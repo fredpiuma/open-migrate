@@ -35,10 +35,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	echo wp_kses(
 		sprintf(
 			/* translators: Max upload file size */
-			__( 'Your host restricts uploads to <strong>%s</strong>.', 'all-in-one-wp-migration' ),
-			esc_html( ai1wm_size_format( wp_max_upload_size() ) )
+			__( 'Your host restricts uploads to <strong>%s</strong>.', 'open-migrate' ),
+			esc_html( openmigrate_size_format( wp_max_upload_size() ) )
 		),
-		ai1wm_allowed_html_tags()
+		openmigrate_allowed_html_tags()
 	);
 	?>
 
@@ -46,10 +46,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	echo wp_kses(
 		sprintf(
 			/* translators: Link to Unlimited Extension */
-			__( 'Our <a href="%s" target="_blank">Unlimited Extension</a> bypasses this!', 'all-in-one-wp-migration' ),
-			'https://servmask.com/products/unlimited-extension?utm_source=below-drag-drop&utm_medium=plugin&utm_campaign=ai1wm'
+			__( 'Our <a href="%s" target="_blank">Unlimited Extension</a> bypasses this!', 'open-migrate' ),
+			'https://servmask.com/products/unlimited-extension?utm_source=below-drag-drop&utm_medium=plugin&utm_campaign=openmigrate'
 		),
-		ai1wm_allowed_html_tags()
+		openmigrate_allowed_html_tags()
 	);
 	?>
 </p>
@@ -58,10 +58,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	echo wp_kses(
 		sprintf(
 			/* translators: Link to how to article */
-			__( 'If you prefer a manual fix, follow our step-by-step guide on <a href="%s" target="_blank">raising your upload limit</a>.', 'all-in-one-wp-migration' ),
+			__( 'If you prefer a manual fix, follow our step-by-step guide on <a href="%s" target="_blank">raising your upload limit</a>.', 'open-migrate' ),
 			'https://help.servmask.com/2018/10/27/how-to-increase-maximum-upload-file-size-in-wordpress/'
 		),
-		ai1wm_allowed_html_tags()
+		openmigrate_allowed_html_tags()
 	);
 	?>
 </p>

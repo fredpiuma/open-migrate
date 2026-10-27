@@ -30,4 +30,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<span class="<?php echo esc_attr( 'ai1wm-menu-count ' . ( $count === 0 ? 'ai1wm-menu-hide' : null ) ); ?>" title="<?php echo esc_attr( sprintf( /* translators: Numbers of backups. */ _n( 'You have %d backup', 'You have %d backups', $count, 'all-in-one-wp-migration' ), $count ) ); ?>"><?php echo esc_html( $count ); ?></span>
+<span class="<?php echo esc_attr( 'openmigrate-menu-count ' . ( $count === 0 ? 'openmigrate-menu-hide' : null ) ); ?>" title="<?php echo esc_attr( sprintf( /* translators: Numbers of backups. */ _n( 'You have %d backup', 'You have %d backups', $count, 'open-migrate' ), $count ) ); ?>"><?php echo esc_html( $count ); ?></span>

@@ -30,14 +30,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="ai1wm-reset-container">
-	<div class="ai1wm-reset-content">
+<div class="openmigrate-reset-container">
+	<div class="openmigrate-reset-content">
 		<h1>
-			<img src="<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/img/reset/star.png?v=' . AI1WM_VERSION ); ?>" alt="<?php esc_attr_e( 'Star', 'all-in-one-wp-migration' ); ?>" />
-			<?php esc_html_e( 'Experience Full Functionality with Premium!', 'all-in-one-wp-migration' ); ?>
+			<img src="<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/img/reset/star.png?v=' . OPENMIGRATE_VERSION ); ?>" alt="<?php esc_attr_e( 'Star', 'open-migrate' ); ?>" />
+			<?php esc_html_e( 'Experience Full Functionality with Premium!', 'open-migrate' ); ?>
 		</h1>
-		<p><?php echo wp_kses( __( 'Please note, the features displayed below are part of an image showcasing the potential of Reset Hub in its Premium version. To activate and enjoy these advanced features, <a href="https://servmask.com/products/unlimited-extension" title="Upgrade to Premium" target="_blank">upgrade to Premium now</a>! Elevate your website management experience with these exclusive functionalities and priority support.', 'all-in-one-wp-migration' ), ai1wm_allowed_html_tags() ); ?></p>
+		<p><?php echo wp_kses( __( 'Please note, the features displayed below are part of an image showcasing the potential of Reset Hub in its Premium version. To activate and enjoy these advanced features, <a href="https://servmask.com/products/unlimited-extension" title="Upgrade to Premium" target="_blank">upgrade to Premium now</a>! Elevate your website management experience with these exclusive functionalities and priority support.', 'open-migrate' ), openmigrate_allowed_html_tags() ); ?></p>
 
-		<a href="https://servmask.com/products/unlimited-extension" target="_blank" title="<?php esc_attr_e( 'Upgrade to Premium ', 'all-in-one-wp-migration' ); ?>"><img src="<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/img/reset/screen.jpg?v=' . AI1WM_VERSION ); ?>" alt="<?php esc_attr_e( 'Reset Hub Demo', 'all-in-one-wp-migration' ); ?>" /></a>
+		<a href="https://servmask.com/products/unlimited-extension" target="_blank" title="<?php esc_attr_e( 'Upgrade to Premium ', 'open-migrate' ); ?>"><img src="<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/img/reset/screen.jpg?v=' . OPENMIGRATE_VERSION ); ?>" alt="<?php esc_attr_e( 'Reset Hub Demo', 'open-migrate' ); ?>" /></a>
 	</div>
 </div>

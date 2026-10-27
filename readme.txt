@@ -46,7 +46,7 @@ All-in-One WP Migration is the gold standard for WordPress site migration and ba
 Enhance your migration and backup workflow with our [premium extensions](https://servmask.com/products):
 
 * **[Unlimited Extension](https://servmask.com/products/unlimited-extension)**: One-click restore from your Backups page, plus uploads that get around your host's file-size restrictions
-* **WP-CLI Commands** (Unlimited Extension): Automate backups and restores from the command line with `wp ai1wm backup` and `wp ai1wm restore`
+* **WP-CLI Commands** (Unlimited Extension): Automate backups and restores from the command line with `wp openmigrate backup` and `wp openmigrate restore`
 * **Cloud Backup & Migration**: Backup and migrate directly to/from Dropbox, Google Drive, OneDrive, and more
 * **Multisite Migration**: Migrate complex WordPress multisite networks
 * **Scheduled Backups**: Automated, recurring WordPress backups on your schedule
@@ -149,7 +149,7 @@ The most common issues after you migrate and their solutions:
 * **Database connection error**: Check that `DB_NAME`, `DB_USER`, `DB_PASSWORD`, and `DB_HOST` in `wp-config.php` match your new server's settings.
 * **404 errors on all pages**: Re-save permalinks under **Settings > Permalinks** to regenerate rewrite rules.
 * **Broken images**: Verify the `wp-content/uploads/` directory transferred completely with correct permissions (755 for directories, 644 for files).
-* **Import stuck or frozen**: Increase PHP `max_execution_time` and `memory_limit`. With the Unlimited Extension, you can also restore from the command line via WP-CLI: `wp ai1wm restore backup.wpress`.
+* **Import stuck or frozen**: Increase PHP `max_execution_time` and `memory_limit`. With the Unlimited Extension, you can also restore from the command line via WP-CLI: `wp openmigrate restore backup.wpress`.
 
 For a comprehensive list of migration troubleshooting tips, see our [migration troubleshooting guide](https://blog.servmask.com/wordpress-migration-troubleshooting/).
 
@@ -159,7 +159,7 @@ Yes, All-in-One WP Migration supports cross-database migration between MySQL, Ma
 
 = Can I automate my backups and migrations using WP-CLI? =
 
-Yes, with the [Unlimited Extension](https://servmask.com/products/unlimited-extension). WP-CLI commands are not included in the free plugin - running them without the extension only prints a notice. With the extension installed, use `wp ai1wm backup` to create a backup and `wp ai1wm restore backup.wpress` to restore or migrate from a backup file. This is ideal for developers who need to migrate sites in automated workflows, CI/CD pipelines, or scheduled backup scripts. Combined with cron jobs, WP-CLI lets you automate your entire backup strategy without touching the WordPress dashboard.
+Yes, with the [Unlimited Extension](https://servmask.com/products/unlimited-extension). WP-CLI commands are not included in the free plugin - running them without the extension only prints a notice. With the extension installed, use `wp openmigrate backup` to create a backup and `wp openmigrate restore backup.wpress` to restore or migrate from a backup file. This is ideal for developers who need to migrate sites in automated workflows, CI/CD pipelines, or scheduled backup scripts. Combined with cron jobs, WP-CLI lets you automate your entire backup strategy without touching the WordPress dashboard.
 
 == Screenshots ==
 1. Mobile Export page
@@ -233,9 +233,9 @@ See our [GDPR Compliant Privacy Policy here](https://www.iubenda.com/privacy-pol
 
 **Fixed**
 
-* Unauthenticated path traversal in ai1wm_error_path. Special thanks to Jakub Herman for responsibly disclosing this issue
+* Unauthenticated path traversal in openmigrate_error_path. Special thanks to Jakub Herman for responsibly disclosing this issue
 * SQLite export producing invalid MySQL CREATE TABLE statements
-* Stale archive file size caused by a cached stat result in ai1wm_archive_bytes()
+* Stale archive file size caused by a cached stat result in openmigrate_archive_bytes()
 * WP-CLI command now registered on cli_init instead of plugins_loaded
 * Duplicate import done status dispatch during clean up
 * Internationalization issues in export views and the decrypt modal
@@ -328,7 +328,7 @@ See our [GDPR Compliant Privacy Policy here](https://www.iubenda.com/privacy-pol
 
 **Improved**
 
-* Stream operations replaced with ai1wm_write() for enhanced reliability
+* Stream operations replaced with openmigrate_write() for enhanced reliability
 * Update javascript dependencies to use latest versions
 
 = 7.98 =
@@ -363,7 +363,7 @@ See our [GDPR Compliant Privacy Policy here](https://www.iubenda.com/privacy-pol
 = 7.95 =
 **Added**
 
-* New action hook ai1wm_status_export_init for developers on export initialization
+* New action hook openmigrate_status_export_init for developers on export initialization
 
 **Fixed**
 

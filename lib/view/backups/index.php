@@ -30,55 +30,55 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="ai1wm-container">
-	<div class="ai1wm-row">
-		<div class="ai1wm-left">
-			<div class="ai1wm-holder">
+<div class="openmigrate-container">
+	<div class="openmigrate-row">
+		<div class="openmigrate-left">
+			<div class="openmigrate-holder">
 				<h1>
-					<i class="ai1wm-icon-export"></i>
-					<?php esc_html_e( 'Backups', 'all-in-one-wp-migration' ); ?>
+					<i class="openmigrate-icon-export"></i>
+					<?php esc_html_e( 'Backups', 'open-migrate' ); ?>
 				</h1>
 
-				<?php if ( is_readable( AI1WM_BACKUPS_PATH ) && is_writable( AI1WM_BACKUPS_PATH ) ) : ?>
-					<div id="ai1wm-backups-list">
-						<?php require_once AI1WM_TEMPLATES_PATH . '/backups/backups-list.php'; ?>
+				<?php if ( is_readable( OPENMIGRATE_BACKUPS_PATH ) && is_writable( OPENMIGRATE_BACKUPS_PATH ) ) : ?>
+					<div id="openmigrate-backups-list">
+						<?php require_once OPENMIGRATE_TEMPLATES_PATH . '/backups/backups-list.php'; ?>
 					</div>
 
-					<form action="" method="post" id="ai1wm-export-form" class="ai1wm-clear">
-						<div id="ai1wm-backups-create">
-							<p class="ai1wm-backups-empty-spinner-holder ai1wm-hide">
+					<form action="" method="post" id="openmigrate-export-form" class="openmigrate-clear">
+						<div id="openmigrate-backups-create">
+							<p class="openmigrate-backups-empty-spinner-holder openmigrate-hide">
 								<span class="spinner"></span>
-								<?php esc_html_e( 'Refreshing backup list...', 'all-in-one-wp-migration' ); ?>
+								<?php esc_html_e( 'Refreshing backup list...', 'open-migrate' ); ?>
 							</p>
-							<p class="ai1wm-backups-empty <?php echo empty( $backups ) ? null : 'ai1wm-hide'; ?>">
-								<?php esc_html_e( 'No backups found. Create a new one?', 'all-in-one-wp-migration' ); ?>
+							<p class="openmigrate-backups-empty <?php echo empty( $backups ) ? null : 'openmigrate-hide'; ?>">
+								<?php esc_html_e( 'No backups found. Create a new one?', 'open-migrate' ); ?>
 							</p>
 							<p>
-								<a href="#" id="ai1wm-create-backup" class="ai1wm-button-green">
-									<i class="ai1wm-icon-export"></i>
-									<?php esc_html_e( 'Create backup', 'all-in-one-wp-migration' ); ?>
+								<a href="#" id="openmigrate-create-backup" class="openmigrate-button-green">
+									<i class="openmigrate-icon-export"></i>
+									<?php esc_html_e( 'Create backup', 'open-migrate' ); ?>
 								</a>
 							</p>
 						</div>
-						<input type="hidden" name="ai1wm_manual_export" value="1" />
+						<input type="hidden" name="openmigrate_manual_export" value="1" />
 					</form>
 
-					<?php do_action( 'ai1wm_backups_left_end' ); ?>
+					<?php do_action( 'openmigrate_backups_left_end' ); ?>
 
 				<?php else : ?>
 
-					<?php require_once AI1WM_TEMPLATES_PATH . '/backups/backups-permissions.php'; ?>
+					<?php require_once OPENMIGRATE_TEMPLATES_PATH . '/backups/backups-permissions.php'; ?>
 
 				<?php endif; ?>
 			</div>
 
-			<div id="ai1wm-backups-list-archive-browser">
+			<div id="openmigrate-backups-list-archive-browser">
 				<archive-browser></archive-browser>
 			</div>
 
 		</div>
 
-		<?php require_once AI1WM_TEMPLATES_PATH . '/common/sidebar-right.php'; ?>
+		<?php require_once OPENMIGRATE_TEMPLATES_PATH . '/common/sidebar-right.php'; ?>
 
 	</div>
 </div>

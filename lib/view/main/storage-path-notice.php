@@ -38,11 +38,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				/* translators: Storage folder path. */
 				__(
 					'Could not create <strong>%s</strong> folder. Please ensure the parent folder has read/write/execute permissions (0777).',
-					'all-in-one-wp-migration'
+					'open-migrate'
 				),
-				AI1WM_STORAGE_PATH
+				OPENMIGRATE_STORAGE_PATH
 			),
-			ai1wm_allowed_html_tags()
+			openmigrate_allowed_html_tags()
 		);
 		?>
 	</p>

@@ -35,28 +35,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_storage_path( $params ) {
+function openmigrate_storage_path( $params ) {
 	if ( empty( $params['storage'] ) ) {
-		throw new Ai1wm_Storage_Exception(
+		throw new OpenMigrate_Storage_Exception(
 			wp_kses(
-				__( 'Could not locate the storage path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-storage-path/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Could not locate the storage path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-storage-path/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
 	// Validate storage path
-	if ( ai1wm_validate_file( $params['storage'] ) !== 0 ) {
-		throw new Ai1wm_Storage_Exception(
+	if ( openmigrate_validate_file( $params['storage'] ) !== 0 ) {
+		throw new OpenMigrate_Storage_Exception(
 			wp_kses(
-				__( 'Your storage directory name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-storage-name/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Your storage directory name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-storage-name/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
 	// Get storage path
-	$storage = AI1WM_STORAGE_PATH . DIRECTORY_SEPARATOR . basename( $params['storage'] );
+	$storage = OPENMIGRATE_STORAGE_PATH . DIRECTORY_SEPARATOR . basename( $params['storage'] );
 	if ( ! is_dir( $storage ) ) {
 		mkdir( $storage, 0777, true );
 	}
@@ -72,16 +72,16 @@ function ai1wm_storage_path( $params ) {
  *
  * @return string
  */
-function ai1wm_resolve_backups_path() {
-	$backups_path = get_option( AI1WM_BACKUPS_PATH_OPTION, false );
+function openmigrate_resolve_backups_path() {
+	$backups_path = get_option( OPENMIGRATE_BACKUPS_PATH_OPTION, false );
 	if ( $backups_path === false ) {
-		return AI1WM_DEFAULT_BACKUPS_PATH;
+		return OPENMIGRATE_DEFAULT_BACKUPS_PATH;
 	}
 
 	$parent_backups_path = dirname( $backups_path );
 	if ( ! is_dir( $parent_backups_path ) || ! is_writable( $parent_backups_path ) ) {
-		delete_option( AI1WM_BACKUPS_PATH_OPTION );
-		return AI1WM_DEFAULT_BACKUPS_PATH;
+		delete_option( OPENMIGRATE_BACKUPS_PATH_OPTION );
+		return OPENMIGRATE_DEFAULT_BACKUPS_PATH;
 	}
 
 	return $backups_path;
@@ -93,37 +93,37 @@ function ai1wm_resolve_backups_path() {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_backup_path( $params ) {
+function openmigrate_backup_path( $params ) {
 	if ( empty( $params['archive'] ) ) {
-		throw new Ai1wm_Archive_Exception(
+		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Could not locate the archive path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-path/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Could not locate the archive path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-path/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
 	// Validate archive path
-	if ( ai1wm_validate_file( $params['archive'] ) !== 0 ) {
-		throw new Ai1wm_Archive_Exception(
+	if ( openmigrate_validate_file( $params['archive'] ) !== 0 ) {
+		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-name/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-name/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
 	// Validate file extension
-	if ( ! ai1wm_is_filename_supported( $params['archive'] ) ) {
-		throw new Ai1wm_Archive_Exception(
+	if ( ! openmigrate_is_filename_supported( $params['archive'] ) ) {
+		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-type/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-type/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
-	return AI1WM_BACKUPS_PATH . DIRECTORY_SEPARATOR . $params['archive'];
+	return OPENMIGRATE_BACKUPS_PATH . DIRECTORY_SEPARATOR . $params['archive'];
 }
 
 /**
@@ -133,7 +133,7 @@ function ai1wm_backup_path( $params ) {
  * @param  array   $allowed_files Array of allowed files
  * @return integer
  */
-function ai1wm_validate_file( $file, $allowed_files = array() ) {
+function openmigrate_validate_file( $file, $allowed_files = array() ) {
 	$file = str_replace( '\\', '/', $file );
 
 	// Validates special characters that are illegal in filenames on certain
@@ -155,42 +155,42 @@ function ai1wm_validate_file( $file, $allowed_files = array() ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_archive_path( $params ) {
+function openmigrate_archive_path( $params ) {
 	if ( empty( $params['archive'] ) ) {
-		throw new Ai1wm_Archive_Exception(
+		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Could not locate the archive path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-path/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Could not locate the archive path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-path/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
 	// Validate archive path
-	if ( ai1wm_validate_file( $params['archive'] ) !== 0 ) {
-		throw new Ai1wm_Archive_Exception(
+	if ( openmigrate_validate_file( $params['archive'] ) !== 0 ) {
+		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-name/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-name/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
 	// Validate file extension
-	if ( ! ai1wm_is_filename_supported( $params['archive'] ) ) {
-		throw new Ai1wm_Archive_Exception(
+	if ( ! openmigrate_is_filename_supported( $params['archive'] ) ) {
+		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-type/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-type/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
 
 	// Get archive path
-	if ( empty( $params['ai1wm_manual_restore'] ) ) {
-		return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . $params['archive'];
+	if ( empty( $params['openmigrate_manual_restore'] ) ) {
+		return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . $params['archive'];
 	}
 
-	return ai1wm_backup_path( $params );
+	return openmigrate_backup_path( $params );
 }
 
 /**
@@ -199,8 +199,8 @@ function ai1wm_archive_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_multipart_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_MULTIPART_NAME;
+function openmigrate_multipart_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_MULTIPART_NAME;
 }
 
 /**
@@ -209,8 +209,8 @@ function ai1wm_multipart_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_content_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_CONTENT_LIST_NAME;
+function openmigrate_content_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_CONTENT_LIST_NAME;
 }
 
 /**
@@ -219,8 +219,8 @@ function ai1wm_content_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_media_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_MEDIA_LIST_NAME;
+function openmigrate_media_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_MEDIA_LIST_NAME;
 }
 
 /**
@@ -229,8 +229,8 @@ function ai1wm_media_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_plugins_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_PLUGINS_LIST_NAME;
+function openmigrate_plugins_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_PLUGINS_LIST_NAME;
 }
 
 /**
@@ -239,8 +239,8 @@ function ai1wm_plugins_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_themes_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_THEMES_LIST_NAME;
+function openmigrate_themes_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_THEMES_LIST_NAME;
 }
 
 /**
@@ -249,8 +249,8 @@ function ai1wm_themes_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_tables_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_TABLES_LIST_NAME;
+function openmigrate_tables_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_TABLES_LIST_NAME;
 }
 
 /**
@@ -259,8 +259,8 @@ function ai1wm_tables_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_incremental_content_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_INCREMENTAL_CONTENT_LIST_NAME;
+function openmigrate_incremental_content_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_INCREMENTAL_CONTENT_LIST_NAME;
 }
 
 /**
@@ -269,8 +269,8 @@ function ai1wm_incremental_content_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_incremental_media_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_INCREMENTAL_MEDIA_LIST_NAME;
+function openmigrate_incremental_media_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_INCREMENTAL_MEDIA_LIST_NAME;
 }
 
 /**
@@ -279,8 +279,8 @@ function ai1wm_incremental_media_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_incremental_plugins_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_INCREMENTAL_PLUGINS_LIST_NAME;
+function openmigrate_incremental_plugins_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_INCREMENTAL_PLUGINS_LIST_NAME;
 }
 
 /**
@@ -289,8 +289,8 @@ function ai1wm_incremental_plugins_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_incremental_themes_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_INCREMENTAL_THEMES_LIST_NAME;
+function openmigrate_incremental_themes_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_INCREMENTAL_THEMES_LIST_NAME;
 }
 
 /**
@@ -299,8 +299,8 @@ function ai1wm_incremental_themes_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_incremental_backups_list_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_INCREMENTAL_BACKUPS_LIST_NAME;
+function openmigrate_incremental_backups_list_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_INCREMENTAL_BACKUPS_LIST_NAME;
 }
 
 /**
@@ -309,8 +309,8 @@ function ai1wm_incremental_backups_list_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_package_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_PACKAGE_NAME;
+function openmigrate_package_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_PACKAGE_NAME;
 }
 
 /**
@@ -319,8 +319,8 @@ function ai1wm_package_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_multisite_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_MULTISITE_NAME;
+function openmigrate_multisite_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_MULTISITE_NAME;
 }
 
 /**
@@ -329,8 +329,8 @@ function ai1wm_multisite_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_blogs_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_BLOGS_NAME;
+function openmigrate_blogs_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_BLOGS_NAME;
 }
 
 /**
@@ -340,15 +340,15 @@ function ai1wm_blogs_path( $params ) {
  * @param  mixed  $prefix Filename prefix
  * @return string
  */
-function ai1wm_settings_path( $params, $prefix = '' ) {
+function openmigrate_settings_path( $params, $prefix = '' ) {
 	// Build the file name from the base name of a clean string identifier.
 	if ( is_scalar( $prefix ) ) {
-		$prefix = ai1wm_basename( str_replace( chr( 0 ), '', strval( $prefix ) ) );
+		$prefix = openmigrate_basename( str_replace( chr( 0 ), '', strval( $prefix ) ) );
 	} else {
 		$prefix = '';
 	}
 
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . ( empty( $prefix ) ? AI1WM_SETTINGS_NAME : sprintf( '%s.%s', $prefix, AI1WM_SETTINGS_NAME ) );
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . ( empty( $prefix ) ? OPENMIGRATE_SETTINGS_NAME : sprintf( '%s.%s', $prefix, OPENMIGRATE_SETTINGS_NAME ) );
 }
 
 /**
@@ -357,8 +357,8 @@ function ai1wm_settings_path( $params, $prefix = '' ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_database_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_DATABASE_NAME;
+function openmigrate_database_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_DATABASE_NAME;
 }
 
 /**
@@ -367,8 +367,8 @@ function ai1wm_database_path( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_cookies_path( $params ) {
-	return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . AI1WM_COOKIES_NAME;
+function openmigrate_cookies_path( $params ) {
+	return openmigrate_storage_path( $params ) . DIRECTORY_SEPARATOR . OPENMIGRATE_COOKIES_NAME;
 }
 
 /**
@@ -377,15 +377,15 @@ function ai1wm_cookies_path( $params ) {
  * @param  mixed  $nonce Log file identifier
  * @return string
  */
-function ai1wm_error_path( $nonce ) {
+function openmigrate_error_path( $nonce ) {
 	// Build the file name from the base name of a clean string identifier.
 	if ( is_scalar( $nonce ) ) {
-		$nonce = ai1wm_basename( str_replace( chr( 0 ), '', strval( $nonce ) ) );
+		$nonce = openmigrate_basename( str_replace( chr( 0 ), '', strval( $nonce ) ) );
 	} else {
 		$nonce = '';
 	}
 
-	return AI1WM_STORAGE_PATH . DIRECTORY_SEPARATOR . sprintf( AI1WM_ERROR_NAME, $nonce );
+	return OPENMIGRATE_STORAGE_PATH . DIRECTORY_SEPARATOR . sprintf( OPENMIGRATE_ERROR_NAME, $nonce );
 }
 
 /**
@@ -394,7 +394,7 @@ function ai1wm_error_path( $nonce ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_archive_name( $params ) {
+function openmigrate_archive_name( $params ) {
 	return basename( $params['archive'] );
 }
 
@@ -404,23 +404,23 @@ function ai1wm_archive_name( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_backup_url( $params ) {
+function openmigrate_backup_url( $params ) {
 	static $backups_base_url = '';
 	if ( empty( $backups_base_url ) ) {
-		if ( Ai1wm_Backups::are_in_wp_content_folder() ) {
-			$backups_base_url = str_replace( untrailingslashit( WP_CONTENT_DIR ), '', AI1WM_BACKUPS_PATH );
+		if ( OpenMigrate_Backups::are_in_wp_content_folder() ) {
+			$backups_base_url = str_replace( untrailingslashit( WP_CONTENT_DIR ), '', OPENMIGRATE_BACKUPS_PATH );
 			$backups_base_url = content_url(
-				ai1wm_replace_directory_separator_with_forward_slash( $backups_base_url )
+				openmigrate_replace_directory_separator_with_forward_slash( $backups_base_url )
 			);
 		} else {
-			$backups_base_url = str_replace( untrailingslashit( ABSPATH ), '', AI1WM_BACKUPS_PATH );
+			$backups_base_url = str_replace( untrailingslashit( ABSPATH ), '', OPENMIGRATE_BACKUPS_PATH );
 			$backups_base_url = site_url(
-				ai1wm_replace_directory_separator_with_forward_slash( $backups_base_url )
+				openmigrate_replace_directory_separator_with_forward_slash( $backups_base_url )
 			);
 		}
 	}
 
-	return $backups_base_url . '/' . ai1wm_replace_directory_separator_with_forward_slash( $params['archive'] );
+	return $backups_base_url . '/' . openmigrate_replace_directory_separator_with_forward_slash( $params['archive'] );
 }
 
 /**
@@ -429,8 +429,8 @@ function ai1wm_backup_url( $params ) {
  * @param  array   $params Request parameters
  * @return integer
  */
-function ai1wm_archive_bytes( $params ) {
-	$archive_path = ai1wm_archive_path( $params );
+function openmigrate_archive_bytes( $params ) {
+	$archive_path = openmigrate_archive_path( $params );
 	clearstatcache( true, $archive_path );
 
 	return filesize( $archive_path );
@@ -442,8 +442,8 @@ function ai1wm_archive_bytes( $params ) {
  * @param  array   $params Request parameters
  * @return integer
  */
-function ai1wm_archive_mtime( $params ) {
-	return filemtime( ai1wm_archive_path( $params ) );
+function openmigrate_archive_mtime( $params ) {
+	return filemtime( openmigrate_archive_path( $params ) );
 }
 
 /**
@@ -452,8 +452,8 @@ function ai1wm_archive_mtime( $params ) {
  * @param  array   $params Request parameters
  * @return integer
  */
-function ai1wm_backup_bytes( $params ) {
-	return filesize( ai1wm_backup_path( $params ) );
+function openmigrate_backup_bytes( $params ) {
+	return filesize( openmigrate_backup_path( $params ) );
 }
 
 /**
@@ -462,8 +462,8 @@ function ai1wm_backup_bytes( $params ) {
  * @param  array   $params Request parameters
  * @return integer
  */
-function ai1wm_database_bytes( $params ) {
-	return filesize( ai1wm_database_path( $params ) );
+function openmigrate_database_bytes( $params ) {
+	return filesize( openmigrate_database_path( $params ) );
 }
 
 /**
@@ -472,8 +472,8 @@ function ai1wm_database_bytes( $params ) {
  * @param  array   $params Request parameters
  * @return integer
  */
-function ai1wm_package_bytes( $params ) {
-	return filesize( ai1wm_package_path( $params ) );
+function openmigrate_package_bytes( $params ) {
+	return filesize( openmigrate_package_path( $params ) );
 }
 
 /**
@@ -482,8 +482,8 @@ function ai1wm_package_bytes( $params ) {
  * @param  array   $params Request parameters
  * @return integer
  */
-function ai1wm_multisite_bytes( $params ) {
-	return filesize( ai1wm_multisite_path( $params ) );
+function openmigrate_multisite_bytes( $params ) {
+	return filesize( openmigrate_multisite_path( $params ) );
 }
 
 /**
@@ -492,8 +492,8 @@ function ai1wm_multisite_bytes( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_archive_size( $params ) {
-	return ai1wm_size_format( filesize( ai1wm_archive_path( $params ) ) );
+function openmigrate_archive_size( $params ) {
+	return openmigrate_size_format( filesize( openmigrate_archive_path( $params ) ) );
 }
 
 /**
@@ -502,8 +502,8 @@ function ai1wm_archive_size( $params ) {
  * @param  array  $params Request parameters
  * @return string
  */
-function ai1wm_backup_size( $params ) {
-	return ai1wm_size_format( filesize( ai1wm_backup_path( $params ) ) );
+function openmigrate_backup_size( $params ) {
+	return openmigrate_size_format( filesize( openmigrate_backup_path( $params ) ) );
 }
 
 /**
@@ -513,7 +513,7 @@ function ai1wm_backup_size( $params ) {
  * @param  string $default Default size
  * @return string
  */
-function ai1wm_parse_size( $size, $default = null ) {
+function openmigrate_parse_size( $size, $default = null ) {
 	$suffixes = array(
 		''  => 1,
 		'k' => 1000,
@@ -538,7 +538,7 @@ function ai1wm_parse_size( $size, $default = null ) {
  * @param  int          $decimals         Optional. Precision of number of decimal places. Default 0.
  * @return string|false False on failure. Number string on success.
  */
-function ai1wm_size_format( $bytes, $decimals = 0 ) {
+function openmigrate_size_format( $bytes, $decimals = 0 ) {
 	if ( strval( $bytes ) === '0' ) {
 		return size_format( 0, $decimals );
 	}
@@ -552,7 +552,7 @@ function ai1wm_size_format( $bytes, $decimals = 0 ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_site_name( $blog_id = null ) {
+function openmigrate_site_name( $blog_id = null ) {
 	return parse_url( get_site_url( $blog_id ), PHP_URL_HOST );
 }
 
@@ -562,11 +562,11 @@ function ai1wm_site_name( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_archive_file( $blog_id = null ) {
+function openmigrate_archive_file( $blog_id = null ) {
 	$name = array();
 
 	// Add domain
-	if ( defined( 'AI1WM_KEEP_DOMAIN_NAME' ) ) {
+	if ( defined( 'OPENMIGRATE_KEEP_DOMAIN_NAME' ) ) {
 		$name[] = parse_url( get_site_url( $blog_id ), PHP_URL_HOST );
 	} elseif ( ( $domain = explode( '.', parse_url( get_site_url( $blog_id ), PHP_URL_HOST ) ) ) ) {
 		foreach ( $domain as $subdomain ) {
@@ -592,7 +592,7 @@ function ai1wm_archive_file( $blog_id = null ) {
 	$name[] = current_time( 'His' );
 
 	// Add unique identifier
-	$name[] = ai1wm_generate_random_string( 12, false );
+	$name[] = openmigrate_generate_random_string( 12, false );
 
 	return sprintf( '%s.wpress', strtolower( implode( '-', $name ) ) );
 }
@@ -603,11 +603,11 @@ function ai1wm_archive_file( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_archive_folder( $blog_id = null ) {
+function openmigrate_archive_folder( $blog_id = null ) {
 	$name = array();
 
 	// Add domain
-	if ( defined( 'AI1WM_KEEP_DOMAIN_NAME' ) ) {
+	if ( defined( 'OPENMIGRATE_KEEP_DOMAIN_NAME' ) ) {
 		$name[] = parse_url( get_site_url( $blog_id ), PHP_URL_HOST );
 	} elseif ( ( $domain = explode( '.', parse_url( get_site_url( $blog_id ), PHP_URL_HOST ) ) ) ) {
 		foreach ( $domain as $subdomain ) {
@@ -635,7 +635,7 @@ function ai1wm_archive_folder( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_archive_bucket( $blog_id = null ) {
+function openmigrate_archive_bucket( $blog_id = null ) {
 	$name = array();
 
 	// Add domain
@@ -665,7 +665,7 @@ function ai1wm_archive_bucket( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_archive_vault( $blog_id = null ) {
+function openmigrate_archive_vault( $blog_id = null ) {
 	$name = array();
 
 	// Add domain
@@ -695,7 +695,7 @@ function ai1wm_archive_vault( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_archive_project( $blog_id = null ) {
+function openmigrate_archive_project( $blog_id = null ) {
 	$name = array();
 
 	// Add domain
@@ -725,7 +725,7 @@ function ai1wm_archive_project( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_archive_share( $blog_id = null ) {
+function openmigrate_archive_share( $blog_id = null ) {
 	$name = array();
 
 	// Add domain
@@ -758,7 +758,7 @@ function ai1wm_archive_share( $blog_id = null ) {
  * @param  boolean $extra_special_chars Whether to include extra special characters
  * @return string
  */
-function ai1wm_generate_random_string( $length = 12, $mixed_chars = true, $special_chars = false, $extra_special_chars = false ) {
+function openmigrate_generate_random_string( $length = 12, $mixed_chars = true, $special_chars = false, $extra_special_chars = false ) {
 	$chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 	if ( $mixed_chars ) {
 		$chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -785,7 +785,7 @@ function ai1wm_generate_random_string( $length = 12, $mixed_chars = true, $speci
  *
  * @return string
  */
-function ai1wm_storage_folder() {
+function openmigrate_storage_folder() {
 	return uniqid();
 }
 
@@ -795,7 +795,7 @@ function ai1wm_storage_folder() {
  * @param  integer $blog_id Blog ID
  * @return boolean
  */
-function ai1wm_is_mainsite( $blog_id = null ) {
+function openmigrate_is_mainsite( $blog_id = null ) {
 	return $blog_id === null || $blog_id === 0 || $blog_id === 1;
 }
 
@@ -805,9 +805,9 @@ function ai1wm_is_mainsite( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_files_abspath( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
-		return ai1wm_get_uploads_dir();
+function openmigrate_blog_files_abspath( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
+		return openmigrate_get_uploads_dir();
 	}
 
 	return WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'blogs.dir' . DIRECTORY_SEPARATOR . $blog_id . DIRECTORY_SEPARATOR . 'files';
@@ -819,9 +819,9 @@ function ai1wm_blog_files_abspath( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_blogsdir_abspath( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
-		return ai1wm_get_uploads_dir();
+function openmigrate_blog_blogsdir_abspath( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
+		return openmigrate_get_uploads_dir();
 	}
 
 	return WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'blogs.dir' . DIRECTORY_SEPARATOR . $blog_id;
@@ -833,12 +833,12 @@ function ai1wm_blog_blogsdir_abspath( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_sites_abspath( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
-		return ai1wm_get_uploads_dir();
+function openmigrate_blog_sites_abspath( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
+		return openmigrate_get_uploads_dir();
 	}
 
-	return ai1wm_get_uploads_dir() . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $blog_id;
+	return openmigrate_get_uploads_dir() . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $blog_id;
 }
 
 /**
@@ -847,8 +847,8 @@ function ai1wm_blog_sites_abspath( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_files_relpath( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
+function openmigrate_blog_files_relpath( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
 		return 'uploads';
 	}
 
@@ -861,8 +861,8 @@ function ai1wm_blog_files_relpath( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_blogsdir_relpath( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
+function openmigrate_blog_blogsdir_relpath( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
 		return 'uploads';
 	}
 
@@ -875,8 +875,8 @@ function ai1wm_blog_blogsdir_relpath( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_sites_relpath( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
+function openmigrate_blog_sites_relpath( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
 		return 'uploads';
 	}
 
@@ -889,8 +889,8 @@ function ai1wm_blog_sites_relpath( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_files_url( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
+function openmigrate_blog_files_url( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
 		return '/wp-content/uploads/';
 	}
 
@@ -903,8 +903,8 @@ function ai1wm_blog_files_url( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_blogsdir_url( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
+function openmigrate_blog_blogsdir_url( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
 		return '/wp-content/uploads/';
 	}
 
@@ -917,8 +917,8 @@ function ai1wm_blog_blogsdir_url( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_sites_url( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
+function openmigrate_blog_sites_url( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
 		return '/wp-content/uploads/';
 	}
 
@@ -931,12 +931,12 @@ function ai1wm_blog_sites_url( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_blog_uploads_url( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
-		return sprintf( '/%s/', ai1wm_get_uploads_path() );
+function openmigrate_blog_uploads_url( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
+		return sprintf( '/%s/', openmigrate_get_uploads_path() );
 	}
 
-	return sprintf( '/%s/sites/%d/', ai1wm_get_uploads_path(), $blog_id );
+	return sprintf( '/%s/sites/%d/', openmigrate_get_uploads_path(), $blog_id );
 }
 
 /**
@@ -945,12 +945,12 @@ function ai1wm_blog_uploads_url( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_servmask_prefix( $blog_id = null ) {
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
-		return AI1WM_TABLE_PREFIX;
+function openmigrate_servmask_prefix( $blog_id = null ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
+		return OPENMIGRATE_TABLE_PREFIX;
 	}
 
-	return AI1WM_TABLE_PREFIX . $blog_id . '_';
+	return OPENMIGRATE_TABLE_PREFIX . $blog_id . '_';
 }
 
 /**
@@ -959,11 +959,11 @@ function ai1wm_servmask_prefix( $blog_id = null ) {
  * @param  integer $blog_id Blog ID
  * @return string
  */
-function ai1wm_table_prefix( $blog_id = null ) {
+function openmigrate_table_prefix( $blog_id = null ) {
 	global $wpdb;
 
 	// Set base table prefix
-	if ( ai1wm_is_mainsite( $blog_id ) ) {
+	if ( openmigrate_is_mainsite( $blog_id ) ) {
 		return $wpdb->base_prefix;
 	}
 
@@ -976,12 +976,12 @@ function ai1wm_table_prefix( $blog_id = null ) {
  * @param  array $filters List of files and directories
  * @return array
  */
-function ai1wm_config_filters( $filters = array() ) {
+function openmigrate_config_filters( $filters = array() ) {
 	return array_merge(
 		$filters,
 		array(
-			AI1WM_PACKAGE_NAME,
-			AI1WM_MULTISITE_NAME,
+			OPENMIGRATE_PACKAGE_NAME,
+			OPENMIGRATE_MULTISITE_NAME,
 		)
 	);
 }
@@ -992,16 +992,16 @@ function ai1wm_config_filters( $filters = array() ) {
  * @param  array $filters List of files and directories
  * @return array
  */
-function ai1wm_content_filters( $filters = array() ) {
+function openmigrate_content_filters( $filters = array() ) {
 	return array_merge(
 		$filters,
 		array(
-			AI1WM_BACKUPS_PATH,
-			AI1WM_BACKUPS_NAME,
-			AI1WM_PACKAGE_NAME,
-			AI1WM_MULTISITE_NAME,
-			AI1WM_DATABASE_NAME,
-			AI1WM_W3TC_CONFIG_FILE,
+			OPENMIGRATE_BACKUPS_PATH,
+			OPENMIGRATE_BACKUPS_NAME,
+			OPENMIGRATE_PACKAGE_NAME,
+			OPENMIGRATE_MULTISITE_NAME,
+			OPENMIGRATE_DATABASE_NAME,
+			OPENMIGRATE_W3TC_CONFIG_FILE,
 		)
 	);
 }
@@ -1012,11 +1012,11 @@ function ai1wm_content_filters( $filters = array() ) {
  * @param  array $filters List of files and directories
  * @return array
  */
-function ai1wm_media_filters( $filters = array() ) {
+function openmigrate_media_filters( $filters = array() ) {
 	return array_merge(
 		$filters,
 		array(
-			AI1WM_BACKUPS_PATH,
+			OPENMIGRATE_BACKUPS_PATH,
 		)
 	);
 }
@@ -1027,34 +1027,34 @@ function ai1wm_media_filters( $filters = array() ) {
  * @param  array $filters List of plugins
  * @return array
  */
-function ai1wm_plugin_filters( $filters = array() ) {
+function openmigrate_plugin_filters( $filters = array() ) {
 	return array_merge(
 		$filters,
 		array(
-			AI1WM_BACKUPS_PATH,
-			AI1WM_PLUGIN_BASEDIR,
-			AI1WMZE_PLUGIN_BASEDIR,
-			AI1WMAE_PLUGIN_BASEDIR,
-			AI1WMVE_PLUGIN_BASEDIR,
-			AI1WMBE_PLUGIN_BASEDIR,
-			AI1WMIE_PLUGIN_BASEDIR,
-			AI1WMXE_PLUGIN_BASEDIR,
-			AI1WMDE_PLUGIN_BASEDIR,
-			AI1WMTE_PLUGIN_BASEDIR,
-			AI1WMFE_PLUGIN_BASEDIR,
-			AI1WMCE_PLUGIN_BASEDIR,
-			AI1WMGE_PLUGIN_BASEDIR,
-			AI1WMRE_PLUGIN_BASEDIR,
-			AI1WMEE_PLUGIN_BASEDIR,
-			AI1WMME_PLUGIN_BASEDIR,
-			AI1WMOE_PLUGIN_BASEDIR,
-			AI1WMPE_PLUGIN_BASEDIR,
-			AI1WMKE_PLUGIN_BASEDIR,
-			AI1WMNE_PLUGIN_BASEDIR,
-			AI1WMSE_PLUGIN_BASEDIR,
-			AI1WMUE_PLUGIN_BASEDIR,
-			AI1WMLE_PLUGIN_BASEDIR,
-			AI1WMWE_PLUGIN_BASEDIR,
+			OPENMIGRATE_BACKUPS_PATH,
+			OPENMIGRATE_PLUGIN_BASEDIR,
+			OPENMIGRATEZE_PLUGIN_BASEDIR,
+			OPENMIGRATEAE_PLUGIN_BASEDIR,
+			OPENMIGRATEVE_PLUGIN_BASEDIR,
+			OPENMIGRATEBE_PLUGIN_BASEDIR,
+			OPENMIGRATEIE_PLUGIN_BASEDIR,
+			OPENMIGRATEXE_PLUGIN_BASEDIR,
+			OPENMIGRATEDE_PLUGIN_BASEDIR,
+			OPENMIGRATETE_PLUGIN_BASEDIR,
+			OPENMIGRATEFE_PLUGIN_BASEDIR,
+			OPENMIGRATECE_PLUGIN_BASEDIR,
+			OPENMIGRATEGE_PLUGIN_BASEDIR,
+			OPENMIGRATERE_PLUGIN_BASEDIR,
+			OPENMIGRATEEE_PLUGIN_BASEDIR,
+			OPENMIGRATEME_PLUGIN_BASEDIR,
+			OPENMIGRATEOE_PLUGIN_BASEDIR,
+			OPENMIGRATEPE_PLUGIN_BASEDIR,
+			OPENMIGRATEKE_PLUGIN_BASEDIR,
+			OPENMIGRATENE_PLUGIN_BASEDIR,
+			OPENMIGRATESE_PLUGIN_BASEDIR,
+			OPENMIGRATEUE_PLUGIN_BASEDIR,
+			OPENMIGRATELE_PLUGIN_BASEDIR,
+			OPENMIGRATEWE_PLUGIN_BASEDIR,
 		)
 	);
 }
@@ -1065,11 +1065,11 @@ function ai1wm_plugin_filters( $filters = array() ) {
  * @param  array $filters List of files and directories
  * @return array
  */
-function ai1wm_theme_filters( $filters = array() ) {
+function openmigrate_theme_filters( $filters = array() ) {
 	return array_merge(
 		$filters,
 		array(
-			AI1WM_BACKUPS_PATH,
+			OPENMIGRATE_BACKUPS_PATH,
 		)
 	);
 }
@@ -1079,120 +1079,120 @@ function ai1wm_theme_filters( $filters = array() ) {
  *
  * @return array
  */
-function ai1wm_active_servmask_plugins( $plugins = array() ) {
+function openmigrate_active_servmask_plugins( $plugins = array() ) {
 	// WP Migration Plugin
-	if ( defined( 'AI1WM_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WM_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATE_PLUGIN_BASENAME;
 	}
 
 	// Microsoft Azure Extension
-	if ( defined( 'AI1WMZE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMZE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEZE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEZE_PLUGIN_BASENAME;
 	}
 
 	// Backblaze B2 Extension
-	if ( defined( 'AI1WMAE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMAE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEAE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEAE_PLUGIN_BASENAME;
 	}
 
 	// Backup Plugin
-	if ( defined( 'AI1WMVE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMVE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEVE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEVE_PLUGIN_BASENAME;
 	}
 
 	// Box Extension
-	if ( defined( 'AI1WMBE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMBE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEBE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEBE_PLUGIN_BASENAME;
 	}
 
 	// DigitalOcean Spaces Extension
-	if ( defined( 'AI1WMIE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMIE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEIE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEIE_PLUGIN_BASENAME;
 	}
 
 	// Direct Extension
-	if ( defined( 'AI1WMXE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMXE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEXE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEXE_PLUGIN_BASENAME;
 	}
 
 	// Dropbox Extension
-	if ( defined( 'AI1WMDE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMDE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEDE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEDE_PLUGIN_BASENAME;
 	}
 
 	// File Extension
-	if ( defined( 'AI1WMTE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMTE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATETE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATETE_PLUGIN_BASENAME;
 	}
 
 	// FTP Extension
-	if ( defined( 'AI1WMFE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMFE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEFE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEFE_PLUGIN_BASENAME;
 	}
 
 	// Google Cloud Storage Extension
-	if ( defined( 'AI1WMCE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMCE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATECE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATECE_PLUGIN_BASENAME;
 	}
 
 	// Google Drive Extension
-	if ( defined( 'AI1WMGE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMGE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEGE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEGE_PLUGIN_BASENAME;
 	}
 
 	// Amazon Glacier Extension
-	if ( defined( 'AI1WMRE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMRE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATERE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATERE_PLUGIN_BASENAME;
 	}
 
 	// Mega Extension
-	if ( defined( 'AI1WMEE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMEE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEEE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEEE_PLUGIN_BASENAME;
 	}
 
 	// Multisite Extension
-	if ( defined( 'AI1WMME_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMME_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEME_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEME_PLUGIN_BASENAME;
 	}
 
 	// OneDrive Extension
-	if ( defined( 'AI1WMOE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMOE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEOE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEOE_PLUGIN_BASENAME;
 	}
 
 	// pCloud Extension
-	if ( defined( 'AI1WMPE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMPE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEPE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEPE_PLUGIN_BASENAME;
 	}
 
 	// Pro Plugin
-	if ( defined( 'AI1WMKE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMKE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEKE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEKE_PLUGIN_BASENAME;
 	}
 
 	// S3 Client Extension
-	if ( defined( 'AI1WMNE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMNE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATENE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATENE_PLUGIN_BASENAME;
 	}
 
 	// Amazon S3 Extension
-	if ( defined( 'AI1WMSE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMSE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATESE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATESE_PLUGIN_BASENAME;
 	}
 
 	// Unlimited Extension
-	if ( defined( 'AI1WMUE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMUE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEUE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEUE_PLUGIN_BASENAME;
 	}
 
 	// URL Extension
-	if ( defined( 'AI1WMLE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMLE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATELE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATELE_PLUGIN_BASENAME;
 	}
 
 	// WebDAV Extension
-	if ( defined( 'AI1WMWE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = AI1WMWE_PLUGIN_BASENAME;
+	if ( defined( 'OPENMIGRATEWE_PLUGIN_BASENAME' ) ) {
+		$plugins[] = OPENMIGRATEWE_PLUGIN_BASENAME;
 	}
 
 	return $plugins;
@@ -1203,8 +1203,8 @@ function ai1wm_active_servmask_plugins( $plugins = array() ) {
  *
  * @return array
  */
-function ai1wm_active_sitewide_plugins() {
-	return array_keys( get_site_option( AI1WM_ACTIVE_SITEWIDE_PLUGINS, array() ) );
+function openmigrate_active_sitewide_plugins() {
+	return array_keys( get_site_option( OPENMIGRATE_ACTIVE_SITEWIDE_PLUGINS, array() ) );
 }
 
 /**
@@ -1212,8 +1212,8 @@ function ai1wm_active_sitewide_plugins() {
  *
  * @return array
  */
-function ai1wm_active_plugins() {
-	return array_values( get_option( AI1WM_ACTIVE_PLUGINS, array() ) );
+function openmigrate_active_plugins() {
+	return array_values( get_option( OPENMIGRATE_ACTIVE_PLUGINS, array() ) );
 }
 
 /**
@@ -1222,8 +1222,8 @@ function ai1wm_active_plugins() {
  * @param  array   $plugins List of plugins
  * @return boolean
  */
-function ai1wm_activate_sitewide_plugins( $plugins ) {
-	$current = get_site_option( AI1WM_ACTIVE_SITEWIDE_PLUGINS, array() );
+function openmigrate_activate_sitewide_plugins( $plugins ) {
+	$current = get_site_option( OPENMIGRATE_ACTIVE_SITEWIDE_PLUGINS, array() );
 
 	// Add plugins
 	foreach ( $plugins as $plugin ) {
@@ -1232,7 +1232,7 @@ function ai1wm_activate_sitewide_plugins( $plugins ) {
 		}
 	}
 
-	return update_site_option( AI1WM_ACTIVE_SITEWIDE_PLUGINS, $current );
+	return update_site_option( OPENMIGRATE_ACTIVE_SITEWIDE_PLUGINS, $current );
 }
 
 /**
@@ -1241,8 +1241,8 @@ function ai1wm_activate_sitewide_plugins( $plugins ) {
  * @param  array   $plugins List of plugins
  * @return boolean
  */
-function ai1wm_activate_plugins( $plugins ) {
-	$current = get_option( AI1WM_ACTIVE_PLUGINS, array() );
+function openmigrate_activate_plugins( $plugins ) {
+	$current = get_option( OPENMIGRATE_ACTIVE_PLUGINS, array() );
 
 	// Add plugins
 	foreach ( $plugins as $plugin ) {
@@ -1251,7 +1251,7 @@ function ai1wm_activate_plugins( $plugins ) {
 		}
 	}
 
-	return update_option( AI1WM_ACTIVE_PLUGINS, $current );
+	return update_option( OPENMIGRATE_ACTIVE_PLUGINS, $current );
 }
 
 /**
@@ -1259,8 +1259,8 @@ function ai1wm_activate_plugins( $plugins ) {
  *
  * @return string
  */
-function ai1wm_active_template() {
-	return get_option( AI1WM_ACTIVE_TEMPLATE );
+function openmigrate_active_template() {
+	return get_option( OPENMIGRATE_ACTIVE_TEMPLATE );
 }
 
 /**
@@ -1268,8 +1268,8 @@ function ai1wm_active_template() {
  *
  * @return string
  */
-function ai1wm_active_stylesheet() {
-	return get_option( AI1WM_ACTIVE_STYLESHEET );
+function openmigrate_active_stylesheet() {
+	return get_option( OPENMIGRATE_ACTIVE_STYLESHEET );
 }
 
 /**
@@ -1278,8 +1278,8 @@ function ai1wm_active_stylesheet() {
  * @param  string  $template Template name
  * @return boolean
  */
-function ai1wm_activate_template( $template ) {
-	return update_option( AI1WM_ACTIVE_TEMPLATE, $template );
+function openmigrate_activate_template( $template ) {
+	return update_option( OPENMIGRATE_ACTIVE_TEMPLATE, $template );
 }
 
 /**
@@ -1288,8 +1288,8 @@ function ai1wm_activate_template( $template ) {
  * @param  string  $stylesheet Stylesheet name
  * @return boolean
  */
-function ai1wm_activate_stylesheet( $stylesheet ) {
-	return update_option( AI1WM_ACTIVE_STYLESHEET, $stylesheet );
+function openmigrate_activate_stylesheet( $stylesheet ) {
+	return update_option( OPENMIGRATE_ACTIVE_STYLESHEET, $stylesheet );
 }
 
 /**
@@ -1298,8 +1298,8 @@ function ai1wm_activate_stylesheet( $stylesheet ) {
  * @param  array   $plugins List of plugins
  * @return boolean
  */
-function ai1wm_deactivate_sitewide_plugins( $plugins ) {
-	$current = get_site_option( AI1WM_ACTIVE_SITEWIDE_PLUGINS, array() );
+function openmigrate_deactivate_sitewide_plugins( $plugins ) {
+	$current = get_site_option( OPENMIGRATE_ACTIVE_SITEWIDE_PLUGINS, array() );
 
 	// Add plugins
 	foreach ( $plugins as $plugin ) {
@@ -1308,7 +1308,7 @@ function ai1wm_deactivate_sitewide_plugins( $plugins ) {
 		}
 	}
 
-	return update_site_option( AI1WM_ACTIVE_SITEWIDE_PLUGINS, $current );
+	return update_site_option( OPENMIGRATE_ACTIVE_SITEWIDE_PLUGINS, $current );
 }
 
 
@@ -1318,8 +1318,8 @@ function ai1wm_deactivate_sitewide_plugins( $plugins ) {
  * @param  array   $plugins List of plugins
  * @return boolean
  */
-function ai1wm_deactivate_plugins( $plugins ) {
-	$current = get_option( AI1WM_ACTIVE_PLUGINS, array() );
+function openmigrate_deactivate_plugins( $plugins ) {
+	$current = get_option( OPENMIGRATE_ACTIVE_PLUGINS, array() );
 
 	// Remove plugins
 	foreach ( $plugins as $plugin ) {
@@ -1328,7 +1328,7 @@ function ai1wm_deactivate_plugins( $plugins ) {
 		}
 	}
 
-	return update_option( AI1WM_ACTIVE_PLUGINS, $current );
+	return update_option( OPENMIGRATE_ACTIVE_PLUGINS, $current );
 }
 
 /**
@@ -1337,8 +1337,8 @@ function ai1wm_deactivate_plugins( $plugins ) {
  * @param  array   $modules List of modules
  * @return boolean
  */
-function ai1wm_deactivate_jetpack_modules( $modules ) {
-	$current = get_option( AI1WM_JETPACK_ACTIVE_MODULES, array() );
+function openmigrate_deactivate_jetpack_modules( $modules ) {
+	$current = get_option( OPENMIGRATE_JETPACK_ACTIVE_MODULES, array() );
 
 	// Remove modules
 	foreach ( $modules as $module ) {
@@ -1347,7 +1347,7 @@ function ai1wm_deactivate_jetpack_modules( $modules ) {
 		}
 	}
 
-	return update_option( AI1WM_JETPACK_ACTIVE_MODULES, $current );
+	return update_option( OPENMIGRATE_JETPACK_ACTIVE_MODULES, $current );
 }
 
 /**
@@ -1356,15 +1356,15 @@ function ai1wm_deactivate_jetpack_modules( $modules ) {
  * @param  array   $rules List of rules
  * @return boolean
  */
-function ai1wm_deactivate_swift_optimizer_rules( $rules ) {
-	$current = get_option( AI1WM_SWIFT_OPTIMIZER_PLUGIN_ORGANIZER, array() );
+function openmigrate_deactivate_swift_optimizer_rules( $rules ) {
+	$current = get_option( OPENMIGRATE_SWIFT_OPTIMIZER_PLUGIN_ORGANIZER, array() );
 
 	// Remove rules
 	foreach ( $rules as $rule ) {
 		unset( $current['rules'][ $rule ] );
 	}
 
-	return update_option( AI1WM_SWIFT_OPTIMIZER_PLUGIN_ORGANIZER, $current );
+	return update_option( OPENMIGRATE_SWIFT_OPTIMIZER_PLUGIN_ORGANIZER, $current );
 }
 
 /**
@@ -1373,23 +1373,23 @@ function ai1wm_deactivate_swift_optimizer_rules( $rules ) {
  * @param  string  $basename Plugin basename
  * @return boolean
  */
-function ai1wm_deactivate_sitewide_revolution_slider( $basename ) {
+function openmigrate_deactivate_sitewide_revolution_slider( $basename ) {
 	if ( ( $plugins = get_plugins() ) ) {
 		if ( isset( $plugins[ $basename ]['Version'] ) && ( $version = $plugins[ $basename ]['Version'] ) ) {
 			if ( version_compare( PHP_VERSION, '7.3', '>=' ) && version_compare( $version, '5.4.8.3', '<' ) ) {
-				return ai1wm_deactivate_sitewide_plugins( array( $basename ) );
+				return openmigrate_deactivate_sitewide_plugins( array( $basename ) );
 			}
 
 			if ( version_compare( PHP_VERSION, '7.2', '>=' ) && version_compare( $version, '5.4.6', '<' ) ) {
-				return ai1wm_deactivate_sitewide_plugins( array( $basename ) );
+				return openmigrate_deactivate_sitewide_plugins( array( $basename ) );
 			}
 
 			if ( version_compare( PHP_VERSION, '7.1', '>=' ) && version_compare( $version, '5.4.1', '<' ) ) {
-				return ai1wm_deactivate_sitewide_plugins( array( $basename ) );
+				return openmigrate_deactivate_sitewide_plugins( array( $basename ) );
 			}
 
 			if ( version_compare( PHP_VERSION, '7.0', '>=' ) && version_compare( $version, '4.6.5', '<' ) ) {
-				return ai1wm_deactivate_sitewide_plugins( array( $basename ) );
+				return openmigrate_deactivate_sitewide_plugins( array( $basename ) );
 			}
 		}
 	}
@@ -1403,23 +1403,23 @@ function ai1wm_deactivate_sitewide_revolution_slider( $basename ) {
  * @param  string  $basename Plugin basename
  * @return boolean
  */
-function ai1wm_deactivate_revolution_slider( $basename ) {
+function openmigrate_deactivate_revolution_slider( $basename ) {
 	if ( ( $plugins = get_plugins() ) ) {
 		if ( isset( $plugins[ $basename ]['Version'] ) && ( $version = $plugins[ $basename ]['Version'] ) ) {
 			if ( version_compare( PHP_VERSION, '7.3', '>=' ) && version_compare( $version, '5.4.8.3', '<' ) ) {
-				return ai1wm_deactivate_plugins( array( $basename ) );
+				return openmigrate_deactivate_plugins( array( $basename ) );
 			}
 
 			if ( version_compare( PHP_VERSION, '7.2', '>=' ) && version_compare( $version, '5.4.6', '<' ) ) {
-				return ai1wm_deactivate_plugins( array( $basename ) );
+				return openmigrate_deactivate_plugins( array( $basename ) );
 			}
 
 			if ( version_compare( PHP_VERSION, '7.1', '>=' ) && version_compare( $version, '5.4.1', '<' ) ) {
-				return ai1wm_deactivate_plugins( array( $basename ) );
+				return openmigrate_deactivate_plugins( array( $basename ) );
 			}
 
 			if ( version_compare( PHP_VERSION, '7.0', '>=' ) && version_compare( $version, '4.6.5', '<' ) ) {
-				return ai1wm_deactivate_plugins( array( $basename ) );
+				return openmigrate_deactivate_plugins( array( $basename ) );
 			}
 		}
 	}
@@ -1432,9 +1432,9 @@ function ai1wm_deactivate_revolution_slider( $basename ) {
  *
  * @return boolean
  */
-function ai1wm_initial_db_version() {
-	if ( ! get_option( AI1WM_DB_VERSION ) ) {
-		return update_option( AI1WM_DB_VERSION, get_option( AI1WM_INITIAL_DB_VERSION ) );
+function openmigrate_initial_db_version() {
+	if ( ! get_option( OPENMIGRATE_DB_VERSION ) ) {
+		return update_option( OPENMIGRATE_DB_VERSION, get_option( OPENMIGRATE_INITIAL_DB_VERSION ) );
 	}
 
 	return false;
@@ -1446,7 +1446,7 @@ function ai1wm_initial_db_version() {
  * @param  string $basename Plugin basename
  * @return string
  */
-function ai1wm_discover_plugin_basename( $basename ) {
+function openmigrate_discover_plugin_basename( $basename ) {
 	if ( ( $plugins = get_plugins() ) ) {
 		foreach ( $plugins as $plugin => $info ) {
 			if ( strpos( dirname( $plugin ), dirname( $basename ) ) !== false ) {
@@ -1466,7 +1466,7 @@ function ai1wm_discover_plugin_basename( $basename ) {
  * @param  string  $basename Plugin basename
  * @return boolean
  */
-function ai1wm_validate_plugin_basename( $basename ) {
+function openmigrate_validate_plugin_basename( $basename ) {
 	if ( ( $plugins = get_plugins() ) ) {
 		foreach ( $plugins as $plugin => $info ) {
 			if ( $plugin === $basename ) {
@@ -1484,7 +1484,7 @@ function ai1wm_validate_plugin_basename( $basename ) {
  * @param  string  $basename Theme basename
  * @return boolean
  */
-function ai1wm_validate_theme_basename( $basename ) {
+function openmigrate_validate_theme_basename( $basename ) {
 	if ( ( $themes = search_theme_directories() ) ) {
 		foreach ( $themes as $theme => $info ) {
 			if ( $info['theme_file'] === $basename ) {
@@ -1501,7 +1501,7 @@ function ai1wm_validate_theme_basename( $basename ) {
  *
  * @return void
  */
-function ai1wm_cache_flush() {
+function openmigrate_cache_flush() {
 	wp_cache_init();
 	wp_cache_flush();
 
@@ -1534,7 +1534,7 @@ function ai1wm_cache_flush() {
  *
  * @return void
  */
-function ai1wm_elementor_cache_flush() {
+function openmigrate_elementor_cache_flush() {
 	delete_post_meta_by_key( '_elementor_css' );
 	delete_post_meta_by_key( '_elementor_element_cache' );
 	delete_post_meta_by_key( '_elementor_page_assets' );
@@ -1550,7 +1550,7 @@ function ai1wm_elementor_cache_flush() {
  * @param  boolean $yes Force SSL checkout
  * @return void
  */
-function ai1wm_woocommerce_force_ssl( $yes = true ) {
+function openmigrate_woocommerce_force_ssl( $yes = true ) {
 	if ( get_option( 'woocommerce_force_ssl_checkout' ) ) {
 		if ( $yes ) {
 			update_option( 'woocommerce_force_ssl_checkout', 'yes' );
@@ -1567,7 +1567,7 @@ function ai1wm_woocommerce_force_ssl( $yes = true ) {
  * @param  string $scheme URL scheme
  * @return string
  */
-function ai1wm_url_scheme( $url, $scheme = '' ) {
+function openmigrate_url_scheme( $url, $scheme = '' ) {
 	if ( empty( $scheme ) ) {
 		return preg_replace( '#^\w+://#', '//', $url );
 	}
@@ -1581,16 +1581,16 @@ function ai1wm_url_scheme( $url, $scheme = '' ) {
  * @param  string   $file Path to the file to open
  * @param  string   $mode Mode in which to open the file
  * @return resource
- * @throws Ai1wm_Not_Accessible_Exception
+ * @throws OpenMigrate_Not_Accessible_Exception
  */
-function ai1wm_open( $file, $mode ) {
+function openmigrate_open( $file, $mode ) {
 	$file_handle = @fopen( $file, $mode );
 	if ( false === $file_handle ) {
-		throw new Ai1wm_Not_Accessible_Exception(
+		throw new OpenMigrate_Not_Accessible_Exception(
 			wp_kses(
 				/* translators: 1: File path, 2: mode */
-				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $file, $mode ),
-				ai1wm_allowed_html_tags()
+				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $file, $mode ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
@@ -1604,16 +1604,16 @@ function ai1wm_open( $file, $mode ) {
  * @param  string   $file Path to the file to open
  * @param  string   $mode Mode in which to open the file
  * @return resource
- * @throws Ai1wm_Not_Accessible_Exception
+ * @throws OpenMigrate_Not_Accessible_Exception
  */
-function ai1wm_gzopen( $file, $mode ) {
+function openmigrate_gzopen( $file, $mode ) {
 	$file_handle = @fopen( "compress.zlib://{$file}", $mode );
 	if ( false === $file_handle ) {
-		throw new Ai1wm_Not_Accessible_Exception(
+		throw new OpenMigrate_Not_Accessible_Exception(
 			wp_kses(
 				/* translators: 1: File path, 2: mode */
-				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $file, $mode ),
-				ai1wm_allowed_html_tags()
+				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $file, $mode ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
@@ -1627,18 +1627,18 @@ function ai1wm_gzopen( $file, $mode ) {
  * @param  resource $handle  File handle to write to
  * @param  string   $content Contents to write to the file
  * @return integer
- * @throws Ai1wm_Not_Writable_Exception
- * @throws Ai1wm_Quota_Exceeded_Exception
+ * @throws OpenMigrate_Not_Writable_Exception
+ * @throws OpenMigrate_Quota_Exceeded_Exception
  */
-function ai1wm_write( $handle, $content ) {
+function openmigrate_write( $handle, $content ) {
 	$write_result = @fwrite( $handle, $content );
 	if ( false === $write_result ) {
 		if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
-			throw new Ai1wm_Not_Writable_Exception(
+			throw new OpenMigrate_Not_Writable_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $meta['uri'] ),
-					ai1wm_allowed_html_tags()
+					sprintf( __( 'Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					openmigrate_allowed_html_tags()
 				)
 			);
 		}
@@ -1646,11 +1646,11 @@ function ai1wm_write( $handle, $content ) {
 		return strlen( $content );
 	} elseif ( strlen( $content ) !== $write_result ) {
 		if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
-			throw new Ai1wm_Quota_Exceeded_Exception(
+			throw new OpenMigrate_Quota_Exceeded_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Out of disk space. Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/out-of-disk-space/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $meta['uri'] ),
-					ai1wm_allowed_html_tags()
+					sprintf( __( 'Out of disk space. Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/out-of-disk-space/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					openmigrate_allowed_html_tags()
 				)
 			);
 		}
@@ -1665,18 +1665,18 @@ function ai1wm_write( $handle, $content ) {
  * @param  resource $handle File handle to read from
  * @param  integer  $length Up to length number of bytes read
  * @return string
- * @throws Ai1wm_Not_Readable_Exception
+ * @throws OpenMigrate_Not_Readable_Exception
  */
-function ai1wm_read( $handle, $length ) {
+function openmigrate_read( $handle, $length ) {
 	if ( $length > 0 ) {
 		$read_result = @fread( $handle, $length );
 		if ( false === $read_result ) {
 			if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
-				throw new Ai1wm_Not_Readable_Exception(
+				throw new OpenMigrate_Not_Readable_Exception(
 					wp_kses(
 						/* translators: 1: Meta data stream URI. */
-						sprintf( __( 'Could not read file: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $meta['uri'] ),
-						ai1wm_allowed_html_tags()
+						sprintf( __( 'Could not read file: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+						openmigrate_allowed_html_tags()
 					)
 				);
 			}
@@ -1696,15 +1696,15 @@ function ai1wm_read( $handle, $length ) {
  * @param  integer  $mode   Offset mode
  * @return integer
  */
-function ai1wm_seek( $handle, $offset, $mode = SEEK_SET ) {
+function openmigrate_seek( $handle, $offset, $mode = SEEK_SET ) {
 	$seek_result = @fseek( $handle, $offset, $mode );
 	if ( -1 === $seek_result ) {
 		if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
-			throw new Ai1wm_Not_Seekable_Exception(
+			throw new OpenMigrate_Not_Seekable_Exception(
 				wp_kses(
 					/* translators: 1: File offset, 2: Meta data stream URI. */
-					sprintf( __( 'Could not seek to offset %1$d on %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $offset, $meta['uri'] ),
-					ai1wm_allowed_html_tags()
+					sprintf( __( 'Could not seek to offset %1$d on %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'open-migrate' ), $offset, $meta['uri'] ),
+					openmigrate_allowed_html_tags()
 				)
 			);
 		}
@@ -1719,15 +1719,15 @@ function ai1wm_seek( $handle, $offset, $mode = SEEK_SET ) {
  * @param  resource $handle File handle
  * @return integer
  */
-function ai1wm_tell( $handle ) {
+function openmigrate_tell( $handle ) {
 	$tell_result = @ftell( $handle );
 	if ( false === $tell_result ) {
 		if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
-			throw new Ai1wm_Not_Tellable_Exception(
+			throw new OpenMigrate_Not_Tellable_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Could not get current pointer position of %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $meta['uri'] ),
-					ai1wm_allowed_html_tags()
+					sprintf( __( 'Could not get current pointer position of %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					openmigrate_allowed_html_tags()
 				)
 			);
 		}
@@ -1746,9 +1746,9 @@ function ai1wm_tell( $handle ) {
  * @param string    $escape
  *
  * @return integer
- * @throws Ai1wm_Not_Writable_Exception
+ * @throws OpenMigrate_Not_Writable_Exception
  */
-function ai1wm_putcsv( $handle, $fields, $separator = ',', $enclosure = '"', $escape = '\\' ) {
+function openmigrate_putcsv( $handle, $fields, $separator = ',', $enclosure = '"', $escape = '\\' ) {
 	if ( PHP_MAJOR_VERSION >= 7 ) {
 		// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters
 		$write_result = @fputcsv( $handle, $fields, $separator, $enclosure, $escape );
@@ -1758,11 +1758,11 @@ function ai1wm_putcsv( $handle, $fields, $separator = ',', $enclosure = '"', $es
 
 	if ( false === $write_result ) {
 		if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
-			throw new Ai1wm_Not_Writable_Exception(
+			throw new OpenMigrate_Not_Writable_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ), $meta['uri'] ),
-					ai1wm_allowed_html_tags()
+					sprintf( __( 'Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					openmigrate_allowed_html_tags()
 				)
 			);
 		}
@@ -1782,7 +1782,7 @@ function ai1wm_putcsv( $handle, $fields, $separator = ',', $enclosure = '"', $es
  *
  * @return array|false|null
  */
-function ai1wm_getcsv( $handle, $length = null, $separator = ',', $enclosure = '"', $escape = '\\' ) {
+function openmigrate_getcsv( $handle, $length = null, $separator = ',', $enclosure = '"', $escape = '\\' ) {
 	return fgetcsv( $handle, $length, $separator, $enclosure, $escape );
 }
 
@@ -1792,7 +1792,7 @@ function ai1wm_getcsv( $handle, $length = null, $separator = ',', $enclosure = '
  * @param  resource $handle File handle to close
  * @return boolean
  */
-function ai1wm_close( $handle ) {
+function openmigrate_close( $handle ) {
 	return @fclose( $handle );
 }
 
@@ -1802,7 +1802,7 @@ function ai1wm_close( $handle ) {
  * @param  string  $file Path to file to delete
  * @return boolean
  */
-function ai1wm_unlink( $file ) {
+function openmigrate_unlink( $file ) {
 	return @unlink( $file );
 }
 
@@ -1813,7 +1813,7 @@ function ai1wm_unlink( $file ) {
  * @param  integer $time File modification time
  * @return boolean
  */
-function ai1wm_touch( $file, $mtime ) {
+function openmigrate_touch( $file, $mtime ) {
 	return @touch( $file, $mtime );
 }
 
@@ -1824,7 +1824,7 @@ function ai1wm_touch( $file, $mtime ) {
  * @param  integer $time File mode
  * @return boolean
  */
-function ai1wm_chmod( $file, $mode ) {
+function openmigrate_chmod( $file, $mode ) {
 	return @chmod( $file, $mode );
 }
 
@@ -1836,17 +1836,17 @@ function ai1wm_chmod( $file, $mode ) {
  * @param  integer $output_file_offset Output file offset bytes
  * @return void
  */
-function ai1wm_copy( $target_file, $output_file, $output_file_offset = 0 ) {
-	$target_handle = ai1wm_open( $target_file, 'rb' );
-	$output_handle = ai1wm_open( $output_file, 'cb' );
-	if ( ai1wm_seek( $output_handle, $output_file_offset, SEEK_SET ) !== -1 ) {
-		while ( ( $file_buffer = ai1wm_read( $target_handle, 4096 ) ) ) {
-			ai1wm_write( $output_handle, $file_buffer );
+function openmigrate_copy( $target_file, $output_file, $output_file_offset = 0 ) {
+	$target_handle = openmigrate_open( $target_file, 'rb' );
+	$output_handle = openmigrate_open( $output_file, 'cb' );
+	if ( openmigrate_seek( $output_handle, $output_file_offset, SEEK_SET ) !== -1 ) {
+		while ( ( $file_buffer = openmigrate_read( $target_handle, 4096 ) ) ) {
+			openmigrate_write( $output_handle, $file_buffer );
 		}
 	}
 
-	ai1wm_close( $target_handle );
-	ai1wm_close( $output_handle );
+	openmigrate_close( $target_handle );
+	openmigrate_close( $output_handle );
 }
 
 /**
@@ -1857,17 +1857,17 @@ function ai1wm_copy( $target_file, $output_file, $output_file_offset = 0 ) {
  * @param  integer $output_file_offset Output file offset bytes
  * @return void
  */
-function ai1wm_copy_gz( $target_file, $output_file, $output_file_offset = 0 ) {
-	$target_handle = ai1wm_gzopen( $target_file, 'rb' );
-	$output_handle = ai1wm_open( $output_file, 'cb' );
-	if ( ai1wm_seek( $output_handle, $output_file_offset, SEEK_SET ) !== -1 ) {
-		while ( ( $file_buffer = ai1wm_read( $target_handle, 4096 ) ) ) {
-			ai1wm_write( $output_handle, $file_buffer );
+function openmigrate_copy_gz( $target_file, $output_file, $output_file_offset = 0 ) {
+	$target_handle = openmigrate_gzopen( $target_file, 'rb' );
+	$output_handle = openmigrate_open( $output_file, 'cb' );
+	if ( openmigrate_seek( $output_handle, $output_file_offset, SEEK_SET ) !== -1 ) {
+		while ( ( $file_buffer = openmigrate_read( $target_handle, 4096 ) ) ) {
+			openmigrate_write( $output_handle, $file_buffer );
 		}
 	}
 
-	ai1wm_close( $target_handle );
-	ai1wm_close( $output_handle );
+	openmigrate_close( $target_handle );
+	openmigrate_close( $output_handle );
 }
 
 
@@ -1878,7 +1878,7 @@ function ai1wm_copy_gz( $target_file, $output_file, $output_file_offset = 0 ) {
  * @param  integer $php_int_size Size of PHP integer
  * @return boolean $php_int_max  Max value of PHP integer
  */
-function ai1wm_is_filesize_supported( $file, $php_int_size = PHP_INT_SIZE, $php_int_max = PHP_INT_MAX ) {
+function openmigrate_is_filesize_supported( $file, $php_int_size = PHP_INT_SIZE, $php_int_max = PHP_INT_MAX ) {
 	$size_result = true;
 
 	// Check whether file size is less than 2GB in PHP 32bits
@@ -1904,7 +1904,7 @@ function ai1wm_is_filesize_supported( $file, $php_int_size = PHP_INT_SIZE, $php_
  * @param  array   $extensions File extensions
  * @return boolean
  */
-function ai1wm_is_filename_supported( $file, $extensions = array( 'wpress' ) ) {
+function openmigrate_is_filename_supported( $file, $extensions = array( 'wpress' ) ) {
 	if ( in_array( pathinfo( $file, PATHINFO_EXTENSION ), $extensions ) ) {
 		return true;
 	}
@@ -1918,11 +1918,11 @@ function ai1wm_is_filename_supported( $file, $extensions = array( 'wpress' ) ) {
  * @param  string  $file Path to file
  * @return boolean
  */
-function ai1wm_is_filedata_supported( $file ) {
+function openmigrate_is_filedata_supported( $file ) {
 	if ( ( $file_handle = @fopen( $file, 'rb' ) ) ) {
-		if ( ( $file_buffer = @fread( $file_handle, Ai1wm_Archiver::HEADER_SIZE ) ) ) {
+		if ( ( $file_buffer = @fread( $file_handle, OpenMigrate_Archiver::HEADER_SIZE ) ) ) {
 			if ( ( $file_data = @unpack( 'a255filename/a14size/a12mtime/a4088path/a8crc32', $file_buffer ) ) !== false ) {
-				if ( AI1WM_PACKAGE_NAME === trim( $file_data['filename'] ) ) {
+				if ( OPENMIGRATE_PACKAGE_NAME === trim( $file_data['filename'] ) ) {
 					return true;
 				}
 			}
@@ -1940,11 +1940,11 @@ function ai1wm_is_filedata_supported( $file ) {
  * @param  string  $file Path to file
  * @return boolean
  */
-function ai1wm_is_gzipped_filedata_supported( $file ) {
+function openmigrate_is_gzipped_filedata_supported( $file ) {
 	if ( ( $file_handle = @gzopen( $file, 'rb' ) ) ) {
-		if ( ( $file_buffer = @gzread( $file_handle, Ai1wm_Archiver::HEADER_SIZE ) ) ) {
+		if ( ( $file_buffer = @gzread( $file_handle, OpenMigrate_Archiver::HEADER_SIZE ) ) ) {
 			if ( ( $file_data = @unpack( 'a255filename/a14size/a12mtime/a4088path/a8crc32', $file_buffer ) ) !== false ) {
-				if ( AI1WM_PACKAGE_NAME === trim( $file_data['filename'] ) ) {
+				if ( OPENMIGRATE_PACKAGE_NAME === trim( $file_data['filename'] ) ) {
 					return true;
 				}
 			}
@@ -1961,14 +1961,14 @@ function ai1wm_is_gzipped_filedata_supported( $file ) {
  *
  * @param  string  $secret_key Secret key
  * @return boolean
- * @throws Ai1wm_Not_Valid_Secret_Key_Exception
+ * @throws OpenMigrate_Not_Valid_Secret_Key_Exception
  */
-function ai1wm_verify_secret_key( $secret_key ) {
-	if ( $secret_key !== get_option( AI1WM_SECRET_KEY ) ) {
-		throw new Ai1wm_Not_Valid_Secret_Key_Exception(
+function openmigrate_verify_secret_key( $secret_key ) {
+	if ( $secret_key !== get_option( OPENMIGRATE_SECRET_KEY ) ) {
+		throw new OpenMigrate_Not_Valid_Secret_Key_Exception(
 			wp_kses(
-				__( 'Could not authenticate the secret key. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-secret-key/" target="_blank">Technical details</a>', 'all-in-one-wp-migration' ),
-				ai1wm_allowed_html_tags()
+				__( 'Could not authenticate the secret key. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-secret-key/" target="_blank">Technical details</a>', 'open-migrate' ),
+				openmigrate_allowed_html_tags()
 			)
 		);
 	}
@@ -1981,20 +1981,20 @@ function ai1wm_verify_secret_key( $secret_key ) {
  *
  * @return boolean
  */
-function ai1wm_is_scheduled_backup() {
-	if ( isset( $_GET['ai1wm_manual_export'] ) || isset( $_POST['ai1wm_manual_export'] ) ) {
+function openmigrate_is_scheduled_backup() {
+	if ( isset( $_GET['openmigrate_manual_export'] ) || isset( $_POST['openmigrate_manual_export'] ) ) {
 		return false;
 	}
 
-	if ( isset( $_GET['ai1wm_manual_import'] ) || isset( $_POST['ai1wm_manual_import'] ) ) {
+	if ( isset( $_GET['openmigrate_manual_import'] ) || isset( $_POST['openmigrate_manual_import'] ) ) {
 		return false;
 	}
 
-	if ( isset( $_GET['ai1wm_manual_restore'] ) || isset( $_POST['ai1wm_manual_restore'] ) ) {
+	if ( isset( $_GET['openmigrate_manual_restore'] ) || isset( $_POST['openmigrate_manual_restore'] ) ) {
 		return false;
 	}
 
-	if ( isset( $_GET['ai1wm_manual_reset'] ) || isset( $_POST['ai1wm_manual_reset'] ) ) {
+	if ( isset( $_GET['openmigrate_manual_reset'] ) || isset( $_POST['openmigrate_manual_reset'] ) ) {
 		return false;
 	}
 
@@ -2006,7 +2006,7 @@ function ai1wm_is_scheduled_backup() {
  *
  * @return void
  */
-function ai1wm_setup_environment() {
+function openmigrate_setup_environment() {
 	// Set whether a client disconnect should abort script execution
 	@ignore_user_abort( true );
 
@@ -2036,9 +2036,9 @@ function ai1wm_setup_environment() {
  *
  * @return void
  */
-function ai1wm_setup_errors() {
-	@set_error_handler( 'Ai1wm_Handler::error' );
-	@register_shutdown_function( 'Ai1wm_Handler::shutdown' );
+function openmigrate_setup_errors() {
+	@set_error_handler( 'OpenMigrate_Handler::error' );
+	@register_shutdown_function( 'OpenMigrate_Handler::shutdown' );
 }
 
 /**
@@ -2055,12 +2055,12 @@ function ai1wm_setup_errors() {
  * @param  array<string, mixed> $params Request parameters
  * @return void
  */
-function ai1wm_close_connection( $params ) {
+function openmigrate_close_connection( $params ) {
 	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 		return;
 	}
 
-	if ( isset( $params['ai1wm_manual_export'] ) || isset( $params['ai1wm_manual_import'] ) || isset( $params['ai1wm_manual_restore'] ) ) {
+	if ( isset( $params['openmigrate_manual_export'] ) || isset( $params['openmigrate_manual_import'] ) || isset( $params['openmigrate_manual_restore'] ) ) {
 		return;
 	}
 
@@ -2076,7 +2076,7 @@ function ai1wm_close_connection( $params ) {
  *
  * @return string
  */
-function ai1wm_get_timezone_string() {
+function openmigrate_get_timezone_string() {
 	if ( ( $timezone_string = get_option( 'timezone_string' ) ) ) {
 		return $timezone_string;
 	}
@@ -2098,7 +2098,7 @@ function ai1wm_get_timezone_string() {
  * @param  string $tag The name of the filter hook
  * @return array
  */
-function ai1wm_get_filters( $tag ) {
+function openmigrate_get_filters( $tag ) {
 	global $wp_filter;
 
 	// Get WordPress filter hooks
@@ -2123,7 +2123,7 @@ function ai1wm_get_filters( $tag ) {
  *
  * @return array
  */
-function ai1wm_get_themes_dirs() {
+function openmigrate_get_themes_dirs() {
 	$theme_dirs = array();
 	foreach ( search_theme_directories() as $theme_name => $theme_info ) {
 		if ( isset( $theme_info['theme_root'] ) ) {
@@ -2141,7 +2141,7 @@ function ai1wm_get_themes_dirs() {
  *
  * @return string
  */
-function ai1wm_get_plugins_dir() {
+function openmigrate_get_plugins_dir() {
 	return untrailingslashit( WP_PLUGIN_DIR );
 }
 
@@ -2150,7 +2150,7 @@ function ai1wm_get_plugins_dir() {
  *
  * @return string
  */
-function ai1wm_get_uploads_dir() {
+function openmigrate_get_uploads_dir() {
 	if ( ( $upload_dir = wp_upload_dir() ) ) {
 		if ( isset( $upload_dir['basedir'] ) ) {
 			return untrailingslashit( $upload_dir['basedir'] );
@@ -2163,7 +2163,7 @@ function ai1wm_get_uploads_dir() {
  *
  * @return string
  */
-function ai1wm_get_uploads_url() {
+function openmigrate_get_uploads_url() {
 	if ( ( $upload_dir = wp_upload_dir() ) ) {
 		if ( isset( $upload_dir['baseurl'] ) ) {
 			return trailingslashit( $upload_dir['baseurl'] );
@@ -2176,7 +2176,7 @@ function ai1wm_get_uploads_url() {
  *
  * @return string
  */
-function ai1wm_get_uploads_path() {
+function openmigrate_get_uploads_path() {
 	if ( ( $upload_dir = wp_upload_dir() ) ) {
 		if ( isset( $upload_dir['basedir'] ) ) {
 			return str_replace( ABSPATH, '', $upload_dir['basedir'] );
@@ -2191,7 +2191,7 @@ function ai1wm_get_uploads_path() {
  * @param  string $suffix If the filename ends in suffix this will also be cut off
  * @return string
  */
-function ai1wm_basename( $path, $suffix = '' ) {
+function openmigrate_basename( $path, $suffix = '' ) {
 	return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
 }
 
@@ -2201,7 +2201,7 @@ function ai1wm_basename( $path, $suffix = '' ) {
  * @param  string $path File path
  * @return string
  */
-function ai1wm_dirname( $path ) {
+function openmigrate_dirname( $path ) {
 	return urldecode( dirname( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ) ) );
 }
 
@@ -2211,7 +2211,7 @@ function ai1wm_dirname( $path ) {
  * @param  string $path Path
  * @return string
  */
-function ai1wm_replace_forward_slash_with_directory_separator( $path ) {
+function openmigrate_replace_forward_slash_with_directory_separator( $path ) {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
 }
 
@@ -2221,7 +2221,7 @@ function ai1wm_replace_forward_slash_with_directory_separator( $path ) {
  * @param  string $path Path
  * @return string
  */
-function ai1wm_replace_directory_separator_with_forward_slash( $path ) {
+function openmigrate_replace_directory_separator_with_forward_slash( $path ) {
 	return str_replace( DIRECTORY_SEPARATOR, '/', $path );
 }
 
@@ -2231,7 +2231,7 @@ function ai1wm_replace_directory_separator_with_forward_slash( $path ) {
  * @param  string $path Path
  * @return string
  */
-function ai1wm_escape_windows_directory_separator( $path ) {
+function openmigrate_escape_windows_directory_separator( $path ) {
 	return preg_replace( '/[\\\\]+/', '\\\\\\\\', $path );
 }
 
@@ -2241,7 +2241,7 @@ function ai1wm_escape_windows_directory_separator( $path ) {
  * @param  array   $params Request parameters
  * @return boolean
  */
-function ai1wm_should_reset_permalinks( $params ) {
+function openmigrate_should_reset_permalinks( $params ) {
 	global $wp_rewrite, $is_apache;
 
 	// Permalinks are not supported
@@ -2263,9 +2263,9 @@ function ai1wm_should_reset_permalinks( $params ) {
  *
  * @return string
  */
-function ai1wm_get_htaccess() {
-	if ( is_file( AI1WM_WORDPRESS_HTACCESS ) ) {
-		return @file_get_contents( AI1WM_WORDPRESS_HTACCESS );
+function openmigrate_get_htaccess() {
+	if ( is_file( OPENMIGRATE_WORDPRESS_HTACCESS ) ) {
+		return @file_get_contents( OPENMIGRATE_WORDPRESS_HTACCESS );
 	}
 
 	return '';
@@ -2276,9 +2276,9 @@ function ai1wm_get_htaccess() {
  *
  * @return string
  */
-function ai1wm_get_webconfig() {
-	if ( is_file( AI1WM_WORDPRESS_WEBCONFIG ) ) {
-		return @file_get_contents( AI1WM_WORDPRESS_WEBCONFIG );
+function openmigrate_get_webconfig() {
+	if ( is_file( OPENMIGRATE_WORDPRESS_WEBCONFIG ) ) {
+		return @file_get_contents( OPENMIGRATE_WORDPRESS_WEBCONFIG );
 	}
 
 	return '';
@@ -2290,7 +2290,7 @@ function ai1wm_get_webconfig() {
  * @param  string $path Directory of the filesystem or disk partition
  * @return mixed
  */
-function ai1wm_disk_free_space( $path ) {
+function openmigrate_disk_free_space( $path ) {
 	if ( function_exists( 'disk_free_space' ) ) {
 		return @disk_free_space( $path );
 	}
@@ -2304,7 +2304,7 @@ function ai1wm_disk_free_space( $path ) {
  * @param int $depth
  * @return void
  */
-function ai1wm_json_response( $data, $options = 0 ) {
+function openmigrate_json_response( $data, $options = 0 ) {
 	if ( ! headers_sent() ) {
 		header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset', 'utf-8' ) );
 	}
@@ -2317,7 +2317,7 @@ function ai1wm_json_response( $data, $options = 0 ) {
  *
  * @return boolean
  */
-function ai1wm_can_encrypt() {
+function openmigrate_can_encrypt() {
 	if ( ! function_exists( 'openssl_encrypt' ) ) {
 		return false;
 	}
@@ -2334,7 +2334,7 @@ function ai1wm_can_encrypt() {
 		return false;
 	}
 
-	if ( ! in_array( AI1WM_CIPHER_NAME, array_map( 'strtoupper', openssl_get_cipher_methods() ) ) ) {
+	if ( ! in_array( OPENMIGRATE_CIPHER_NAME, array_map( 'strtoupper', openssl_get_cipher_methods() ) ) ) {
 		return false;
 	}
 
@@ -2346,7 +2346,7 @@ function ai1wm_can_encrypt() {
  *
  * @return boolean
  */
-function ai1wm_can_decrypt() {
+function openmigrate_can_decrypt() {
 	if ( ! function_exists( 'openssl_decrypt' ) ) {
 		return false;
 	}
@@ -2363,7 +2363,7 @@ function ai1wm_can_decrypt() {
 		return false;
 	}
 
-	if ( ! in_array( AI1WM_CIPHER_NAME, array_map( 'strtoupper', openssl_get_cipher_methods() ) ) ) {
+	if ( ! in_array( OPENMIGRATE_CIPHER_NAME, array_map( 'strtoupper', openssl_get_cipher_methods() ) ) ) {
 		return false;
 	}
 
@@ -2376,21 +2376,21 @@ function ai1wm_can_decrypt() {
  * @param string $string String to encrypt
  * @param string $key    Key to encrypt the string with
  * @return string
- * @throws Ai1wm_Not_Encryptable_Exception
+ * @throws OpenMigrate_Not_Encryptable_Exception
  */
-function ai1wm_encrypt_string( $string, $key ) {
-	$iv_length = ai1wm_crypt_iv_length();
+function openmigrate_encrypt_string( $string, $key ) {
+	$iv_length = openmigrate_crypt_iv_length();
 	$key       = substr( sha1( $key, true ), 0, $iv_length );
 
 	$iv = openssl_random_pseudo_bytes( $iv_length );
 	if ( $iv === false ) {
-		throw new Ai1wm_Not_Encryptable_Exception( esc_html__( 'Could not generate random bytes. The process cannot continue.', 'all-in-one-wp-migration' ) );
+		throw new OpenMigrate_Not_Encryptable_Exception( esc_html__( 'Could not generate random bytes. The process cannot continue.', 'open-migrate' ) );
 	}
 
 	// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters, PHPCompatibility.Constants.NewConstants
-	$encrypted_string = openssl_encrypt( $string, AI1WM_CIPHER_NAME, $key, OPENSSL_RAW_DATA, $iv );
+	$encrypted_string = openssl_encrypt( $string, OPENMIGRATE_CIPHER_NAME, $key, OPENSSL_RAW_DATA, $iv );
 	if ( $encrypted_string === false ) {
-		throw new Ai1wm_Not_Encryptable_Exception( esc_html__( 'Could not encrypt data. The process cannot continue.', 'all-in-one-wp-migration' ) );
+		throw new OpenMigrate_Not_Encryptable_Exception( esc_html__( 'Could not encrypt data. The process cannot continue.', 'open-migrate' ) );
 	}
 
 	return sprintf( '%s%s', $iv, $encrypted_string );
@@ -2400,12 +2400,12 @@ function ai1wm_encrypt_string( $string, $key ) {
  * Returns encrypt/decrypt iv length
  *
  * @return int
- * @throws Ai1wm_Not_Encryptable_Exception
+ * @throws OpenMigrate_Not_Encryptable_Exception
  */
-function ai1wm_crypt_iv_length() {
-	$iv_length = openssl_cipher_iv_length( AI1WM_CIPHER_NAME );
+function openmigrate_crypt_iv_length() {
+	$iv_length = openssl_cipher_iv_length( OPENMIGRATE_CIPHER_NAME );
 	if ( $iv_length === false ) {
-		throw new Ai1wm_Not_Encryptable_Exception( esc_html__( 'Could not obtain cipher length. The process cannot continue.', 'all-in-one-wp-migration' ) );
+		throw new OpenMigrate_Not_Encryptable_Exception( esc_html__( 'Could not obtain cipher length. The process cannot continue.', 'open-migrate' ) );
 	}
 
 	return $iv_length;
@@ -2417,18 +2417,18 @@ function ai1wm_crypt_iv_length() {
  * @param string $encrypted_string String to decrypt
  * @param string $key              Key to decrypt the string with
  * @return string
- * @throws Ai1wm_Not_Encryptable_Exception
- * @throws Ai1wm_Not_Decryptable_Exception
+ * @throws OpenMigrate_Not_Encryptable_Exception
+ * @throws OpenMigrate_Not_Decryptable_Exception
  */
-function ai1wm_decrypt_string( $encrypted_string, $key ) {
-	$iv_length = ai1wm_crypt_iv_length();
+function openmigrate_decrypt_string( $encrypted_string, $key ) {
+	$iv_length = openmigrate_crypt_iv_length();
 	$key       = substr( sha1( $key, true ), 0, $iv_length );
 	$iv        = substr( $encrypted_string, 0, $iv_length );
 
 	// phpcs:ignore PHPCompatibility.Constants.NewConstants, PHPCompatibility.FunctionUse.NewFunctionParameters
-	$decrypted_string = openssl_decrypt( substr( $encrypted_string, $iv_length ), AI1WM_CIPHER_NAME, $key, OPENSSL_RAW_DATA, $iv );
+	$decrypted_string = openssl_decrypt( substr( $encrypted_string, $iv_length ), OPENMIGRATE_CIPHER_NAME, $key, OPENSSL_RAW_DATA, $iv );
 	if ( $decrypted_string === false ) {
-		throw new Ai1wm_Not_Decryptable_Exception( esc_html__( 'Could not decrypt data. The process cannot continue.', 'all-in-one-wp-migration' ) );
+		throw new OpenMigrate_Not_Decryptable_Exception( esc_html__( 'Could not decrypt data. The process cannot continue.', 'open-migrate' ) );
 	}
 
 	return $decrypted_string;
@@ -2441,17 +2441,17 @@ function ai1wm_decrypt_string( $encrypted_string, $key ) {
  * @param string $password
  * @return bool
  */
-function ai1wm_is_decryption_password_valid( $encrypted_signature, $password ) {
+function openmigrate_is_decryption_password_valid( $encrypted_signature, $password ) {
 	try {
 		$encrypted_signature = base64_decode( $encrypted_signature );
 
-		return ai1wm_decrypt_string( $encrypted_signature, $password ) === AI1WM_SIGN_TEXT;
-	} catch ( Ai1wm_Not_Decryptable_Exception $exception ) {
+		return openmigrate_decrypt_string( $encrypted_signature, $password ) === OPENMIGRATE_SIGN_TEXT;
+	} catch ( OpenMigrate_Not_Decryptable_Exception $exception ) {
 		return false;
 	}
 }
 
-function ai1wm_populate_roles() {
+function openmigrate_populate_roles() {
 	if ( ! function_exists( 'populate_roles' ) && ! function_exists( 'populate_options' ) && ! function_exists( 'populate_network' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/schema.php';
 	}
@@ -2468,18 +2468,18 @@ function ai1wm_populate_roles() {
  *
  * @return array
  */
-function ai1wm_auth_headers( $headers = array() ) {
-	if ( $hash = get_option( AI1WM_AUTH_HEADER ) ) {
+function openmigrate_auth_headers( $headers = array() ) {
+	if ( $hash = get_option( OPENMIGRATE_AUTH_HEADER ) ) {
 		$headers['Authorization'] = sprintf( 'Basic %s', $hash );
 	}
 
-	if ( ( $user = get_option( AI1WM_AUTH_USER ) ) && ( $password = get_option( AI1WM_AUTH_PASSWORD ) ) ) {
+	if ( ( $user = get_option( OPENMIGRATE_AUTH_USER ) ) && ( $password = get_option( OPENMIGRATE_AUTH_PASSWORD ) ) ) {
 		if ( ! isset( $headers['Authorization'] ) && ( $hash = base64_encode( sprintf( '%s:%s', $user, $password ) ) ) ) {
-			update_option( AI1WM_AUTH_HEADER, $hash );
+			update_option( OPENMIGRATE_AUTH_HEADER, $hash );
 			$headers['Authorization'] = sprintf( 'Basic %s', $hash );
 		}
-		delete_option( AI1WM_AUTH_USER );
-		delete_option( AI1WM_AUTH_PASSWORD );
+		delete_option( OPENMIGRATE_AUTH_USER );
+		delete_option( OPENMIGRATE_AUTH_PASSWORD );
 	}
 
 	return $headers;
@@ -2490,7 +2490,7 @@ function ai1wm_auth_headers( $headers = array() ) {
  *
  * @return bool
  */
-function ai1wm_direct_download_supported() {
+function openmigrate_direct_download_supported() {
 	return ! ( $_SERVER['SERVER_NAME'] === 'playground.wordpress.net' || $_SERVER['SERVER_SOFTWARE'] === 'PHP.wasm' );
 }
 
@@ -2499,7 +2499,7 @@ function ai1wm_direct_download_supported() {
  *
  * @return array
  */
-function ai1wm_allowed_html_tags() {
+function openmigrate_allowed_html_tags() {
 	return array(
 		'a'      => array(
 			'href'       => array(),
@@ -2551,7 +2551,7 @@ function ai1wm_allowed_html_tags() {
  *
  * @return bool
  */
-function ai1wm_register_style( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
+function openmigrate_register_style( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
 	if ( is_rtl() ) {
 		$src = str_replace( '.min.css', '.min.rtl.css', $src );
 	}
@@ -2570,7 +2570,7 @@ function ai1wm_register_style( $handle, $src, $deps = array(), $ver = false, $me
  *
  * @return void
  */
-function ai1wm_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = 'all' ) {
+function openmigrate_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = 'all' ) {
 	if ( is_rtl() ) {
 		$src = str_replace( '.min.css', '.min.rtl.css', $src );
 	}
@@ -2589,7 +2589,7 @@ function ai1wm_enqueue_style( $handle, $src = '', $deps = array(), $ver = false,
  *
  * @return bool
  */
-function ai1wm_register_script( $handle, $src, $deps = array(), $ver = false, $args = array() ) {
+function openmigrate_register_script( $handle, $src, $deps = array(), $ver = false, $args = array() ) {
 	return wp_register_script( $handle, $src, $deps, $ver, $args );
 }
 
@@ -2604,7 +2604,7 @@ function ai1wm_register_script( $handle, $src, $deps = array(), $ver = false, $a
  *
  * @return void
  */
-function ai1wm_enqueue_script( $handle, $src = '', $deps = array(), $ver = false, $args = array() ) {
+function openmigrate_enqueue_script( $handle, $src = '', $deps = array(), $ver = false, $args = array() ) {
 	wp_enqueue_script( $handle, $src, $deps, $ver, $args );
 }
 
@@ -2614,7 +2614,7 @@ function ai1wm_enqueue_script( $handle, $src = '', $deps = array(), $ver = false
  * @param  string  $name Compression type
  * @return boolean
  */
-function ai1wm_has_compression_type( $name ) {
+function openmigrate_has_compression_type( $name ) {
 	switch ( strtolower( $name ) ) {
 		case 'gzip':
 			return function_exists( 'gzcompress' );

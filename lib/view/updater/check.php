@@ -30,4 +30,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<a href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Check for updates', 'all-in-one-wp-migration' ); ?></a>
+<a href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Check for updates', 'open-migrate' ); ?></a>

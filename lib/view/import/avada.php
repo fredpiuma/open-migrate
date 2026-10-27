@@ -30,24 +30,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( $should_reset_permalinks ) {
-	echo wp_kses( __( '» Permalinks are set to default. <a class="ai1wm-no-underline" href="https://help.servmask.com/knowledgebase/permalinks-are-set-to-default/" target="_blank">Why?</a><br />', 'all-in-one-wp-migration' ), ai1wm_allowed_html_tags() );
+	echo wp_kses( __( '» Permalinks are set to default. <a class="openmigrate-no-underline" href="https://help.servmask.com/knowledgebase/permalinks-are-set-to-default/" target="_blank">Why?</a><br />', 'open-migrate' ), openmigrate_allowed_html_tags() );
 } else {
 	echo wp_kses(
 		/* translators: Url */
-		sprintf( __( '» <a class="ai1wm-no-underline" href="%s" target="_blank">Save permalinks structure</a>.<br />', 'all-in-one-wp-migration' ), admin_url( 'options-permalink.php#submit' ) ),
-		ai1wm_allowed_html_tags()
+		sprintf( __( '» <a class="openmigrate-no-underline" href="%s" target="_blank">Save permalinks structure</a>.<br />', 'open-migrate' ), admin_url( 'options-permalink.php#submit' ) ),
+		openmigrate_allowed_html_tags()
 	);
 }
 
-if ( ai1wm_validate_plugin_basename( 'oxygen/functions.php' ) ) {
-	echo wp_kses( __( '» <a class="ai1wm-no-underline" href="https://classic.oxygenbuilder.com/documentation/other/importing-exporting/#resigning" target="_blank">Re-sign Oxygen Builder shortcodes</a>.<br />', 'all-in-one-wp-migration' ), ai1wm_allowed_html_tags() );
+if ( openmigrate_validate_plugin_basename( 'oxygen/functions.php' ) ) {
+	echo wp_kses( __( '» <a class="openmigrate-no-underline" href="https://classic.oxygenbuilder.com/documentation/other/importing-exporting/#resigning" target="_blank">Re-sign Oxygen Builder shortcodes</a>.<br />', 'open-migrate' ), openmigrate_allowed_html_tags() );
 }
 
-echo wp_kses( __( '» <a class="ai1wm-no-underline" href="https://theme-fusion.com/documentation/avada/installation-maintenance/important-update-information/#clear-caches" target="_blank">Reset Avada Fusion Builder cache</a>.<br />', 'all-in-one-wp-migration' ), ai1wm_allowed_html_tags() );
-echo wp_kses( __( '» <a class="ai1wm-no-underline" href="https://wordpress.org/support/view/plugin-reviews/all-in-one-wp-migration?rate=5#postform" target="_blank">Review your migration experience</a>.<br />', 'all-in-one-wp-migration' ), ai1wm_allowed_html_tags() );
+echo wp_kses( __( '» <a class="openmigrate-no-underline" href="https://theme-fusion.com/documentation/avada/installation-maintenance/important-update-information/#clear-caches" target="_blank">Reset Avada Fusion Builder cache</a>.<br />', 'open-migrate' ), openmigrate_allowed_html_tags() );
+echo wp_kses( __( '» <a class="openmigrate-no-underline" href="https://wordpress.org/support/view/plugin-reviews/all-in-one-wp-migration?rate=5#postform" target="_blank">Review your migration experience</a>.<br />', 'open-migrate' ), openmigrate_allowed_html_tags() );
 
 echo wp_kses(
 	/* translators: Url */
-	sprintf( __( '» <a class="ai1wm-no-underline" href="%s" target="_blank">Protect your site with real-time threat protection</a>', 'all-in-one-wp-migration' ), 'https://servmask.com/protect' ),
-	ai1wm_allowed_html_tags()
+	sprintf( __( '» <a class="openmigrate-no-underline" href="%s" target="_blank">Protect your site with real-time threat protection</a>', 'open-migrate' ), 'https://servmask.com/protect' ),
+	openmigrate_allowed_html_tags()
 );

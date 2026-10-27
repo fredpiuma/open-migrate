@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="ai1wm-message ai1wm-red-message ai1wm-clear" style="margin-top: 4em;">
+<div class="openmigrate-message openmigrate-red-message openmigrate-clear" style="margin-top: 4em;">
 	<?php
 	echo wp_kses(
 		sprintf(
@@ -39,11 +39,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'<h3>Could not export site</h3>
 				<p>Please ensure the directory <strong>%s</strong> has read/write permissions.</p>
 				<p><a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a></p>',
-				'all-in-one-wp-migration'
+				'open-migrate'
 			),
-			AI1WM_STORAGE_PATH
+			OPENMIGRATE_STORAGE_PATH
 		),
-		ai1wm_allowed_html_tags()
+		openmigrate_allowed_html_tags()
 	);
 	?>
 </div>

@@ -30,11 +30,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<p class="ai1wm-backup-bulk-delete-holder">
-	<a href="#" id="ai1wm-backup-bulk-delete" class="ai1wm-hide">
-		<i class="ai1wm-icon-close"></i>
-		<span class="ai1wm-backup-bulk-delete-text">
-			<?php esc_html_e( 'Delete selected', 'all-in-one-wp-migration' ); ?>
+<p class="openmigrate-backup-bulk-delete-holder">
+	<a href="#" id="openmigrate-backup-bulk-delete" class="openmigrate-hide">
+		<i class="openmigrate-icon-close"></i>
+		<span class="openmigrate-backup-bulk-delete-text">
+			<?php esc_html_e( 'Delete selected', 'open-migrate' ); ?>
 		</span>
 	</a>
 </p>

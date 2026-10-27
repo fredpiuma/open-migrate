@@ -30,31 +30,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="ai1wm-social-share-wrapper">
+<div class="openmigrate-social-share-wrapper">
 	<a href="https://twitter.com/intent/tweet?text=Check+this+epic+WordPress+Migration+plugin&url=https://servmask.com&via=servmask"
-		class="ai1wm-social-icon icon-x"
+		class="openmigrate-social-icon icon-x"
 		target="_blank"
 		rel="noopener"
-		title="<?php esc_attr_e( 'Share on X', 'all-in-one-wp-migration' ); ?>"
-		aria-label="<?php esc_attr_e( 'Share on X', 'all-in-one-wp-migration' ); ?>">
-		<i class="ai1wm-icon-x" aria-hidden="true"></i>
+		title="<?php esc_attr_e( 'Share on X', 'open-migrate' ); ?>"
+		aria-label="<?php esc_attr_e( 'Share on X', 'open-migrate' ); ?>">
+		<i class="openmigrate-icon-x" aria-hidden="true"></i>
 	</a>
 
 	<a href="https://www.facebook.com/sharer/sharer.php?u=https://servmask.com"
-		class="ai1wm-social-icon icon-facebook"
+		class="openmigrate-social-icon icon-facebook"
 		target="_blank"
 		rel="noopener"
-		title="<?php esc_attr_e( 'Share on Facebook', 'all-in-one-wp-migration' ); ?>"
-		aria-label="<?php esc_attr_e( 'Share on Facebook', 'all-in-one-wp-migration' ); ?>">
-		<i class="ai1wm-icon-facebook" aria-hidden="true"></i>
+		title="<?php esc_attr_e( 'Share on Facebook', 'open-migrate' ); ?>"
+		aria-label="<?php esc_attr_e( 'Share on Facebook', 'open-migrate' ); ?>">
+		<i class="openmigrate-icon-facebook" aria-hidden="true"></i>
 	</a>
 
 	<a href="https://www.youtube.com/channel/UCWMNPEnX7KyDLknpcmPaSwg?sub_confirmation=1"
-		class="ai1wm-social-icon icon-youtube"
+		class="openmigrate-social-icon icon-youtube"
 		target="_blank"
 		rel="noopener"
-		title="<?php esc_attr_e( 'Subscribe on YouTube', 'all-in-one-wp-migration' ); ?>"
-		aria-label="<?php esc_attr_e( 'Subscribe on YouTube', 'all-in-one-wp-migration' ); ?>">
-		<i class="ai1wm-icon-youtube" aria-hidden="true"></i>
+		title="<?php esc_attr_e( 'Subscribe on YouTube', 'open-migrate' ); ?>"
+		aria-label="<?php esc_attr_e( 'Subscribe on YouTube', 'open-migrate' ); ?>">
+		<i class="openmigrate-icon-youtube" aria-hidden="true"></i>
 	</a>
 </div>

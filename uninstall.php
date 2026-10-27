@@ -37,7 +37,7 @@ if ( defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	if ( ( $cron = get_option( 'cron', array() ) ) ) {
 		foreach ( $cron as $timestamp => $hooks ) {
 			foreach ( $hooks as $key => $value ) {
-				if ( strpos( $key, 'ai1wm_' ) === 0 ) {
+				if ( strpos( $key, 'openmigrate_' ) === 0 ) {
 					unset( $cron[ $timestamp ][ $key ] );
 				}
 			}
@@ -47,5 +47,5 @@ if ( defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	}
 
 	// Delete any options or other data stored in the database here
-	$wpdb->query( "DELETE FROM `{$wpdb->options}` WHERE `option_name` LIKE 'ai1wm\_%'" );
+	$wpdb->query( "DELETE FROM `{$wpdb->options}` WHERE `option_name` LIKE 'openmigrate\_%'" );
 }

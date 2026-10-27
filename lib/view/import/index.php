@@ -30,38 +30,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="ai1wm-container">
-	<div class="ai1wm-row">
-		<div class="ai1wm-left">
-			<div class="ai1wm-holder">
+<div class="openmigrate-container">
+	<div class="openmigrate-row">
+		<div class="openmigrate-left">
+			<div class="openmigrate-holder">
 				<h1>
-					<i class="ai1wm-icon-publish"></i>
-					<?php esc_html_e( 'Import Site', 'all-in-one-wp-migration' ); ?>
+					<i class="openmigrate-icon-publish"></i>
+					<?php esc_html_e( 'Import Site', 'open-migrate' ); ?>
 				</h1>
 
-				<?php if ( is_readable( AI1WM_STORAGE_PATH ) && is_writable( AI1WM_STORAGE_PATH ) ) : ?>
+				<?php if ( is_readable( OPENMIGRATE_STORAGE_PATH ) && is_writable( OPENMIGRATE_STORAGE_PATH ) ) : ?>
 
-					<form action="" method="post" id="ai1wm-import-form" class="ai1wm-clear" enctype="multipart/form-data">
+					<form action="" method="post" id="openmigrate-import-form" class="openmigrate-clear" enctype="multipart/form-data">
 
-						<?php do_action( 'ai1wm_import_left_options' ); ?>
+						<?php do_action( 'openmigrate_import_left_options' ); ?>
 
-						<?php require_once AI1WM_TEMPLATES_PATH . '/import/import-buttons.php'; ?>
+						<?php require_once OPENMIGRATE_TEMPLATES_PATH . '/import/import-buttons.php'; ?>
 
-						<input type="hidden" name="ai1wm_manual_import" value="1" />
+						<input type="hidden" name="openmigrate_manual_import" value="1" />
 
 					</form>
 
-					<?php do_action( 'ai1wm_import_left_end' ); ?>
+					<?php do_action( 'openmigrate_import_left_end' ); ?>
 
 				<?php else : ?>
 
-					<?php require_once AI1WM_TEMPLATES_PATH . '/import/import-permissions.php'; ?>
+					<?php require_once OPENMIGRATE_TEMPLATES_PATH . '/import/import-permissions.php'; ?>
 
 				<?php endif; ?>
 			</div>
 		</div>
 
-		<?php require_once AI1WM_TEMPLATES_PATH . '/common/sidebar-right.php'; ?>
+		<?php require_once OPENMIGRATE_TEMPLATES_PATH . '/common/sidebar-right.php'; ?>
 
 	</div>
 </div>

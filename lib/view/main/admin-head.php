@@ -33,16 +33,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 <style type="text/css" media="all">
 	@font-face {
 		font-family: 'servmask';
-		src: url('<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/font/servmask.eot?v=' . AI1WM_VERSION ); ?>');
-		src: url('<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/font/servmask.eot?v=' . AI1WM_VERSION ); ?>#iefix') format('embedded-opentype'),
-		url('<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/font/servmask.woff?v=' . AI1WM_VERSION ); ?>') format('woff'),
-		url('<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/font/servmask.ttf?v=' . AI1WM_VERSION ); ?>') format('truetype'),
-		url('<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/font/servmask.svg?v=' . AI1WM_VERSION ); ?>#servmask') format('svg');
+		src: url('<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/font/servmask.eot?v=' . OPENMIGRATE_VERSION ); ?>');
+		src: url('<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/font/servmask.eot?v=' . OPENMIGRATE_VERSION ); ?>#iefix') format('embedded-opentype'),
+		url('<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/font/servmask.woff?v=' . OPENMIGRATE_VERSION ); ?>') format('woff'),
+		url('<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/font/servmask.ttf?v=' . OPENMIGRATE_VERSION ); ?>') format('truetype'),
+		url('<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/font/servmask.svg?v=' . OPENMIGRATE_VERSION ); ?>#servmask') format('svg');
 		font-weight: normal;
 		font-style: normal;
 	}
 
-	[class^="ai1wm-icon-"], [class*=" ai1wm-icon-"] {
+	[class^="openmigrate-icon-"], [class*=" openmigrate-icon-"] {
 		font-family: 'servmask';
 		speak: none;
 		font-style: normal;
@@ -56,15 +56,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		-moz-osx-font-smoothing: grayscale;
 	}
 
-	.ai1wm-icon-notification:before {
+	.openmigrate-icon-notification:before {
 		content: "\e619";
 	}
 
-	.ai1wm-icon-bullhorn:before {
+	.openmigrate-icon-bullhorn:before {
 		content: "\e91a";
 	}
 
-	.ai1wm-label {
+	.openmigrate-label {
 		border: 1px solid #5cb85c;
 		background-color: transparent;
 		color: #5cb85c;
@@ -79,12 +79,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		text-decoration: none !important;
 	}
 
-	.ai1wm-label:hover {
+	.openmigrate-label:hover {
 		background-color: #5cb85c;
 		color: #fff;
 	}
 
-	.ai1wm-menu-count {
+	.openmigrate-menu-count {
 		display: inline-block;
 		vertical-align: top;
 		box-sizing: border-box;
@@ -101,7 +101,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		z-index: 26;
 	}
 
-	.ai1wm-menu-premium {
+	.openmigrate-menu-premium {
 		display: inline-block;
 		vertical-align: top;
 		box-sizing: border-box;
@@ -118,19 +118,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 		font-weight: normal;
 	}
 
-	.ai1wm-menu-count.ai1wm-menu-hide {
+	.openmigrate-menu-count.openmigrate-menu-hide {
 		display: none;
 	}
 
 	<?php if ( version_compare( $version, '3.8', '<' ) ) : ?>
-	.toplevel_page_ai1wm_export > div.wp-menu-image {
+	.toplevel_page_openmigrate_export > div.wp-menu-image {
 		background: none !important;
 	}
 
-	.toplevel_page_ai1wm_export > div.wp-menu-image:before {
+	.toplevel_page_openmigrate_export > div.wp-menu-image:before {
 		line-height: 27px !important;
 		content: '';
-		background: url('<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/img/logo-20x20.png' ); ?>') no-repeat center center;
+		background: url('<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/img/logo-20x20.png' ); ?>') no-repeat center center;
 		speak: none !important;
 		font-style: normal !important;
 		font-weight: normal !important;
@@ -143,11 +143,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	}
 
 	<?php else : ?>
-	.toplevel_page_ai1wm_export > div.wp-menu-image:before {
+	.toplevel_page_openmigrate_export > div.wp-menu-image:before {
 		position: relative;
 		display: inline-block;
 		content: '';
-		background: url('<?php echo esc_url( wp_make_link_relative( AI1WM_URL ) . '/lib/view/assets/img/logo-20x20.png' ); ?>') no-repeat center center;
+		background: url('<?php echo esc_url( wp_make_link_relative( OPENMIGRATE_URL ) . '/lib/view/assets/img/logo-20x20.png' ); ?>') no-repeat center center;
 		speak: none !important;
 		font-style: normal !important;
 		font-weight: normal !important;
@@ -159,8 +159,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		-moz-osx-font-smoothing: grayscale !important;
 	}
 
-	.wp-menu-open.toplevel_page_ai1wm_export,
-	.wp-menu-open.toplevel_page_ai1wm_export > a {
+	.wp-menu-open.toplevel_page_openmigrate_export,
+	.wp-menu-open.toplevel_page_openmigrate_export > a {
 		background-color: #111 !important;
 	}
 	<?php endif; ?>

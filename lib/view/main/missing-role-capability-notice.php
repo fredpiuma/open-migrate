@@ -37,9 +37,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			__(
 				'Your current profile role does not have Export/Import capabilities enabled.
 				<a href="https://help.servmask.com/knowledgebase/how-to-add-import-and-export-capabilities-to-wordpress-users/" target="_blank">Technical details</a>',
-				'all-in-one-wp-migration'
+				'open-migrate'
 			),
-			ai1wm_allowed_html_tags()
+			openmigrate_allowed_html_tags()
 		);
 		?>
 	</p>

@@ -40,8 +40,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define EOL for CLI and Web
  */
-if (!defined('BANDAR_EOL')) {
-	define('BANDAR_EOL', php_sapi_name() === 'cli' ? PHP_EOL : '<br />');
+if (!defined('OPENMIGRATE_BANDAR_EOL')) {
+	define('OPENMIGRATE_BANDAR_EOL', php_sapi_name() === 'cli' ? PHP_EOL : '<br />');
 }
 
 /**
@@ -52,7 +52,7 @@ require_once
 	DIRECTORY_SEPARATOR .
 	'Exceptions' .
 	DIRECTORY_SEPARATOR .
-	'TemplateDoesNotExistException.php';
+	'OpenMigrate_TemplateDoesNotExistException.php';
 
 /**
  * Bandar Main class
@@ -65,7 +65,7 @@ require_once
  * @version   Release: 2.0.1
  * @link      https://github.com/yani-/bandar/
  */
-class Bandar
+class OpenMigrate_Bandar
 {
 	/**
 	 * Path to template files
@@ -92,25 +92,25 @@ class Bandar
 		/**
 		 * if debug flag is on, output the string
 		 */
-		if (defined('BANDAR_DEBUG') && BANDAR_DEBUG) {
+		if (defined('OPENMIGRATE_BANDAR_DEBUG') && OPENMIGRATE_BANDAR_DEBUG) {
 			echo $str;
 		}
 	}
 
 	/**
-	 * Retrieves templatesPath from BANDAR_TEMPLATES_PATH constant
+	 * Retrieves templatesPath from OPENMIGRATE_BANDAR_TEMPLATES_PATH constant
 	 *
-	 * @throws TemplatesPathNotSetException If BANDAR_TEMPLATES_PATH is not defined
+	 * @throws TemplatesPathNotSetException If OPENMIGRATE_BANDAR_TEMPLATES_PATH is not defined
 	 *
 	 * @return string|null Templates path
 	 */
 	public static function getTemplatesPathFromConstant()
 	{
 		self::debug(
-			'Calling getTemplatesPathFromConstant' . BANDAR_EOL
+			'Calling getTemplatesPathFromConstant' . OPENMIGRATE_BANDAR_EOL
 		);
-		if (defined('BANDAR_TEMPLATES_PATH')) {
-			return realpath(BANDAR_TEMPLATES_PATH) . DIRECTORY_SEPARATOR;
+		if (defined('OPENMIGRATE_BANDAR_TEMPLATES_PATH')) {
+			return realpath(OPENMIGRATE_BANDAR_TEMPLATES_PATH) . DIRECTORY_SEPARATOR;
 		}
 		return null;
 	}
@@ -120,16 +120,16 @@ class Bandar
 	 *
 	 * @param string $template Template file
 	 *
-	 * @throws TemplateDoesNotExistException If template file is not found
+	 * @throws OpenMigrate_TemplateDoesNotExistException If template file is not found
 	 *
 	 * @return null
 	 */
 	public static function setTemplate($template, $path = false)
 	{
 		self::debug(
-			'Calling setTemplate with' . BANDAR_EOL .
-			'$template = ' . $template . BANDAR_EOL .
-			'type of $template is ' . gettype($template) . BANDAR_EOL
+			'Calling setTemplate with' . OPENMIGRATE_BANDAR_EOL .
+			'$template = ' . $template . OPENMIGRATE_BANDAR_EOL .
+			'type of $template is ' . gettype($template) . OPENMIGRATE_BANDAR_EOL
 		);
 
 		if ($path) {
@@ -145,7 +145,7 @@ class Bandar
 		if (self::templateExists($template)) {
 			self::$template = $template;
 		} else {
-			throw new TemplateDoesNotExistException;
+			throw new OpenMigrate_TemplateDoesNotExistException;
 		}
 	}
 
@@ -159,9 +159,9 @@ class Bandar
 	public static function templateExists($template)
 	{
 		self::debug(
-			'Calling templateExists with ' . BANDAR_EOL .
-			'$template = ' . $template . BANDAR_EOL .
-			'type of $template is ' . gettype($template) . BANDAR_EOL
+			'Calling templateExists with ' . OPENMIGRATE_BANDAR_EOL .
+			'$template = ' . $template . OPENMIGRATE_BANDAR_EOL .
+			'type of $template is ' . gettype($template) . OPENMIGRATE_BANDAR_EOL
 		);
 		return (!is_dir($template) && is_readable($template));
 	}
@@ -178,10 +178,10 @@ class Bandar
 	{
 		self::debug(
 			'Calling render with' .
-			'$template = ' . $template . BANDAR_EOL .
-			'type of $template is ' . gettype($template) . BANDAR_EOL .
-			'$args = ' . print_r($args, true) . BANDAR_EOL .
-			'type of $args is ' . gettype($args) . BANDAR_EOL
+			'$template = ' . $template . OPENMIGRATE_BANDAR_EOL .
+			'type of $template is ' . gettype($template) . OPENMIGRATE_BANDAR_EOL .
+			'$args = ' . print_r($args, true) . OPENMIGRATE_BANDAR_EOL .
+			'type of $args is ' . gettype($args) . OPENMIGRATE_BANDAR_EOL
 		);
 		self::setTemplate($template, $path);
 		/**
@@ -209,10 +209,10 @@ class Bandar
 	{
 		self::debug(
 			'Calling render with' .
-			'$template = ' . $template . BANDAR_EOL .
-			'type of $template is ' . gettype($template) . BANDAR_EOL .
-			'$args = ' . print_r($args, true) . BANDAR_EOL .
-			'type of $args is ' . gettype($args) . BANDAR_EOL
+			'$template = ' . $template . OPENMIGRATE_BANDAR_EOL .
+			'type of $template is ' . gettype($template) . OPENMIGRATE_BANDAR_EOL .
+			'$args = ' . print_r($args, true) . OPENMIGRATE_BANDAR_EOL .
+			'type of $args is ' . gettype($args) . OPENMIGRATE_BANDAR_EOL
 		);
 		self::setTemplate($template, $path);
 		/**

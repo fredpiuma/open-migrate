@@ -30,4 +30,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<br /><span class="ai1wm-update-message"><?php echo wp_kses( $message, ai1wm_allowed_html_tags() ); ?></span>
+<br /><span class="openmigrate-update-message"><?php echo wp_kses( $message, openmigrate_allowed_html_tags() ); ?></span>

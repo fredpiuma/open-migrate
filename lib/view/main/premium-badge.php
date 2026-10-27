@@ -30,4 +30,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<span class="ai1wm-menu-premium"><?php esc_html_e( 'Premium', 'all-in-one-wp-migration' ); ?></span>
+<span class="openmigrate-menu-premium"><?php esc_html_e( 'Premium', 'open-migrate' ); ?></span>

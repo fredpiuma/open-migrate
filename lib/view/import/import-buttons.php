@@ -30,29 +30,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="ai1wm-import-messages"></div>
+<div class="openmigrate-import-messages"></div>
 
-<div class="ai1wm-import-form">
+<div class="openmigrate-import-form">
 	<div class="hide-if-no-js">
-		<div class="ai1wm-drag-drop-area" id="ai1wm-drag-drop-area">
-			<div id="ai1wm-import-init">
+		<div class="openmigrate-drag-drop-area" id="openmigrate-drag-drop-area">
+			<div id="openmigrate-import-init">
 				<p>
-					<i class="ai1wm-icon-cloud-upload"></i><br />
-					<?php esc_html_e( 'Drag & Drop a backup to import it', 'all-in-one-wp-migration' ); ?>
+					<i class="openmigrate-icon-cloud-upload"></i><br />
+					<?php esc_html_e( 'Drag & Drop a backup to import it', 'open-migrate' ); ?>
 				</p>
-				<div class="ai1wm-button-group ai1wm-button-import ai1wm-expandable">
-					<div class="ai1wm-button-main">
-						<span role="list" aria-label="<?php esc_attr_e( 'Import From', 'all-in-one-wp-migration' ); ?>"><?php esc_html_e( 'Import From', 'all-in-one-wp-migration' ); ?></span>
+				<div class="openmigrate-button-group openmigrate-button-import openmigrate-expandable">
+					<div class="openmigrate-button-main">
+						<span role="list" aria-label="<?php esc_attr_e( 'Import From', 'open-migrate' ); ?>"><?php esc_html_e( 'Import From', 'open-migrate' ); ?></span>
 						<span class="ai1mw-lines">
-							<span class="ai1wm-line ai1wm-line-first"></span>
-							<span class="ai1wm-line ai1wm-line-second"></span>
-							<span class="ai1wm-line ai1wm-line-third"></span>
+							<span class="openmigrate-line openmigrate-line-first"></span>
+							<span class="openmigrate-line openmigrate-line-second"></span>
+							<span class="openmigrate-line openmigrate-line-third"></span>
 						</span>
 					</div>
-					<ul class="ai1wm-dropdown-menu ai1wm-import-providers">
-						<?php foreach ( apply_filters( 'ai1wm_import_buttons', array() ) as $button ) : ?>
+					<ul class="openmigrate-dropdown-menu openmigrate-import-providers">
+						<?php foreach ( apply_filters( 'openmigrate_import_buttons', array() ) as $button ) : ?>
 							<li>
-								<?php echo wp_kses( $button, ai1wm_allowed_html_tags() ); ?>
+								<?php echo wp_kses( $button, openmigrate_allowed_html_tags() ); ?>
 							</li>
 						<?php endforeach; ?>
 					</ul>
@@ -62,4 +62,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 </div>
 
-<p style="margin: 0;"><?php echo wp_kses( apply_filters( 'ai1wm_pro', '' ), ai1wm_allowed_html_tags() ); ?></p>
+<p style="margin: 0;"><?php echo wp_kses( apply_filters( 'openmigrate_pro', '' ), openmigrate_allowed_html_tags() ); ?></p>

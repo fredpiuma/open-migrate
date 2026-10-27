@@ -35,12 +35,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php
 		esc_html_e(
 			'WordPress Multisite requires our All-in-One WP Migration Multisite Extension. Get it here: ',
-			'all-in-one-wp-migration'
+			'open-migrate'
 		);
 		?>
-		<a href="https://servmask.com/products/multisite-extension" target="_blank" class="ai1wm-label">
-			<i class="ai1wm-icon-notification"></i>
-			<?php esc_html_e( 'Get multisite', 'all-in-one-wp-migration' ); ?>
+		<a href="https://servmask.com/products/multisite-extension" target="_blank" class="openmigrate-label">
+			<i class="openmigrate-icon-notification"></i>
+			<?php esc_html_e( 'Get multisite', 'open-migrate' ); ?>
 		</a>
 	</p>
 </div>

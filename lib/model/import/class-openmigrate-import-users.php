@@ -1,0 +1,71 @@
+<?php
+/**
+ * Copyright (C) 2014-2025 ServMask Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Attribution: This code is part of the All-in-One WP Migration plugin, developed by
+ *
+ * ███████╗███████╗██████╗ ██╗   ██╗███╗   ███╗ █████╗ ███████╗██╗  ██╗
+ * ██╔════╝██╔════╝██╔══██╗██║   ██║████╗ ████║██╔══██╗██╔════╝██║ ██╔╝
+ * ███████╗█████╗  ██████╔╝██║   ██║██╔████╔██║███████║███████╗█████╔╝
+ * ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██║╚██╔╝██║██╔══██║╚════██║██╔═██╗
+ * ███████║███████╗██║  ██║ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║███████║██║  ██╗
+ * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Kangaroos cannot jump here' );
+}
+
+class OpenMigrate_Import_Users {
+
+	public static function execute( $params ) {
+
+		// Check multisite.json file
+		if ( is_file( openmigrate_multisite_path( $params ) ) ) {
+
+			// Set progress
+			OpenMigrate_Status::info( __( 'Preparing WordPress users...', 'open-migrate' ) );
+
+			// Read multisite.json file
+			$handle = openmigrate_open( openmigrate_multisite_path( $params ), 'r' );
+
+			// Parse multisite.json file
+			$multisite = openmigrate_read( $handle, filesize( openmigrate_multisite_path( $params ) ) );
+			$multisite = json_decode( $multisite, true );
+
+			// Close handle
+			openmigrate_close( $handle );
+
+			openmigrate_populate_roles();
+
+			// Set WordPress super admins
+			if ( isset( $multisite['Admins'] ) && ( $admins = $multisite['Admins'] ) ) {
+				foreach ( $admins as $username ) {
+					if ( ( $user = get_user_by( 'login', $username ) ) ) {
+						if ( $user->exists() ) {
+							$user->set_role( 'administrator' );
+						}
+					}
+				}
+			}
+
+			// Set progress
+			OpenMigrate_Status::info( __( 'WordPress users prepared.', 'open-migrate' ) );
+		}
+
+		return $params;
+	}
+}

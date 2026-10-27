@@ -30,26 +30,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<ul id="ai1wm-queries">
-	<li class="ai1wm-query ai1wm-expandable">
+<ul id="openmigrate-queries">
+	<li class="openmigrate-query openmigrate-expandable">
 		<p>
 			<span>
-				<strong><?php esc_html_e( 'Search for', 'all-in-one-wp-migration' ); ?></strong>
-				<small class="ai1wm-query-find-text ai1wm-tooltip" title="<?php esc_attr_e( 'Search the database for this text', 'all-in-one-wp-migration' ); ?>"> <?php echo esc_html( __( '<text>', 'all-in-one-wp-migration' ) ); ?> </small>
-				<strong><?php esc_html_e( 'Replace with', 'all-in-one-wp-migration' ); ?></strong>
-				<small class="ai1wm-query-replace-text ai1wm-tooltip" title="<?php esc_attr_e( 'Replace the database with this text', 'all-in-one-wp-migration' ); ?>"> <?php echo esc_html( __( '<another-text>', 'all-in-one-wp-migration' ) ); ?> </small>
-				<strong><?php esc_html_e( 'in the database', 'all-in-one-wp-migration' ); ?></strong>
+				<strong><?php esc_html_e( 'Search for', 'open-migrate' ); ?></strong>
+				<small class="openmigrate-query-find-text openmigrate-tooltip" title="<?php esc_attr_e( 'Search the database for this text', 'open-migrate' ); ?>"> <?php echo esc_html( __( '<text>', 'open-migrate' ) ); ?> </small>
+				<strong><?php esc_html_e( 'Replace with', 'open-migrate' ); ?></strong>
+				<small class="openmigrate-query-replace-text openmigrate-tooltip" title="<?php esc_attr_e( 'Replace the database with this text', 'open-migrate' ); ?>"> <?php echo esc_html( __( '<another-text>', 'open-migrate' ) ); ?> </small>
+				<strong><?php esc_html_e( 'in the database', 'open-migrate' ); ?></strong>
 			</span>
-			<span class="ai1wm-query-arrow ai1wm-icon-chevron-right"></span>
+			<span class="openmigrate-query-arrow openmigrate-icon-chevron-right"></span>
 		</p>
 		<div>
-			<input class="ai1wm-query-find-input" type="text" placeholder="<?php esc_attr_e( 'Search for', 'all-in-one-wp-migration' ); ?>" name="options[replace][old_value][]" />
-			<input class="ai1wm-query-replace-input" type="text" placeholder="<?php esc_attr_e( 'Replace with', 'all-in-one-wp-migration' ); ?>" name="options[replace][new_value][]" />
+			<input class="openmigrate-query-find-input" type="text" placeholder="<?php esc_attr_e( 'Search for', 'open-migrate' ); ?>" name="options[replace][old_value][]" />
+			<input class="openmigrate-query-replace-input" type="text" placeholder="<?php esc_attr_e( 'Replace with', 'open-migrate' ); ?>" name="options[replace][new_value][]" />
 		</div>
 	</li>
 </ul>
 
-<button type="button" class="ai1wm-button-gray" id="ai1wm-add-new-replace-button">
-	<i class="ai1wm-icon-plus2"></i>
-	<?php esc_html_e( 'Add', 'all-in-one-wp-migration' ); ?>
+<button type="button" class="openmigrate-button-gray" id="openmigrate-add-new-replace-button">
+	<i class="openmigrate-icon-plus2"></i>
+	<?php esc_html_e( 'Add', 'open-migrate' ); ?>
 </button>

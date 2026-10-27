@@ -30,4 +30,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<a href="https://servmask.com/contact-support" target="_blank"><?php esc_html_e( 'Contact Support', 'all-in-one-wp-migration' ); ?></a>
+<a href="https://servmask.com/contact-support" target="_blank"><?php esc_html_e( 'Contact Support', 'open-migrate' ); ?></a>

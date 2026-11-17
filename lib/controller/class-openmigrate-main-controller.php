@@ -182,7 +182,6 @@ class OpenMigrate_Main_Controller {
 	 */
 	public function openmigrate_buttons() {
 		add_filter( 'openmigrate_export_buttons', 'OpenMigrate_Export_Controller::buttons' );
-		add_filter( 'openmigrate_import_buttons', 'OpenMigrate_Import_Controller::buttons' );
 	}
 
 	/**
@@ -883,6 +882,7 @@ class OpenMigrate_Main_Controller {
 			'openmigrate_uploader',
 			array(
 				'url'           => wp_make_link_relative( add_query_arg( array( 'openmigrate_import' => 1, 'openmigrate_manual_import' => 1 ), admin_url( 'admin-ajax.php?action=openmigrate_import' ) ) ),
+				'chunk_size'    => max( 65536, (int) apply_filters( 'openmigrate_max_chunk_size', OPENMIGRATE_MAX_CHUNK_SIZE ) - 65536 ),
 				'params'        => array(
 					'priority'   => 5,
 					'secret_key' => get_option( OPENMIGRATE_SECRET_KEY ),
@@ -943,6 +943,14 @@ class OpenMigrate_Main_Controller {
 		openmigrate_register_script(
 			'openmigrate_restore',
 			OpenMigrate_Template::asset_link( 'javascript/restore.js' ),
+			array( 'openmigrate_import' ),
+			OPENMIGRATE_VERSION,
+			false
+		);
+
+		openmigrate_register_script(
+			'openmigrate_chunk_upload',
+			OpenMigrate_Template::asset_link( 'javascript/chunk-upload.js' ),
 			array( 'openmigrate_import' ),
 			OPENMIGRATE_VERSION,
 			false
@@ -1034,6 +1042,7 @@ class OpenMigrate_Main_Controller {
 		// Load scripts and styles
 		openmigrate_enqueue_style( 'openmigrate_import' );
 		openmigrate_enqueue_script( 'openmigrate_import' );
+		openmigrate_enqueue_script( 'openmigrate_chunk_upload' );
 	}
 
 	/**

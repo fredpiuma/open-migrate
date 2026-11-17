@@ -82,8 +82,14 @@ class OpenMigrate_Import_Upload {
 			);
 		}
 
-		// Verify file data
-		if ( ! openmigrate_is_filedata_supported( $upload_tmp_name ) ) {
+		// Chunked upload: the part is written at this byte offset of the archive
+		$chunk_offset = 0;
+		if ( isset( $params['chunk_offset'] ) ) {
+			$chunk_offset = max( 0, (int) $params['chunk_offset'] );
+		}
+
+		// Verify file data (the archive header is only in the first part)
+		if ( 0 === $chunk_offset && ! openmigrate_is_filedata_supported( $upload_tmp_name ) ) {
 			throw new OpenMigrate_Upload_Exception(
 				wp_kses(
 					__(
@@ -101,7 +107,7 @@ class OpenMigrate_Import_Upload {
 		switch ( $upload_error ) {
 			case UPLOAD_ERR_OK:
 				try {
-					openmigrate_copy( $upload_tmp_name, openmigrate_archive_path( $params ) );
+					openmigrate_copy( $upload_tmp_name, openmigrate_archive_path( $params ), $chunk_offset );
 					openmigrate_unlink( $upload_tmp_name );
 				} catch ( Exception $e ) {
 					/* translators: Error message. */

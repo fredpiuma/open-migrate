@@ -40,22 +40,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<i class="openmigrate-icon-cloud-upload"></i><br />
 					<?php esc_html_e( 'Drag & Drop a backup to import it', 'open-migrate' ); ?>
 				</p>
-				<div class="openmigrate-button-group openmigrate-button-import openmigrate-expandable">
-					<div class="openmigrate-button-main">
-						<span role="list" aria-label="<?php esc_attr_e( 'Import From', 'open-migrate' ); ?>"><?php esc_html_e( 'Import From', 'open-migrate' ); ?></span>
-						<span class="ai1mw-lines">
-							<span class="openmigrate-line openmigrate-line-first"></span>
-							<span class="openmigrate-line openmigrate-line-second"></span>
-							<span class="openmigrate-line openmigrate-line-third"></span>
-						</span>
+				<div class="openmigrate-button-group openmigrate-button-import">
+					<div class="openmigrate-button-main" id="openmigrate-import-file" style="padding:6px 25px;">
+						<i class="openmigrate-icon-upload2" aria-hidden="true"></i>
+						<span><?php esc_html_e( 'Import File', 'open-migrate' ); ?></span>
+						<input type="file" id="openmigrate-select-file" aria-label="<?php esc_attr_e( 'Select a backup file to import', 'open-migrate' ); ?>" style="height:100%;" />
 					</div>
-					<ul class="openmigrate-dropdown-menu openmigrate-import-providers">
-						<?php foreach ( apply_filters( 'openmigrate_import_buttons', array() ) as $button ) : ?>
-							<li>
-								<?php echo wp_kses( $button, openmigrate_allowed_html_tags() ); ?>
-							</li>
-						<?php endforeach; ?>
-					</ul>
 				</div>
 			</div>
 		</div>

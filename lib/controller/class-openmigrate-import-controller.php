@@ -199,10 +199,6 @@ class OpenMigrate_Import_Controller {
 		return $params;
 	}
 
-	public static function buttons() {
-		return array( apply_filters( 'openmigrate_import_file', OpenMigrate_Template::get_content( 'import/button-file' ) ) );
-	}
-
 	public static function max_chunk_size() {
 		return min(
 			openmigrate_parse_size( ini_get( 'post_max_size' ), OPENMIGRATE_MAX_CHUNK_SIZE ),

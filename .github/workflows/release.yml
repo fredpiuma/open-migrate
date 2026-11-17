@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Baixar o código da tag do release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.release.tag_name }}
 
@@ -41,7 +41,7 @@ jobs:
 
       - name: Conferir o conteúdo do zip
         run: |
-          unzip -l dist/open-migrate.zip | awk 'NR>3 {print $4}' | sed '/^$/d' > lista.txt
+          unzip -Z1 dist/open-migrate.zip > lista.txt
           if grep -vE '^(open-migrate/|$)' lista.txt | grep -q .; then
             echo "O zip tem arquivos fora da pasta open-migrate/" >&2; exit 1
           fi

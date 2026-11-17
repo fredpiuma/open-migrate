@@ -566,6 +566,11 @@
       "path": "lib/view/assets/javascript/chunk-upload.js",
       "reason": "Envio do .wpress em partes (a versão gratuita manda o arquivo inteiro e esbarra em post_max_size)",
       "kind": "new-file"
+    },
+    {
+      "path": "lib/view/assets/img/logo.svg, logo-20x20.png, logo-32x32.png, logo-128x128.png",
+      "reason": "Logo próprio do Open Migrate (seta circular com ponto central) no lugar da marca da ServMask; mesmos nomes de arquivo, então CSS e menu não mudam",
+      "kind": "asset"
     }
   ],
   "minified_patches": [

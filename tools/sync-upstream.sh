@@ -7,7 +7,7 @@ set -euo pipefail
 VERSION="${1:?Uso: tools/sync-upstream.sh <versão> [--verify]}"
 MODE="${2:-sync}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MAP="$ROOT/docs/upstream-map.json"
+MAP="$ROOT/tools/upstream-map.json"
 SRC_DIR="$ROOT/upstream-src"
 ZIP="$SRC_DIR/all-in-one-wp-migration.$VERSION.zip"
 SLUG="all-in-one-wp-migration"

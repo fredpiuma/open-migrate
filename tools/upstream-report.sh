@@ -12,7 +12,7 @@ mkdir -p "$(dirname "$OUT")"
 python3 -I - "$FROM" "$TO" "$OUT" <<'PY'
 import fnmatch, json, subprocess, sys
 frm, to, out = sys.argv[1:4]
-m = json.load(open("docs/upstream-map.json", encoding="utf-8"))
+m = json.load(open("tools/upstream-map.json", encoding="utf-8"))
 git = lambda *a: subprocess.run(["git", *a], capture_output=True, text=True, check=True).stdout
 files = git("diff", "--name-status", "upstream/%s" % frm, "upstream/%s" % to).splitlines()
 

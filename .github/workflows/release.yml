@@ -1,0 +1,57 @@
+name: Release
+
+# Ao publicar um release no GitHub, gera o zip do plugin (sem arquivos de desenvolvimento)
+# e anexa ao release como open-migrate.zip e open-migrate-<versão>.zip.
+# O nome fixo open-migrate.zip alimenta o link https://github.com/<dono>/open-migrate/releases/latest/download/open-migrate.zip
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código da tag do release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Conferir que a versão do código é a da tag
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          WANTED="${TAG#v}"
+          HEADER="$(sed -n 's/^ \* Version: *//p' open-migrate.php | head -1 | tr -d '\r ')"
+          CONST="$(sed -n "s/.*define( 'OPENMIGRATE_VERSION', '\([^']*\)'.*/\1/p" constants.php | head -1)"
+          STABLE="$(sed -n 's/^Stable tag: *//p' readme.txt | head -1 | tr -d '\r ')"
+          echo "tag=$WANTED cabeçalho=$HEADER constante=$CONST stable=$STABLE"
+          for v in "$HEADER" "$CONST" "$STABLE"; do
+            if [ "$v" != "$WANTED" ]; then
+              echo "A versão da tag ($WANTED) não bate com a do código. Corrija e crie o release de novo." >&2
+              exit 1
+            fi
+          done
+
+      - name: Gerar o zip
+        run: tools/build-zip.sh
+
+      - name: Conferir o conteúdo do zip
+        run: |
+          unzip -l dist/open-migrate.zip | awk 'NR>3 {print $4}' | sed '/^$/d' > lista.txt
+          if grep -vE '^(open-migrate/|$)' lista.txt | grep -q .; then
+            echo "O zip tem arquivos fora da pasta open-migrate/" >&2; exit 1
+          fi
+          if grep -E '^open-migrate/(tools/|\.github/|README\.md|CHANGELOG\.md|CREDITS\.md|SECURITY\.md|CLAUDE\.md|docs/)' lista.txt; then
+            echo "O zip tem arquivos de desenvolvimento" >&2; exit 1
+          fi
+          grep -q '^open-migrate/open-migrate.php$' lista.txt
+
+      - name: Anexar os zips ao release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" dist/open-migrate.zip dist/open-migrate-*.zip --clobber

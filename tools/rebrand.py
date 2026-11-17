@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Renomeação determinística do All-in-One WP Migration para o Open Migrate.
 
-Uso: python3 -I tools/rebrand.py <origem> <destino> [--map docs/upstream-map.json]
+Uso: python3 -I tools/rebrand.py <origem> <destino> [--map tools/upstream-map.json]
 
-Lê as regras de docs/upstream-map.json (rename, protected_literals), copia a árvore
+Lê as regras de tools/upstream-map.json (rename, protected_literals), copia a árvore
 <origem> para <destino> e aplica a renomeação. Mesma entrada, mesma saída.
 """
 import argparse
@@ -60,7 +60,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("source")
     parser.add_argument("dest")
-    parser.add_argument("--map", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs", "upstream-map.json"))
+    parser.add_argument("--map", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "upstream-map.json"))
     args = parser.parse_args()
 
     data, protected = load_rules(args.map)

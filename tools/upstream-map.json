@@ -1,0 +1,603 @@
+{
+  "$comment": "Mapa entre o Open Migrate e o original All-in-One WP Migration and Backup. Lido por tools/rebrand.py, tools/upstream-report.sh e por agentes. Procedimento em docs/02-mapeamento-upstream.md.",
+  "upstream": {
+    "name": "All-in-One WP Migration and Backup",
+    "slug": "all-in-one-wp-migration",
+    "author": "ServMask",
+    "license": "GPLv3",
+    "version": "7.113",
+    "released_at": "2026-10-27",
+    "synced_at": null,
+    "info_api": "https://api.wordpress.org/plugins/info/1.0/all-in-one-wp-migration.json",
+    "download_url": "https://downloads.wordpress.org/plugin/all-in-one-wp-migration.{version}.zip",
+    "version_check": "Cabeçalho 'Version:' de all-in-one-wp-migration.php deve ser igual a {version}; senão abortar",
+    "changelog_source": "readme.txt, seção '== Changelog ==' (changelog.txt está parado na 7.75)"
+  },
+  "fork": {
+    "name": "Open Migrate",
+    "slug": "open-migrate",
+    "text_domain": "open-migrate",
+    "main_file": "open-migrate.php",
+    "author": "Frederico de Castro",
+    "author_uri": "https://www.fredericodecastro.com.br/links",
+    "license": "GPLv3"
+  },
+  "rename": {
+    "file_extensions": [
+      ".php",
+      ".js",
+      ".css",
+      ".json",
+      ".txt",
+      ".pot"
+    ],
+    "files": [
+      {
+        "from": "all-in-one-wp-migration.php",
+        "to": "open-migrate.php"
+      },
+      {
+        "from": "TemplateDoesNotExistException.php",
+        "to": "OpenMigrate_TemplateDoesNotExistException.php"
+      },
+      {
+        "from_pattern": "class-ai1wm-",
+        "to": "class-openmigrate-"
+      }
+    ],
+    "tokens": [
+      {
+        "from": "all-in-one-wp-migration.php",
+        "to": "open-migrate.php",
+        "note": "arquivo principal em basenames; aplicar antes do text domain"
+      },
+      {
+        "from": "all-in-one-wp-migration/",
+        "to": "open-migrate/",
+        "note": "pasta do plugin em basenames"
+      },
+      {
+        "from": "'all-in-one-wp-migration'",
+        "to": "'open-migrate'",
+        "note": "text domain e slug"
+      },
+      {
+        "from": "ai1wm/v1",
+        "to": "open-migrate/v1",
+        "note": "namespace REST; aplicar antes da regra ai1wm"
+      },
+      {
+        "from": "BANDAR_",
+        "to": "OPENMIGRATE_BANDAR_",
+        "note": "constantes do Bandar: evita colisão com o original ativo ao mesmo tempo"
+      },
+      {
+        "from": "class Bandar",
+        "to": "class OpenMigrate_Bandar",
+        "note": "classe global do Bandar"
+      },
+      {
+        "from": "extends Bandar",
+        "to": "extends OpenMigrate_Bandar"
+      },
+      {
+        "from": "TemplateDoesNotExistException",
+        "to": "OpenMigrate_TemplateDoesNotExistException",
+        "note": "exceção global do Bandar"
+      },
+      {
+        "from": "AI1WM",
+        "to": "OPENMIGRATE"
+      },
+      {
+        "from": "Ai1wm",
+        "to": "OpenMigrate"
+      },
+      {
+        "from": "ai1wm",
+        "to": "openmigrate"
+      }
+    ],
+    "skip_license_header": true
+  },
+  "protected_literals": [
+    {
+      "literal": "ai1wm-backups",
+      "reason": "Pasta de backups compartilhada com o original (requisito de compatibilidade) (só entre aspas ou barras; classes CSS ai1wm-backups* são renomeadas)",
+      "regex": "(?<!class=\")(?<=['\"/])ai1wm-backups(?=['\"/])"
+    },
+    {
+      "literal": "SERVMASK_PREFIX_",
+      "reason": "Marcador de prefixo de tabela dentro do database.sql dos backups"
+    },
+    {
+      "literal": ".wpress",
+      "reason": "Extensão do formato"
+    },
+    {
+      "literal": "package.json",
+      "reason": "Nome interno do arquivo .wpress"
+    },
+    {
+      "literal": "database.sql",
+      "reason": "Nome interno do arquivo .wpress"
+    },
+    {
+      "literal": "multisite.json",
+      "reason": "Nome interno do arquivo .wpress"
+    },
+    {
+      "literal": "settings.json",
+      "reason": "Nome interno do arquivo .wpress"
+    }
+  ],
+  "compat": {
+    "backups_folder": "wp-content/ai1wm-backups",
+    "read_only_original_options": {
+      "ai1wm_backups_path": "Fallback do caminho de backups customizado (7.69+)",
+      "ai1wm_backups_labels": "Rótulos exibidos quando não houver rótulo próprio"
+    },
+    "exclude_on_db_export": [
+      "ai1wm_status",
+      "ai1wm_secret_key",
+      "ai1wm_auth_user",
+      "ai1wm_auth_password",
+      "ai1wm_auth_header"
+    ],
+    "preserve_original_options": [
+      "ai1wm_secret_key",
+      "ai1wm_auth_user",
+      "ai1wm_auth_password",
+      "ai1wm_auth_header",
+      "ai1wm_backups_labels",
+      "ai1wm_backups_path"
+    ],
+    "exclude_folders_on_export": [
+      "plugins/all-in-one-wp-migration",
+      "plugins/all-in-one-wp-migration-*-extension"
+    ],
+    "package_json": {
+      "Plugin.Version": "Gravar a versão upstream de base (upstream.version)",
+      "OpenMigrate.Version": "Chave aditiva com a versão do fork"
+    },
+    "to_verify": [
+      "Lista exata de options excluídas em lib/model/export/class-ai1wm-export-database.php (linha ~146 na 7.113)",
+      "Como import-done monta a lista de plugins ativos e garante que o próprio plugin continue ativo"
+    ]
+  },
+  "removed": [
+    {
+      "path": "lib/controller/class-ai1wm-feedback-controller.php",
+      "reason": "Telemetria/feedback"
+    },
+    {
+      "path": "lib/model/class-ai1wm-feedback.php",
+      "reason": "Telemetria/feedback (wp_remote_post)"
+    },
+    {
+      "path": "lib/view/common/leave-feedback.php",
+      "reason": "Telemetria/feedback"
+    },
+    {
+      "path": "lib/view/common/report-problem.php",
+      "reason": "Telemetria/feedback"
+    },
+    {
+      "path": "lib/view/main/contact-support.php",
+      "reason": "Suporte do fornecedor"
+    },
+    {
+      "path": "lib/controller/class-ai1wm-updater-controller.php",
+      "reason": "Atualizador de extensões pagas"
+    },
+    {
+      "path": "lib/model/class-ai1wm-updater.php",
+      "reason": "Atualizador de extensões pagas (wp_remote_get)"
+    },
+    {
+      "path": "lib/view/updater/",
+      "reason": "Atualizador de extensões pagas"
+    },
+    {
+      "path": "lib/model/class-ai1wm-extensions.php",
+      "reason": "Catálogo e versões mínimas de extensões pagas"
+    },
+    {
+      "path": "lib/controller/class-ai1wm-schedules-controller.php",
+      "reason": "Tela premium (vitrine)"
+    },
+    {
+      "path": "lib/view/schedules/",
+      "reason": "Tela premium (vitrine)"
+    },
+    {
+      "path": "lib/controller/class-ai1wm-reset-controller.php",
+      "reason": "Reset Hub: não é import/export/backup"
+    },
+    {
+      "path": "lib/view/reset/",
+      "reason": "Reset Hub"
+    },
+    {
+      "path": "lib/view/main/premium-badge.php",
+      "reason": "Divulgação"
+    },
+    {
+      "path": "lib/view/import/pro.php",
+      "reason": "Aviso do limitador / Unlimited Extension"
+    },
+    {
+      "path": "lib/view/common/share-buttons.php",
+      "reason": "Divulgação"
+    },
+    {
+      "path": "lib/view/main/translate.php",
+      "reason": "Divulgação"
+    },
+    {
+      "path": "lib/view/export/help-section.php",
+      "reason": "Links para a ajuda do fornecedor"
+    },
+    {
+      "path_glob": "lib/view/export/button-*.php",
+      "except": [
+        "lib/view/export/button-file.php"
+      ],
+      "reason": "Destinos das extensões pagas"
+    },
+    {
+      "path_glob": "lib/view/import/button-*.php",
+      "except": [
+        "lib/view/import/button-file.php"
+      ],
+      "reason": "Destinos das extensões pagas"
+    },
+    {
+      "path_glob": "lib/view/assets/javascript/{reset,schedules,settings}.min.js",
+      "reason": "Telas removidas (settings.min.js está vazio na 7.113)"
+    },
+    {
+      "path_glob": "lib/view/assets/css/{reset,schedules,updater}.min*.css",
+      "reason": "Telas removidas"
+    },
+    {
+      "path": "lib/view/assets/img/reset/",
+      "reason": "Telas removidas"
+    },
+    {
+      "path": "lib/view/assets/img/schedules/",
+      "reason": "Telas removidas"
+    },
+    {
+      "path": "changelog.txt",
+      "reason": "Changelog do fornecedor (o fork usa CHANGELOG.md)"
+    },
+    "lib/controller/class-openmigrate-feedback-controller.php",
+    "lib/controller/class-openmigrate-reset-controller.php",
+    "lib/controller/class-openmigrate-schedules-controller.php",
+    "lib/controller/class-openmigrate-updater-controller.php",
+    "lib/model/class-openmigrate-compatibility.php",
+    "lib/model/class-openmigrate-extensions.php",
+    "lib/model/class-openmigrate-feedback.php",
+    "lib/model/class-openmigrate-updater.php",
+    "lib/model/export/class-openmigrate-export-compatibility.php",
+    "lib/model/import/class-openmigrate-import-compatibility.php",
+    "lib/view/assets/css/reset.min.css",
+    "lib/view/assets/css/reset.min.rtl.css",
+    "lib/view/assets/css/schedules.min.css",
+    "lib/view/assets/css/schedules.min.rtl.css",
+    "lib/view/assets/css/updater.min.css",
+    "lib/view/assets/css/updater.min.rtl.css",
+    "lib/view/assets/javascript/reset.min.js",
+    "lib/view/assets/javascript/schedules.min.js",
+    "lib/view/assets/javascript/servmask.min.js",
+    "lib/view/assets/javascript/settings.min.js",
+    "lib/view/common/sidebar-right.php",
+    "lib/view/export/button-azure-storage.php",
+    "lib/view/export/button-b2.php",
+    "lib/view/export/button-box.php",
+    "lib/view/export/button-digitalocean.php",
+    "lib/view/export/button-dropbox.php",
+    "lib/view/export/button-ftp.php",
+    "lib/view/export/button-gcloud-storage.php",
+    "lib/view/export/button-gdrive.php",
+    "lib/view/export/button-glacier.php",
+    "lib/view/export/button-mega.php",
+    "lib/view/export/button-onedrive.php",
+    "lib/view/export/button-pcloud.php",
+    "lib/view/export/button-s3-client.php",
+    "lib/view/export/button-s3.php",
+    "lib/view/export/button-webdav.php",
+    "lib/view/import/button-azure-storage.php",
+    "lib/view/import/button-b2.php",
+    "lib/view/import/button-box.php",
+    "lib/view/import/button-digitalocean.php",
+    "lib/view/import/button-dropbox.php",
+    "lib/view/import/button-ftp.php",
+    "lib/view/import/button-gcloud-storage.php",
+    "lib/view/import/button-gdrive.php",
+    "lib/view/import/button-glacier.php",
+    "lib/view/import/button-mega.php",
+    "lib/view/import/button-onedrive.php",
+    "lib/view/import/button-pcloud.php",
+    "lib/view/import/button-s3-client.php",
+    "lib/view/import/button-s3.php",
+    "lib/view/import/button-url.php",
+    "lib/view/import/button-webdav.php",
+    "lib/view/import/button-file.php"
+  ],
+  "to_decide": [
+    {
+      "path": "lib/view/common/sidebar-right.php",
+      "question": "Contém só divulgação ou também ajuda útil?"
+    },
+    {
+      "path": "lib/view/assets/javascript/servmask.min.js",
+      "question": "Biblioteca comum das telas; manter e renomear o handle"
+    }
+  ],
+  "local_changes": [
+    {
+      "path": "open-migrate.php",
+      "kind": "identity",
+      "reason": "Cabeçalho do plugin (nome, autor, URI, versão, text domain)"
+    },
+    {
+      "path": "constants.php",
+      "kind": "compat",
+      "reason": "OPENMIGRATE_BACKUPS_NAME e caminho padrão apontam para ai1wm-backups"
+    },
+    {
+      "path": "functions.php",
+      "kind": "compat",
+      "reason": "openmigrate_resolve_backups_path() com fallback só leitura para ai1wm_backups_path"
+    },
+    {
+      "path": "lib/controller/class-openmigrate-main-controller.php",
+      "kind": "removal",
+      "reason": "Menus e registros das telas removidas; max_file_size fora do JS"
+    },
+    {
+      "path": "lib/controller/class-openmigrate-main-controller.php",
+      "kind": "feature",
+      "reason": "cli_init(): registra 'openmigrate' sempre e o alias 'ai1wm' só se o original não estiver ativo; remove a condição count(Extensions::get()) === 0"
+    },
+    {
+      "path": "exceptions.php",
+      "reason": "Identidade do fork, constantes, cabeçalho e carregamento",
+      "kind": "identity"
+    },
+    {
+      "path": "lib/controller/class-openmigrate-backups-controller.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/controller/class-openmigrate-export-controller.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/controller/class-openmigrate-import-controller.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/controller/class-openmigrate-rest-controller.php",
+      "reason": "Ajustes do fork",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/class-openmigrate-backups.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/export/class-openmigrate-export-config.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/export/class-openmigrate-export-database.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-check-compression.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-check-encryption.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-confirm.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-database.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-done.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-upload.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-validate-crc.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/model/import/class-openmigrate-import-validate.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/vendor/servmask/archiver/class-openmigrate-compressor.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/vendor/servmask/command/class-openmigrate-wp-cli-command.php",
+      "reason": "WP-CLI próprio (backup, export, import, restore, delete)",
+      "kind": "rewrite"
+    },
+    {
+      "path": "lib/vendor/servmask/database/class-openmigrate-database-mysql.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/vendor/servmask/database/class-openmigrate-database-mysqli.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/vendor/servmask/database/class-openmigrate-database.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/view/assets/javascript/import.min.js",
+      "reason": "Remoção do limitador de tamanho do upload",
+      "kind": "patch"
+    },
+    {
+      "path": "lib/view/backups/backups-permissions.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/backups/index.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/export/advanced-settings.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/export/export-permissions.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/export/index.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/import/avada.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/import/done.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/import/import-buttons.php",
+      "reason": "Dropdown \"Import From\" trocado por um botão único com o input de arquivo (um clique só)",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/import/import-permissions.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/import/index.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/import/oxygen.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/main/missing-auto-increment.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/main/missing-role-capability-notice.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/main/multisite-notice.php",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "loader.php",
+      "reason": "Identidade do fork, constantes, cabeçalho e carregamento",
+      "kind": "identity"
+    },
+    {
+      "path": "readme.txt",
+      "reason": "Identidade do fork, constantes, cabeçalho e carregamento",
+      "kind": "identity"
+    },
+    {
+      "path": "lib/model/class-openmigrate-compat.php",
+      "reason": "Compatibilidade com o original, remoção de limites/pro e ajustes de fluxo",
+      "kind": "behavior"
+    },
+    {
+      "path": "lib/view/assets/javascript/restore.js",
+      "reason": "Remoção de links, banners e blocos promocionais/de marca; marcação de interface reduzida",
+      "kind": "removal"
+    },
+    {
+      "path": "lib/view/assets/javascript/chunk-upload.js",
+      "reason": "Envio do .wpress em partes (a versão gratuita manda o arquivo inteiro e esbarra em post_max_size)",
+      "kind": "new-file"
+    }
+  ],
+  "minified_patches": [
+    {
+      "path": "lib/view/assets/javascript/import.min.js",
+      "reason": "Remover limitador de tamanho no import",
+      "find": "this.fileSize>openmigrate_uploader.max_file_size?this.model.setStatus({type:\"pro\",message:openmigrate_locale.import_from_file}):",
+      "replace": "",
+      "expected_occurrences": 2,
+      "verify": "Depois do patch, o arquivo não pode conter 'type:\"pro\"'"
+    }
+  ],
+  "history": [
+    {
+      "upstream_version": "7.113",
+      "fork_version": "1.0.0",
+      "date": "2026-11-17",
+      "notes": "Base inicial"
+    },
+    {
+      "upstream_version": "7.113",
+      "fork_version": "1.0.0",
+      "date": "2026-11-17",
+      "notes": "Fases 1 a 4: identidade, compatibilidade, limitador removido, WP-CLI e remoções"
+    }
+  ],
+  "replaced": [
+    {
+      "path": "lib/vendor/servmask/command/class-ai1wm-wp-cli-command.php",
+      "reason": "Na 7.113 gratuita é uma casca que manda comprar a Unlimited Extension. O fork substitui por implementação própria (Fase 3b). No merge, manter a versão do fork e só ler o diff do upstream para ver se a cadeia de filtros mudou",
+      "reference": "6.77: All-In-One-WP-Migration-With-Import-master/lib/vendor/servmask/command/class-ai1wm-wp-cli-command.php"
+    }
+  ],
+  "synced_at": "2026-11-17"
+}

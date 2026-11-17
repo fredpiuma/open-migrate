@@ -37,7 +37,7 @@ define( 'OPENMIGRATE_DEBUG', false );
 // ==================
 // = Plugin Version =
 // ==================
-define( 'OPENMIGRATE_VERSION', '1.0.0' );
+define( 'OPENMIGRATE_VERSION', '1.0.1' );
 
 // ================================
 // = Upstream Version (compat)    =

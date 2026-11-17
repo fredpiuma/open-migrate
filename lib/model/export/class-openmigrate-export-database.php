@@ -143,7 +143,7 @@ class OpenMigrate_Export_Database {
 		$db_client->set_reserved_column_prefixes( array( 'wp_force_deactivated_plugins', 'wp_page_for_privacy_policy', 'wp_rocket_settings', 'wp_rocket_dismiss_imagify_notice', 'wp_rocket_no_licence', 'wp_rocket_rocketcdn_old_url', 'wp_rocket_hide_deactivation_form' ) );
 
 		// Exclude site options
-		$db_client->set_table_where_query( openmigrate_table_prefix() . 'options', sprintf( "`option_name` NOT IN ('%s', '%s', '%s', '%s', '%s', '%s', '%s')", OPENMIGRATE_STATUS, OPENMIGRATE_SECRET_KEY, OPENMIGRATE_AUTH_USER, OPENMIGRATE_AUTH_PASSWORD, OPENMIGRATE_AUTH_HEADER, OPENMIGRATE_BACKUPS_LABELS, OPENMIGRATE_SITES_LINKS ) );
+		$db_client->set_table_where_query( openmigrate_table_prefix() . 'options', sprintf( "`option_name` NOT IN ('%s')", implode( "', '", array_merge( array( OPENMIGRATE_STATUS, OPENMIGRATE_SECRET_KEY, OPENMIGRATE_AUTH_USER, OPENMIGRATE_AUTH_PASSWORD, OPENMIGRATE_AUTH_HEADER, OPENMIGRATE_BACKUPS_LABELS, OPENMIGRATE_SITES_LINKS ), OpenMigrate_Compat::original_state_options() ) ) ) );
 
 		// Set table select columns
 		if ( ( $column_names = $db_client->get_column_names( openmigrate_table_prefix() . 'options' ) ) ) {

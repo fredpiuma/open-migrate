@@ -266,16 +266,6 @@ class OpenMigrate_Rest_Controller {
 				'permission_callback' => array( __CLASS__, 'can_export' ),
 			)
 		);
-
-		register_rest_route(
-			self::REST_NAMESPACE,
-			'/backups/' . $name_path . '/restore',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( __CLASS__, 'restore_backup' ),
-				'permission_callback' => array( __CLASS__, 'can_import' ),
-			)
-		);
 	}
 
 	// ── Permission callbacks ────────────────────────────────────────────
@@ -899,27 +889,6 @@ class OpenMigrate_Rest_Controller {
 		);
 	}
 
-	/**
-	 * POST /backups/{name}/restore
-	 *
-	 * @param  WP_REST_Request<array<string, mixed>> $request
-	 * @return WP_Error
-	 */
-	public static function restore_backup( $request ) {
-		return new WP_Error(
-			'upgrade_required',
-			sprintf(
-				/* translators: 1: Link to Unlimited Extension */
-				__(
-					'"Restore" functionality is available in our Unlimited Extension (%s). If you would rather go the manual route, you can still restore by downloading your backup and using the import endpoint.',
-					'open-migrate'
-				),
-				'https://servmask.com/products/unlimited-extension'
-			),
-			array( 'status' => 403 )
-		);
-	}
-
 	// ── Private helpers ─────────────────────────────────────────────────
 
 	/**
@@ -1223,14 +1192,9 @@ class OpenMigrate_Rest_Controller {
 	 */
 	private static function upload_limit_message() {
 		return sprintf(
-			/* translators: 1: Max upload file size, 2: Link to Unlimited Extension, 3: Link to how to article */
-			__(
-				'Your file exceeds the %1$s upload limit set by your host. Our Unlimited Extension bypasses this! %2$s. If you prefer a manual fix, follow our step-by-step guide on raising your upload limit: %3$s',
-				'open-migrate'
-			),
-			openmigrate_size_format( wp_max_upload_size() ),
-			'https://servmask.com/products/unlimited-extension',
-			'https://help.servmask.com/2018/10/27/how-to-increase-maximum-upload-file-size-in-wordpress/'
+			/* translators: Max upload file size */
+			__( 'Your file exceeds the %s upload limit of this PHP/web server. Use the chunked upload in the admin screen, WP-CLI (wp openmigrate import) or place the file in the backups folder.', 'open-migrate' ),
+			openmigrate_size_format( wp_max_upload_size() )
 		);
 	}
 }

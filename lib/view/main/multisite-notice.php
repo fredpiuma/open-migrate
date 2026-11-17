@@ -32,15 +32,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="error">
 	<p>
-		<?php
-		esc_html_e(
-			'WordPress Multisite requires our All-in-One WP Migration Multisite Extension. Get it here: ',
-			'open-migrate'
-		);
-		?>
-		<a href="https://servmask.com/products/multisite-extension" target="_blank" class="openmigrate-label">
-			<i class="openmigrate-icon-notification"></i>
-			<?php esc_html_e( 'Get multisite', 'open-migrate' ); ?>
-		</a>
+		<?php esc_html_e( 'Open Migrate does not support WordPress Multisite yet.', 'open-migrate' ); ?>
 	</p>
 </div>

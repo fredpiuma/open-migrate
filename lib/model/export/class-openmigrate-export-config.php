@@ -127,7 +127,9 @@ class OpenMigrate_Export_Config {
 		}
 
 		// Set plugin version
-		$config['Plugin'] = array( 'Version' => OPENMIGRATE_VERSION );
+		// The original plugin reads this version, so it gets the upstream one; our own goes in a separate key
+		$config['Plugin']       = array( 'Version' => OPENMIGRATE_UPSTREAM_VERSION );
+		$config['OpenMigrate'] = array( 'Version' => OPENMIGRATE_VERSION );
 
 		// Set WordPress version and content
 		$config['WordPress'] = array( 'Version' => $wp_version, 'Absolute' => ABSPATH, 'Content' => WP_CONTENT_DIR, 'Plugins' => openmigrate_get_plugins_dir(), 'Themes' => openmigrate_get_themes_dirs(), 'Uploads' => openmigrate_get_uploads_dir(), 'UploadsURL' => openmigrate_get_uploads_url() );
@@ -158,7 +160,7 @@ class OpenMigrate_Export_Config {
 		$config['PHP'] = array( 'Version' => PHP_VERSION, 'System' => PHP_OS, 'Integer' => PHP_INT_SIZE );
 
 		// Set active plugins
-		$config['Plugins'] = array_values( array_diff( openmigrate_active_plugins(), openmigrate_active_servmask_plugins() ) );
+		$config['Plugins'] = array_values( array_diff( openmigrate_active_plugins(), openmigrate_active_servmask_plugins(), OpenMigrate_Compat::original_plugin_basenames() ) );
 
 		// Set active template
 		$config['Template'] = openmigrate_active_template();

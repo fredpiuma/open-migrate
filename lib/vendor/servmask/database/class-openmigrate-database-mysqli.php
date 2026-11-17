@@ -63,7 +63,7 @@ class OpenMigrate_Database_Mysqli extends OpenMigrate_Database {
 			// MySQL server has gone away, try to reconnect
 			if ( empty( $this->wpdb->dbh ) || 2006 === $mysqli_errno ) {
 				if ( ! $this->wpdb->check_connection( false ) ) {
-					throw new OpenMigrate_Database_Exception( __( 'Error reconnecting to the database. <a href="https://help.servmask.com/knowledgebase/mysql-error-reconnecting/" target="_blank">Technical details</a>', 'open-migrate' ), 503 );
+					throw new OpenMigrate_Database_Exception( __( 'Error reconnecting to the database.', 'open-migrate' ), 503 );
 				}
 
 				mysqli_real_query( $this->wpdb->dbh, $input );

@@ -120,7 +120,8 @@ class OpenMigrate_Backups {
 	 * @return array
 	 */
 	public static function get_labels() {
-		return get_option( OPENMIGRATE_BACKUPS_LABELS, array() );
+		// Labels of the original plugin are shown when there is no label of our own (read only)
+		return array_merge( (array) get_option( 'ai1wm_backups_labels', array() ), (array) get_option( OPENMIGRATE_BACKUPS_LABELS, array() ) );
 	}
 
 	/**

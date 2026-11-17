@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php
 		echo wp_kses(
 			'<strong>Database error:</strong> Your site\'s options table is missing its <strong>AUTO_INCREMENT</strong> attribute and your site will not function correctly without it. Please restore it immediately.
-			<a href="https://help.servmask.com/knowledgebase/how-to-add-auto-increment/" target="_blank">Technical details</a>',
+',
 			openmigrate_allowed_html_tags()
 		);
 		?>

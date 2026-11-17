@@ -39,7 +39,7 @@ class OpenMigrate_Import_Validate {
 				wp_kses(
 					__(
 						'Your server uses 32-bit PHP and cannot process files larger than 2GB. Please switch to 64-bit PHP and try again.
-						<a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>',
+',
 						'open-migrate'
 					),
 					openmigrate_allowed_html_tags()
@@ -53,7 +53,7 @@ class OpenMigrate_Import_Validate {
 				wp_kses(
 					__(
 						'Invalid file type. Please ensure your file is a <strong>.wpress</strong> backup created with All-in-One WP Migration.
-						<a href="https://help.servmask.com/knowledgebase/invalid-backup-file/" target="_blank">Technical details</a>',
+',
 						'open-migrate'
 					),
 					openmigrate_allowed_html_tags()
@@ -71,7 +71,7 @@ class OpenMigrate_Import_Validate {
 		if ( ! $archive->is_valid() ) {
 			throw new OpenMigrate_Import_Exception(
 				wp_kses(
-					__( 'The archive file appears to be corrupted. Follow <a href="https://help.servmask.com/knowledgebase/corrupted-archive/" target="_blank">this article</a> for possible fixes.', 'open-migrate' ),
+					__( 'The archive file appears to be corrupted. Follow for possible fixes.', 'open-migrate' ),
 					openmigrate_allowed_html_tags()
 				)
 			);
@@ -86,7 +86,7 @@ class OpenMigrate_Import_Validate {
 				wp_kses(
 					__(
 						'Please ensure your file was created with the All-in-One WP Migration plugin.
-						<a href="https://help.servmask.com/knowledgebase/invalid-backup-file/" target="_blank">Technical details</a>',
+',
 						'open-migrate'
 					),
 					openmigrate_allowed_html_tags()

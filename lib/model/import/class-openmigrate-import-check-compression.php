@@ -55,7 +55,7 @@ class OpenMigrate_Import_Check_Compression {
 					sprintf(
 						__(
 							'Importing a compressed backup is not supported on this server.
-							Please ensure <strong>%s</strong> extension is enabled. <a href="https://help.servmask.com/knowledgebase/compressed-backups/" target="_blank">Technical details</a>',
+							Please ensure <strong>%s</strong> extension is enabled.',
 							'open-migrate'
 						),
 						$package['Compression']['Type']

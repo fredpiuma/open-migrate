@@ -49,7 +49,6 @@ class OpenMigrate_Not_Valid_Secret_Key_Exception extends Exception {}
 class OpenMigrate_Quota_Exceeded_Exception extends Exception {}
 class OpenMigrate_Storage_Exception extends Exception {}
 class OpenMigrate_Compatibility_Exception extends Exception {}
-class OpenMigrate_Feedback_Exception extends Exception {}
 class OpenMigrate_Database_Exception extends Exception {}
 class OpenMigrate_Not_Encryptable_Exception extends Exception {}
 class OpenMigrate_Not_Decryptable_Exception extends Exception {}

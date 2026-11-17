@@ -51,9 +51,9 @@ class OpenMigrate_Import_Check_Encryption {
 		// Check decryption support
 		if ( ! openmigrate_can_decrypt() ) {
 			if ( defined( 'WP_CLI' ) ) {
-				WP_CLI::error( __( 'Importing an encrypted backup is not supported on this server. The process cannot continue. Technical details: https://help.servmask.com/knowledgebase/unable-to-encrypt-and-decrypt-backups/', 'open-migrate' ) );
+				WP_CLI::error( __( 'Importing an encrypted backup is not supported on this server. The process cannot continue.', 'open-migrate' ) );
 			} else {
-				OpenMigrate_Status::server_cannot_decrypt( __( 'Importing an encrypted backup is not supported on this server. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/unable-to-encrypt-and-decrypt-backups/" target="_blank">Technical details</a>', 'open-migrate' ) );
+				OpenMigrate_Status::server_cannot_decrypt( __( 'Importing an encrypted backup is not supported on this server. The process cannot continue.', 'open-migrate' ) );
 
 				// REST API: throw to halt the pipeline; controller preserves the status option
 				if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
@@ -65,7 +65,7 @@ class OpenMigrate_Import_Check_Encryption {
 		}
 
 		// Get WP CLI decryption password
-		if ( defined( 'WP_CLI' ) ) {
+		if ( defined( 'WP_CLI' ) && empty( $params['decryption_password'] ) ) {
 			$params['decryption_password'] = readline( __( 'Backup is encrypted. Please provide decryption password: ', 'open-migrate' ) );
 		}
 

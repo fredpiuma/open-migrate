@@ -78,7 +78,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		</div>
 
-		<?php require_once OPENMIGRATE_TEMPLATES_PATH . '/common/sidebar-right.php'; ?>
-
 	</div>
 </div>

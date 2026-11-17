@@ -41,7 +41,7 @@ class OpenMigrate_Import_Upload {
 				wp_kses(
 					__(
 						'The uploaded file is missing a temporary path. The process cannot continue.
-						<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 						'open-migrate'
 					),
 					openmigrate_allowed_html_tags()
@@ -58,7 +58,7 @@ class OpenMigrate_Import_Upload {
 				wp_kses(
 					__(
 						'The uploaded file is missing an error code. The process cannot continue.
-						<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 						'open-migrate'
 					),
 					openmigrate_allowed_html_tags()
@@ -73,7 +73,7 @@ class OpenMigrate_Import_Upload {
 				wp_kses(
 					__(
 						'Invalid file type. Please ensure your file is a <strong>.wpress</strong> backup created with All-in-One WP Migration.
-						<a href="https://help.servmask.com/knowledgebase/invalid-backup-file/" target="_blank">Technical details</a>',
+',
 						'open-migrate'
 					),
 					openmigrate_allowed_html_tags()
@@ -88,7 +88,7 @@ class OpenMigrate_Import_Upload {
 				wp_kses(
 					__(
 						'Invalid file data. Please ensure your file is a <strong>.wpress</strong> backup created with All-in-One WP Migration.
-						<a href="https://help.servmask.com/knowledgebase/invalid-backup-file/" target="_blank">Technical details</a>',
+',
 						'open-migrate'
 					),
 					openmigrate_allowed_html_tags()
@@ -110,7 +110,7 @@ class OpenMigrate_Import_Upload {
 							sprintf(
 								__(
 									'Could not upload the file because %s. The process cannot continue.
-									<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 									'open-migrate'
 								),
 								$e->getMessage()
@@ -131,7 +131,7 @@ class OpenMigrate_Import_Upload {
 					wp_kses(
 						__(
 							'The uploaded file is too large for this server. The process cannot continue.
-							<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 							'open-migrate'
 						),
 						openmigrate_allowed_html_tags()
@@ -144,7 +144,7 @@ class OpenMigrate_Import_Upload {
 					wp_kses(
 						__(
 							'No temporary folder is available on the server. The process cannot continue.
-							<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 							'open-migrate'
 						),
 						openmigrate_allowed_html_tags()
@@ -157,7 +157,7 @@ class OpenMigrate_Import_Upload {
 					wp_kses(
 						__(
 							'Could not save the uploaded file. Please check file permissions and try again.
-							<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 							'open-migrate'
 						),
 						openmigrate_allowed_html_tags()
@@ -170,7 +170,7 @@ class OpenMigrate_Import_Upload {
 					wp_kses(
 						__(
 							'A PHP extension blocked this file upload. The process cannot continue.
-							<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 							'open-migrate'
 						),
 						openmigrate_allowed_html_tags()
@@ -185,7 +185,7 @@ class OpenMigrate_Import_Upload {
 						sprintf(
 							__(
 								'An unknown error (code: %s) occurred during the file upload. The process cannot continue.
-								<a href="https://help.servmask.com/knowledgebase/upload-file-error/" target="_blank">Technical details</a>',
+',
 								'open-migrate'
 							),
 							$upload_error

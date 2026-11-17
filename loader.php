@@ -65,19 +65,14 @@ require_once OPENMIGRATE_VENDOR_PATH . '/servmask/database/class-openmigrate-dat
 
 require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-backups-controller.php';
 require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-export-controller.php';
-require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-feedback-controller.php';
 require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-import-controller.php';
 require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-main-controller.php';
 require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-rest-controller.php';
-require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-reset-controller.php';
-require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-schedules-controller.php';
 require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-status-controller.php';
-require_once OPENMIGRATE_CONTROLLER_PATH . '/class-openmigrate-updater-controller.php';
 
 require_once OPENMIGRATE_MODEL_PATH . '/export/class-openmigrate-export-archive.php';
 require_once OPENMIGRATE_MODEL_PATH . '/export/class-openmigrate-export-archive-crc.php';
 require_once OPENMIGRATE_MODEL_PATH . '/export/class-openmigrate-export-clean.php';
-require_once OPENMIGRATE_MODEL_PATH . '/export/class-openmigrate-export-compatibility.php';
 require_once OPENMIGRATE_MODEL_PATH . '/export/class-openmigrate-export-config-file.php';
 require_once OPENMIGRATE_MODEL_PATH . '/export/class-openmigrate-export-config.php';
 require_once OPENMIGRATE_MODEL_PATH . '/export/class-openmigrate-export-content.php';
@@ -98,7 +93,6 @@ require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-blogs.ph
 require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-check-compression.php';
 require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-check-encryption.php';
 require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-clean.php';
-require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-compatibility.php';
 require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-confirm.php';
 require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-content.php';
 require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-database-file.php';
@@ -114,14 +108,11 @@ require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-validate
 require_once OPENMIGRATE_MODEL_PATH . '/import/class-openmigrate-import-validate-crc.php';
 
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-backups.php';
-require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-compatibility.php';
+require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-compat.php';
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-deprecated.php';
-require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-extensions.php';
-require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-feedback.php';
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-handler.php';
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-log.php';
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-message.php';
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-notification.php';
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-status.php';
 require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-template.php';
-require_once OPENMIGRATE_MODEL_PATH . '/class-openmigrate-updater.php';

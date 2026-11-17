@@ -61,5 +61,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 </div>
-
-<p style="margin: 0;"><?php echo wp_kses( apply_filters( 'openmigrate_pro', '' ), openmigrate_allowed_html_tags() ); ?></p>

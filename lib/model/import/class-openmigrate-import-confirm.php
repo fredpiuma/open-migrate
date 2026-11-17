@@ -52,29 +52,10 @@ class OpenMigrate_Import_Confirm {
 		openmigrate_close( $handle );
 
 		// Confirm message
-		if ( defined( 'WP_CLI' ) ) {
-			$messages[] = sprintf(
-				/* translators: Link to Unlimited Extension */
-				__(
-					'Importing this file will only replace matching content. Other items stay unchanged.
-					Need a full reset first? Try Reset Hub in our Unlimited Extension (%s).
-					Ensure you have a current backup. Proceed?',
-					'open-migrate'
-				),
-				'https://servmask.com/products/unlimited-extension'
-			);
-		} else {
-			$messages[] = sprintf(
-				/* translators: Link to Unlimited Extension */
-				__(
-					'Importing this file will only replace matching content. Other items stay unchanged.
-					Need a full reset first? Try Reset Hub in our <a href="%s" target="_blank">Unlimited Extension</a>.<br />
-					Ensure you have a current backup. Proceed?',
-					'open-migrate'
-				),
-				'https://servmask.com/products/unlimited-extension?utm_source=import-confirm&utm_medium=plugin&utm_campaign=openmigrate'
-			);
-		}
+		$messages[] = __(
+			'Importing this file will only replace matching content. Other items stay unchanged. Ensure you have a current backup. Proceed?',
+			'open-migrate'
+		);
 
 		// Check compatibility of PHP versions
 		if ( isset( $package['PHP']['Version'] ) ) {
@@ -102,7 +83,7 @@ class OpenMigrate_Import_Confirm {
 						/* translators: 1: Source PHP version, 2: Target PHP version. */
 						__(
 							'Your backup is from a PHP %1$s but the site that you are importing to is PHP %2$s.
-							This could cause the import to fail. Technical details: https://help.servmask.com/knowledgebase/migrate-wordpress-from-php-5-to-php-7/',
+							This could cause the import to fail.',
 							'open-migrate'
 						),
 						$from_php,
@@ -113,7 +94,7 @@ class OpenMigrate_Import_Confirm {
 						'<i class="openmigrate-import-info">' .
 						/* translators: 1: Source PHP version, 2: Target PHP version. */
 						__(
-							'Your backup is from a PHP %1$s but the site that you are importing to is PHP %2$s. This could cause the import to fail. <a href="https://help.servmask.com/knowledgebase/migrate-wordpress-from-php-5-to-php-7/" target="_blank">Technical details</a>',
+							'Your backup is from a PHP %1$s but the site that you are importing to is PHP %2$s. This could cause the import to fail.',
 							'open-migrate'
 						) . '</i>',
 						$from_php,

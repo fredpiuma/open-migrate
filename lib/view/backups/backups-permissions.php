@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			__(
 				'<h3>Could not restore site</h3>
 				<p>Please ensure the directory <strong>%s</strong> has read/write permissions.</p>
-				<p><a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a></p>',
+				<p></p>',
 				'open-migrate'
 			),
 			OPENMIGRATE_BACKUPS_PATH

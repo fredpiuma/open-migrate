@@ -178,7 +178,7 @@ class OpenMigrate_Compressor extends OpenMigrate_Archiver {
 
 					// Seek to beginning of file size (back over: content + crc32(8) + path(4088) + mtime(12) + size(14))
 					if ( @fseek( $this->file_handle, - $file_bytes_written - 8 - 4088 - 12 - 14, SEEK_CUR ) === -1 ) {
-						throw new OpenMigrate_Not_Seekable_Exception( __( 'Your PHP is 32-bit. In order to export your file, please change your PHP version to 64-bit and try again. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'open-migrate' ) );
+						throw new OpenMigrate_Not_Seekable_Exception( __( 'Your PHP is 32-bit. In order to export your file, please change your PHP version to 64-bit and try again.', 'open-migrate' ) );
 					}
 
 					// Write file size to file header
@@ -192,7 +192,7 @@ class OpenMigrate_Compressor extends OpenMigrate_Archiver {
 
 					// Seek to beginning of file CRC (forward over: mtime(12) + path(4088))
 					if ( @fseek( $this->file_handle, + 12 + 4088, SEEK_CUR ) === -1 ) {
-						throw new OpenMigrate_Not_Seekable_Exception( __( 'Your PHP is 32-bit. In order to export your file, please change your PHP version to 64-bit and try again. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'open-migrate' ) );
+						throw new OpenMigrate_Not_Seekable_Exception( __( 'Your PHP is 32-bit. In order to export your file, please change your PHP version to 64-bit and try again.', 'open-migrate' ) );
 					}
 
 					// Write file CRC to file header
@@ -206,7 +206,7 @@ class OpenMigrate_Compressor extends OpenMigrate_Archiver {
 
 					// Seek to end of file content (forward over: content)
 					if ( @fseek( $this->file_handle, + $file_bytes_written, SEEK_CUR ) === -1 ) {
-						throw new OpenMigrate_Not_Seekable_Exception( __( 'Your PHP is 32-bit. In order to export your file, please change your PHP version to 64-bit and try again. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'open-migrate' ) );
+						throw new OpenMigrate_Not_Seekable_Exception( __( 'Your PHP is 32-bit. In order to export your file, please change your PHP version to 64-bit and try again.', 'open-migrate' ) );
 					}
 				}
 			}

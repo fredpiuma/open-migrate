@@ -294,7 +294,7 @@ class OpenMigrate_Backups_Controller {
 
 		// Check decryption support
 		if ( ! openmigrate_can_decrypt() ) {
-			openmigrate_json_response( array( 'errors' => array( __( 'Download a file from encrypted backup is not supported on this server. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/unable-to-encrypt-and-decrypt-backups/" target="_blank">Technical details</a>', 'open-migrate' ) ) ) );
+			openmigrate_json_response( array( 'errors' => array( __( 'Download a file from encrypted backup is not supported on this server. The process cannot continue.', 'open-migrate' ) ) ) );
 			exit;
 		}
 

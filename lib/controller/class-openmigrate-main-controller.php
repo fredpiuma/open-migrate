@@ -87,6 +87,7 @@ class OpenMigrate_Main_Controller {
 		add_action( 'admin_init', array( $this, 'setup_secret_key' ) );
 		add_action( 'admin_init', array( $this, 'check_auto_increment' ) );
 		add_action( 'admin_init', array( $this, 'check_user_role_capability' ) );
+		add_action( 'admin_notices', array( $this, 'environment_notices' ) );
 		add_action( 'admin_init', array( $this, 'schedule_crons' ) );
 		add_action( 'admin_init', array( $this, 'load_textdomain' ) );
 
@@ -97,21 +98,14 @@ class OpenMigrate_Main_Controller {
 
 		// Register scripts and styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_servmask_scripts_and_styles' ), 5 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_settings_scripts_and_styles' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_export_scripts_and_styles' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_import_scripts_and_styles' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_backups_scripts_and_styles' ), 5 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_schedules_scripts_and_styles' ), 5 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_reset_scripts_and_styles' ), 5 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_updater_scripts_and_styles' ), 5 );
 
 		// Enqueue scripts and styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_export_scripts_and_styles' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_import_scripts_and_styles' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_backups_scripts_and_styles' ), 5 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_schedules_scripts_and_styles' ), 5 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_reset_scripts_and_styles' ), 5 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_updater_scripts_and_styles' ), 5 );
 
 		// Render the bulk delete button below the backups list
 		add_action( 'openmigrate_backups_left_end', 'OpenMigrate_Backups_Controller::bulk_delete_button' );
@@ -127,8 +121,6 @@ class OpenMigrate_Main_Controller {
 	 * @return void
 	 */
 	private function activate_filters() {
-		// Add links to plugin list page
-		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
 		// Add custom schedules
 		add_filter( 'cron_schedules', array( $this, 'add_cron_schedules' ), 9999 );
@@ -145,7 +137,6 @@ class OpenMigrate_Main_Controller {
 	public function openmigrate_commands() {
 		// Add export commands
 		add_filter( 'openmigrate_export', 'OpenMigrate_Export_Init::execute', 5 );
-		add_filter( 'openmigrate_export', 'OpenMigrate_Export_Compatibility::execute', 10 );
 		add_filter( 'openmigrate_export', 'OpenMigrate_Export_Archive::execute', 30 );
 		add_filter( 'openmigrate_export', 'OpenMigrate_Export_Config::execute', 50 );
 		add_filter( 'openmigrate_export', 'OpenMigrate_Export_Config_File::execute', 60 );
@@ -166,8 +157,7 @@ class OpenMigrate_Main_Controller {
 
 		// Add import commands
 		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Upload::execute', 5 );
-		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Compatibility::execute', 10 );
-		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Validate::execute', 50 );
+		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Validate::execute', 10 );
 		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Validate_Crc::execute', 55 );
 		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Check_Compression::execute', 70 );
 		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Check_Encryption::execute', 75 );
@@ -193,7 +183,6 @@ class OpenMigrate_Main_Controller {
 	public function openmigrate_buttons() {
 		add_filter( 'openmigrate_export_buttons', 'OpenMigrate_Export_Controller::buttons' );
 		add_filter( 'openmigrate_import_buttons', 'OpenMigrate_Import_Controller::buttons' );
-		add_filter( 'openmigrate_pro', 'OpenMigrate_Import_Controller::pro', 10 );
 	}
 
 	/**
@@ -216,46 +205,25 @@ class OpenMigrate_Main_Controller {
 			}
 		}
 
-		// Add in plugin update message
-		foreach ( OpenMigrate_Extensions::get() as $slug => $extension ) {
-			add_action( "in_plugin_update_message-{$extension['basename']}", 'OpenMigrate_Updater_Controller::in_plugin_update_message', 10, 2 );
-		}
-
-		// Add automatic plugins update
-		add_action( 'wp_maybe_auto_update', 'OpenMigrate_Updater_Controller::check_for_updates' );
-
 		// Add HTTP export headers
 		add_filter( 'openmigrate_http_export_headers', 'openmigrate_auth_headers' );
 
 		// Add HTTP import headers
 		add_filter( 'openmigrate_http_import_headers', 'openmigrate_auth_headers' );
 
-		// Add HTTP reset headers
-		add_filter( 'openmigrate_http_reset_headers', 'openmigrate_auth_headers' );
-
 		// Add chunk size limit
 		add_filter( 'openmigrate_max_chunk_size', 'OpenMigrate_Import_Controller::max_chunk_size' );
-
-		// Add plugins API
-		add_filter( 'plugins_api', 'OpenMigrate_Updater_Controller::plugins_api', 20, 3 );
-
-		// Add plugins updates
-		add_filter( 'pre_set_site_transient_update_plugins', 'OpenMigrate_Updater_Controller::pre_update_plugins' );
-
-		// Add plugins metadata
-		add_filter( 'site_transient_update_plugins', 'OpenMigrate_Updater_Controller::update_plugins' );
-
-		// Add "Check for updates" link to plugin list page
-		add_filter( 'plugin_row_meta', 'OpenMigrate_Updater_Controller::plugin_row_meta', 10, 2 );
 
 		// Add storage folder daily cleanup cron
 		add_action( 'openmigrate_storage_cleanup', 'OpenMigrate_Export_Controller::cleanup' );
 
 		// Register REST API routes
-		add_action( 'rest_api_init', 'OpenMigrate_Rest_Controller::register_routes' );
+		if ( defined( 'OPENMIGRATE_REST_ENABLED' ) && OPENMIGRATE_REST_ENABLED ) {
+			add_action( 'rest_api_init', 'OpenMigrate_Rest_Controller::register_routes' );
 
-		// Let a valid secret_key authenticate read-only poll/log routes after an import wipes user credentials
-		add_filter( 'rest_authentication_errors', 'OpenMigrate_Rest_Controller::allow_secret_key_auth', 1000 );
+			// Let a valid secret_key authenticate read-only poll/log routes after an import wipes user credentials
+			add_filter( 'rest_authentication_errors', 'OpenMigrate_Rest_Controller::allow_secret_key_auth', 1000 );
+		}
 	}
 
 	/**
@@ -264,8 +232,13 @@ class OpenMigrate_Main_Controller {
 	 * @return void
 	 */
 	public function cli_init() {
-		if ( defined( 'WP_CLI' ) && count( OpenMigrate_Extensions::get() ) === 0 ) {
-			WP_CLI::add_command( 'openmigrate', 'OpenMigrate_WP_CLI_Command', array( 'shortdesc' => __( 'All-in-One WP Migration Command', 'open-migrate' ) ) );
+		if ( defined( 'WP_CLI' ) ) {
+			WP_CLI::add_command( 'openmigrate', 'OpenMigrate_WP_CLI_Command', array( 'shortdesc' => __( 'Open Migrate commands', 'open-migrate' ) ) );
+
+			// Legacy alias, only when the original plugin is not active
+			if ( ! defined( 'AI1WM_PLUGIN_NAME' ) ) {
+				WP_CLI::add_command( 'ai1wm', 'OpenMigrate_WP_CLI_Command', array( 'shortdesc' => __( 'Open Migrate commands (alias)', 'open-migrate' ) ) );
+			}
 		}
 	}
 
@@ -304,6 +277,26 @@ class OpenMigrate_Main_Controller {
 	public function setup_secret_key() {
 		if ( ! get_option( OPENMIGRATE_SECRET_KEY ) ) {
 			update_option( OPENMIGRATE_SECRET_KEY, openmigrate_generate_random_string( 12 ) );
+		}
+	}
+
+	/**
+	 * Warn about a 32-bit PHP and about the original plugin being active at the same time
+	 *
+	 * @return void
+	 */
+	public function environment_notices() {
+		$screen = get_current_screen();
+		if ( ! $screen || strpos( (string) $screen->id, 'openmigrate_' ) === false ) {
+			return;
+		}
+
+		if ( PHP_INT_SIZE < 8 ) {
+			echo '<div class="notice notice-warning"><p>' . esc_html__( 'Open Migrate: this PHP is 32-bit, so backups larger than 2 GB cannot be handled. Use a 64-bit PHP.', 'open-migrate' ) . '</p></div>';
+		}
+
+		if ( defined( 'AI1WM_PLUGIN_NAME' ) ) {
+			echo '<div class="notice notice-info"><p>' . esc_html__( 'The original All-in-One WP Migration is also active. Both plugins share the same backups folder; avoid running an export or import in both at the same time.', 'open-migrate' ) . '</p></div>';
 		}
 	}
 
@@ -687,28 +680,14 @@ class OpenMigrate_Main_Controller {
 	}
 
 	/**
-	 * Add links to plugin list page
-	 *
-	 * @return array
-	 */
-	public function plugin_row_meta( $links, $file ) {
-		if ( $file === OPENMIGRATE_PLUGIN_BASENAME ) {
-			$links[] = OpenMigrate_Template::get_content( 'main/contact-support' );
-			$links[] = OpenMigrate_Template::get_content( 'main/translate' );
-		}
-
-		return $links;
-	}
-
-	/**
 	 * Register plugin menus
 	 *
 	 * @return void
 	 */
 	public function admin_menu() {
 		add_menu_page(
-			'All-in-One WP Migration',
-			'All-in-One WP Migration',
+			'Open Migrate',
+			'Open Migrate',
 			'openmigrate_export_site',
 			'openmigrate_export',
 			'OpenMigrate_Export_Controller::index',
@@ -742,26 +721,6 @@ class OpenMigrate_Main_Controller {
 			'openmigrate_backups',
 			'OpenMigrate_Backups_Controller::index'
 		);
-
-		if ( ! ( defined( 'OPENMIGRATEVE_PATH' ) || defined( 'OPENMIGRATEKE_PATH' ) || defined( 'OPENMIGRATEME_PATH' ) || defined( 'OPENMIGRATEUE_PATH' ) ) ) {
-			add_submenu_page(
-				'openmigrate_export',
-				__( 'Reset Hub', 'open-migrate' ),
-				__( 'Reset Hub', 'open-migrate' ) . OpenMigrate_Template::get_content( 'main/premium-badge' ),
-				'openmigrate_export_site',
-				'openmigrate_reset',
-				'OpenMigrate_Reset_Controller::index'
-			);
-
-			add_submenu_page(
-				'openmigrate_export',
-				__( 'Schedules', 'open-migrate' ),
-				__( 'Schedules', 'open-migrate' ) . OpenMigrate_Template::get_content( 'main/premium-badge' ),
-				'openmigrate_export_site',
-				'openmigrate_schedules',
-				'OpenMigrate_Schedules_Controller::index'
-			);
-		}
 	}
 
 	/**
@@ -785,7 +744,7 @@ class OpenMigrate_Main_Controller {
 
 		openmigrate_register_script(
 			'openmigrate_servmask',
-			OpenMigrate_Template::asset_link( 'javascript/servmask.min.js' ),
+			false,
 			array( 'openmigrate_util' ),
 			OPENMIGRATE_VERSION,
 			false
@@ -793,45 +752,8 @@ class OpenMigrate_Main_Controller {
 
 		wp_localize_script(
 			'openmigrate_servmask',
-			'openmigrate_feedback',
-			array(
-				'ajax'       => array(
-					'url' => wp_make_link_relative( add_query_arg( array( 'openmigrate_import' => 1 ), admin_url( 'admin-ajax.php?action=openmigrate_feedback' ) ) ),
-				),
-				'secret_key' => get_option( OPENMIGRATE_SECRET_KEY ),
-			)
-		);
-
-		$upload_limit_text = sprintf(
-			/* translators: 1: Max upload file size */
-			__(
-				'Your file exceeds the <strong>%1$s</strong> upload limit set by your host.<br />%2$s<br />%3$s',
-				'open-migrate'
-			),
-			esc_html( openmigrate_size_format( wp_max_upload_size() ) ),
-			sprintf(
-				/* translators: Link to Unlimited Extension */
-				__( 'Our <a href="%s" target="_blank">Unlimited Extension</a> bypasses this!', 'open-migrate' ),
-				'https://servmask.com/products/unlimited-extension?utm_source=file-import&utm_medium=plugin&utm_campaign=openmigrate'
-			),
-			sprintf(
-				/* translators: Link to how to article */
-				__( 'If you prefer a manual fix, follow our step-by-step guide on <a href="%s" target="_blank">raising your upload limit</a>.', 'open-migrate' ),
-				'https://help.servmask.com/2018/10/27/how-to-increase-maximum-upload-file-size-in-wordpress/'
-			)
-		);
-
-		wp_localize_script(
-			'openmigrate_servmask',
 			'openmigrate_locale',
 			array(
-				// Feedback
-				'thanks_for_submitting_your_feedback' => __( 'Thank you! We have received your request and will be in touch soon.', 'open-migrate' ),
-
-				// Updater
-				'check_for_updates'                   => __( 'Check for updates', 'open-migrate' ),
-				'invalid_purchase_id'                 => __( 'Your purchase ID is invalid. Please <a href="mailto:support@servmask.com">contact us</a>.', 'open-migrate' ),
-
 				// Export
 				'stop_exporting_your_website'         => __( 'Are you sure you want to stop the export?', 'open-migrate' ),
 				'preparing_to_export'                 => __( 'Preparing to export...', 'open-migrate' ),
@@ -876,30 +798,7 @@ class OpenMigrate_Main_Controller {
 				'upload_failed'                       => __( 'Upload failed', 'open-migrate' ),
 				/* translators: Disk space to free up. */
 				'out_of_disk_space'                   => __( 'Not enough disk space.<br /> Free up %s before restoring.', 'open-migrate' ),
-				'file_too_large'                      => sprintf(
-					/* translators: 1: Link to Unlimited Extension, 2: Link to how to article */
-					__(
-						'Your file exceeds the upload limit set by your host web server.<br />%1$s<br />%2$s',
-						'open-migrate'
-					),
-					sprintf(
-						/* translators: Link to Unlimited Extension */
-						__( 'Our <a href="%s" target="_blank">Unlimited Extension</a> bypasses this!', 'open-migrate' ),
-						'https://servmask.com/products/unlimited-extension?utm_source=file-upload-webserver&utm_medium=plugin&utm_campaign=openmigrate'
-					),
-					sprintf(
-						/* translators: Link to how to article */
-						__( 'If you prefer a manual fix, follow our step-by-step guide on <a href="%s" target="_blank">raising your upload limit</a>.', 'open-migrate' ),
-						'https://help.servmask.com/2018/10/27/how-to-increase-maximum-upload-file-size-in-wordpress/'
-					)
-				),
-				'import_from_file'                    => $upload_limit_text,
-				'invalid_archive_extension'           => __(
-					'Invalid file type. Please ensure that your file is a <strong>.wpress</strong> file created with All-in-One WP Migration.
-					<a href="https://help.servmask.com/knowledgebase/invalid-backup-file/" target="_blank">Technical details</a>',
-					'open-migrate'
-				),
-				'upgrade'                             => $upload_limit_text,
+				'invalid_archive_extension'           => __( 'Invalid file type. Please ensure that your file is a <strong>.wpress</strong> backup.', 'open-migrate' ),
 
 				// Backups
 				'want_to_delete_this_file'            => __( 'Are you sure you want to delete this backup?', 'open-migrate' ),
@@ -907,12 +806,6 @@ class OpenMigrate_Main_Controller {
 				'want_to_delete_selected_plural'      => __( 'Are you sure you want to delete %d selected backups?', 'open-migrate' ),
 				'delete_selected'                     => __( 'Delete (%d selected)', 'open-migrate' ),
 				'session_expired'                     => __( 'Your session has expired. The page will reload so you can log in again.', 'open-migrate' ),
-				'unlimited'                           => __( 'Backup restore requires the Unlimited Extension. <a href="https://servmask.com/products/unlimited-extension" target="_blank">Get it here</a>', 'open-migrate' ),
-				'restore_from_file'                   => sprintf(
-					/* translators: 1: Link to Unlimited Extension */
-					__( '"Restore" functionality is available in our <a href="%s" target="_blank">Unlimited Extension</a>.<br /> If you would rather go the manual route, you can still restore by downloading your backup and using "Import from file".', 'open-migrate' ),
-					'https://servmask.com/products/unlimited-extension?utm_source=restore-from-file&utm_medium=plugin&utm_campaign=openmigrate'
-				),
 				'archive_browser_error'               => __( 'Error', 'open-migrate' ),
 				'archive_browser_list_error'          => __( 'Could not read backup content', 'open-migrate' ),
 				'archive_browser_title'               => __( 'List the content of the backup', 'open-migrate' ),
@@ -920,21 +813,6 @@ class OpenMigrate_Main_Controller {
 				'close_encryption'                    => __( 'Close', 'open-migrate' ),
 				'check_encryption'                    => __( 'Submit', 'open-migrate' ),
 			)
-		);
-	}
-
-	/**
-	 * Register settings scripts and styles
-	 *
-	 * @return void
-	 */
-	public function register_settings_scripts_and_styles() {
-		openmigrate_register_script(
-			'openmigrate_settings',
-			OpenMigrate_Template::asset_link( 'javascript/settings.min.js' ),
-			array( 'openmigrate_servmask' ),
-			OPENMIGRATE_VERSION,
-			false
 		);
 	}
 
@@ -1004,7 +882,6 @@ class OpenMigrate_Main_Controller {
 			'openmigrate_import',
 			'openmigrate_uploader',
 			array(
-				'max_file_size' => wp_max_upload_size(),
 				'url'           => wp_make_link_relative( add_query_arg( array( 'openmigrate_import' => 1, 'openmigrate_manual_import' => 1 ), admin_url( 'admin-ajax.php?action=openmigrate_import' ) ) ),
 				'params'        => array(
 					'priority'   => 5,
@@ -1037,7 +914,7 @@ class OpenMigrate_Main_Controller {
 			'openmigrate_import',
 			'openmigrate_compatibility',
 			array(
-				'messages' => OpenMigrate_Compatibility::get( array() ),
+				'messages' => array(),
 			)
 		);
 
@@ -1064,9 +941,17 @@ class OpenMigrate_Main_Controller {
 		);
 
 		openmigrate_register_script(
+			'openmigrate_restore',
+			OpenMigrate_Template::asset_link( 'javascript/restore.js' ),
+			array( 'openmigrate_import' ),
+			OPENMIGRATE_VERSION,
+			false
+		);
+
+		openmigrate_register_script(
 			'openmigrate_backups',
 			OpenMigrate_Template::asset_link( 'javascript/backups.min.js' ),
-			array( 'openmigrate_export', 'openmigrate_import' ),
+			array( 'openmigrate_export', 'openmigrate_import', 'openmigrate_restore' ),
 			OPENMIGRATE_VERSION,
 			false
 		);
@@ -1108,58 +993,6 @@ class OpenMigrate_Main_Controller {
 	}
 
 	/**
-	 * Register schedules scripts and styles
-	 *
-	 * @return void
-	 */
-	public function register_schedules_scripts_and_styles() {
-		openmigrate_register_style(
-			'openmigrate_schedules',
-			OpenMigrate_Template::asset_link( 'css/schedules.min.css' )
-		);
-
-		openmigrate_register_script(
-			'openmigrate_schedules',
-			OpenMigrate_Template::asset_link( 'javascript/schedules.min.js' ),
-			array( 'openmigrate_servmask' ),
-			OPENMIGRATE_VERSION,
-			false
-		);
-	}
-
-	/**
-	 * Register reset scripts and styles
-	 *
-	 * @return void
-	 */
-	public function register_reset_scripts_and_styles() {
-		openmigrate_register_style(
-			'openmigrate_reset',
-			OpenMigrate_Template::asset_link( 'css/reset.min.css' )
-		);
-
-		openmigrate_register_script(
-			'openmigrate_reset',
-			OpenMigrate_Template::asset_link( 'javascript/reset.min.js' ),
-			array( 'openmigrate_servmask' ),
-			OPENMIGRATE_VERSION,
-			false
-		);
-	}
-
-	/**
-	 * Register updater scripts and styles
-	 *
-	 * @return void
-	 */
-	public function register_updater_scripts_and_styles() {
-		openmigrate_register_style(
-			'openmigrate_updater',
-			OpenMigrate_Template::asset_link( 'css/updater.min.css' )
-		);
-	}
-
-	/**
 	 * Enqueue scripts and styles for Export Controller
 	 *
 	 * @param  string $hook Hook suffix
@@ -1188,7 +1021,7 @@ class OpenMigrate_Main_Controller {
 	 * @return void
 	 */
 	public function enqueue_import_scripts_and_styles( $hook ) {
-		if ( stripos( 'all-in-one-wp-migration_page_openmigrate_import', $hook ) === false ) {
+		if ( stripos( 'open-migrate_page_openmigrate_import', $hook ) === false ) {
 			return;
 		}
 
@@ -1210,7 +1043,7 @@ class OpenMigrate_Main_Controller {
 	 * @return void
 	 */
 	public function enqueue_backups_scripts_and_styles( $hook ) {
-		if ( stripos( 'all-in-one-wp-migration_page_openmigrate_backups', $hook ) === false ) {
+		if ( stripos( 'open-migrate_page_openmigrate_backups', $hook ) === false ) {
 			return;
 		}
 
@@ -1223,65 +1056,6 @@ class OpenMigrate_Main_Controller {
 		// Load scripts and styles
 		openmigrate_enqueue_style( 'openmigrate_backups' );
 		openmigrate_enqueue_script( 'openmigrate_backups' );
-	}
-
-	/**
-	 * Enqueue scripts and styles for Schedules page
-	 *
-	 * @param  string $hook Hook suffix
-	 * @return void
-	 */
-	public function enqueue_schedules_scripts_and_styles( $hook ) {
-		if ( stripos( 'all-in-one-wp-migration_page_openmigrate_schedules', $hook ) === false ) {
-			return;
-		}
-
-		// We don't want heartbeat to occur when restoring
-		wp_deregister_script( 'heartbeat' );
-
-		// We don't want auth check for monitoring whether the user is still logged in
-		remove_action( 'admin_enqueue_scripts', 'wp_auth_check_load' );
-
-		// Load scripts and styles
-		openmigrate_enqueue_style( 'openmigrate_schedules' );
-		openmigrate_enqueue_script( 'openmigrate_schedules' );
-	}
-
-	/**
-	 * Enqueue scripts and styles for Reset page
-	 *
-	 * @param  string $hook Hook suffix
-	 * @return void
-	 */
-	public function enqueue_reset_scripts_and_styles( $hook ) {
-		if ( stripos( 'all-in-one-wp-migration_page_openmigrate_reset', $hook ) === false ) {
-			return;
-		}
-
-		// We don't want heartbeat to occur when restoring
-		wp_deregister_script( 'heartbeat' );
-
-		// We don't want auth check for monitoring whether the user is still logged in
-		remove_action( 'admin_enqueue_scripts', 'wp_auth_check_load' );
-
-		// Load scripts and styles
-		openmigrate_enqueue_style( 'openmigrate_reset' );
-		openmigrate_enqueue_script( 'openmigrate_reset' );
-	}
-
-	/**
-	 * Enqueue scripts and styles for Updater Controller
-	 *
-	 * @param  string $hook Hook suffix
-	 * @return void
-	 */
-	public function enqueue_updater_scripts_and_styles( $hook ) {
-		if ( 'plugins.php' !== strtolower( $hook ) ) {
-			return;
-		}
-
-		// Load styles
-		openmigrate_enqueue_style( 'openmigrate_updater' );
 	}
 
 	/**
@@ -1325,15 +1099,6 @@ class OpenMigrate_Main_Controller {
 				update_option( OPENMIGRATE_AUTH_HEADER, base64_encode( sprintf( '%s:%s', $user, $password ) ) );
 			}
 		}
-
-		// Check for updates
-		if ( isset( $_GET['openmigrate_check_for_updates'] ) ) {
-			if ( check_admin_referer( 'openmigrate_check_for_updates', 'openmigrate_nonce' ) ) {
-				if ( current_user_can( 'update_plugins' ) ) {
-					OpenMigrate_Updater::check_for_updates();
-				}
-			}
-		}
 	}
 
 	/**
@@ -1351,7 +1116,6 @@ class OpenMigrate_Main_Controller {
 		add_action( 'wp_ajax_openmigrate_export', 'OpenMigrate_Export_Controller::export' );
 		add_action( 'wp_ajax_openmigrate_import', 'OpenMigrate_Import_Controller::import' );
 		add_action( 'wp_ajax_openmigrate_status', 'OpenMigrate_Status_Controller::status' );
-		add_action( 'wp_ajax_openmigrate_feedback', 'OpenMigrate_Feedback_Controller::feedback' );
 
 		if ( current_user_can( 'openmigrate_import_site' ) ) {
 			add_action( 'wp_ajax_openmigrate_backup_clean', 'OpenMigrate_Backups_Controller::clean' );

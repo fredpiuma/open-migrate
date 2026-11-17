@@ -129,7 +129,7 @@ class OpenMigrate_Import_Validate_Crc {
 						__(
 							'This backup file is damaged and can\'t be imported.<br />' .
 							'Try downloading or transferring the file again.<br /><br />' .
-							'<strong>Reason:</strong> File integrity check failed (CRC mismatch). <a href="https://help.servmask.com/knowledgebase/import-failed-crc-mismatch/" target="_blank">Technical details</a>',
+							'<strong>Reason:</strong> File integrity check failed (CRC mismatch).',
 							'open-migrate'
 						),
 						openmigrate_allowed_html_tags()

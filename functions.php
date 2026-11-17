@@ -39,7 +39,7 @@ function openmigrate_storage_path( $params ) {
 	if ( empty( $params['storage'] ) ) {
 		throw new OpenMigrate_Storage_Exception(
 			wp_kses(
-				__( 'Could not locate the storage path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-storage-path/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Could not locate the storage path. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -49,7 +49,7 @@ function openmigrate_storage_path( $params ) {
 	if ( openmigrate_validate_file( $params['storage'] ) !== 0 ) {
 		throw new OpenMigrate_Storage_Exception(
 			wp_kses(
-				__( 'Your storage directory name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-storage-name/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Your storage directory name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -74,7 +74,13 @@ function openmigrate_storage_path( $params ) {
  */
 function openmigrate_resolve_backups_path() {
 	$backups_path = get_option( OPENMIGRATE_BACKUPS_PATH_OPTION, false );
-	if ( $backups_path === false ) {
+
+	// Custom path set by the original plugin (read only, never written)
+	if ( $backups_path === false || $backups_path === '' ) {
+		$backups_path = get_option( 'ai1wm_backups_path', false );
+	}
+
+	if ( $backups_path === false || $backups_path === '' ) {
 		return OPENMIGRATE_DEFAULT_BACKUPS_PATH;
 	}
 
@@ -97,7 +103,7 @@ function openmigrate_backup_path( $params ) {
 	if ( empty( $params['archive'] ) ) {
 		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Could not locate the archive path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-path/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Could not locate the archive path. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -107,7 +113,7 @@ function openmigrate_backup_path( $params ) {
 	if ( openmigrate_validate_file( $params['archive'] ) !== 0 ) {
 		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-name/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -117,7 +123,7 @@ function openmigrate_backup_path( $params ) {
 	if ( ! openmigrate_is_filename_supported( $params['archive'] ) ) {
 		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-type/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -159,7 +165,7 @@ function openmigrate_archive_path( $params ) {
 	if ( empty( $params['archive'] ) ) {
 		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Could not locate the archive path. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-path/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Could not locate the archive path. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -169,7 +175,7 @@ function openmigrate_archive_path( $params ) {
 	if ( openmigrate_validate_file( $params['archive'] ) !== 0 ) {
 		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-archive-name/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Your archive file name contains invalid characters: < > : " | ? * \0. It must not include these characters. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -179,7 +185,7 @@ function openmigrate_archive_path( $params ) {
 	if ( ! openmigrate_is_filename_supported( $params['archive'] ) ) {
 		throw new OpenMigrate_Archive_Exception(
 			wp_kses(
-				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-type/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Invalid archive file type. Only .wpress files are allowed. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -1033,29 +1039,43 @@ function openmigrate_plugin_filters( $filters = array() ) {
 		array(
 			OPENMIGRATE_BACKUPS_PATH,
 			OPENMIGRATE_PLUGIN_BASEDIR,
-			OPENMIGRATEZE_PLUGIN_BASEDIR,
-			OPENMIGRATEAE_PLUGIN_BASEDIR,
-			OPENMIGRATEVE_PLUGIN_BASEDIR,
-			OPENMIGRATEBE_PLUGIN_BASEDIR,
-			OPENMIGRATEIE_PLUGIN_BASEDIR,
-			OPENMIGRATEXE_PLUGIN_BASEDIR,
-			OPENMIGRATEDE_PLUGIN_BASEDIR,
-			OPENMIGRATETE_PLUGIN_BASEDIR,
-			OPENMIGRATEFE_PLUGIN_BASEDIR,
-			OPENMIGRATECE_PLUGIN_BASEDIR,
-			OPENMIGRATEGE_PLUGIN_BASEDIR,
-			OPENMIGRATERE_PLUGIN_BASEDIR,
-			OPENMIGRATEEE_PLUGIN_BASEDIR,
-			OPENMIGRATEME_PLUGIN_BASEDIR,
-			OPENMIGRATEOE_PLUGIN_BASEDIR,
-			OPENMIGRATEPE_PLUGIN_BASEDIR,
-			OPENMIGRATEKE_PLUGIN_BASEDIR,
-			OPENMIGRATENE_PLUGIN_BASEDIR,
-			OPENMIGRATESE_PLUGIN_BASEDIR,
-			OPENMIGRATEUE_PLUGIN_BASEDIR,
-			OPENMIGRATELE_PLUGIN_BASEDIR,
-			OPENMIGRATEWE_PLUGIN_BASEDIR,
-		)
+		),
+		openmigrate_original_plugin_dirs()
+	);
+}
+
+/**
+ * Plugin folders of the original All-in-One WP Migration and its extensions.
+ *
+ * They are never exported, so a backup restored on a site that uses the original keeps it untouched.
+ *
+ * @return array
+ */
+function openmigrate_original_plugin_dirs() {
+	return array(
+		'all-in-one-wp-migration',
+		'all-in-one-wp-migration-azure-storage-extension',
+		'all-in-one-wp-migration-b2-extension',
+		'all-in-one-wp-migration-backup',
+		'all-in-one-wp-migration-box-extension',
+		'all-in-one-wp-migration-digitalocean-extension',
+		'all-in-one-wp-migration-direct-extension',
+		'all-in-one-wp-migration-dropbox-extension',
+		'all-in-one-wp-migration-file-extension',
+		'all-in-one-wp-migration-ftp-extension',
+		'all-in-one-wp-migration-gcloud-storage-extension',
+		'all-in-one-wp-migration-gdrive-extension',
+		'all-in-one-wp-migration-glacier-extension',
+		'all-in-one-wp-migration-mega-extension',
+		'all-in-one-wp-migration-multisite-extension',
+		'all-in-one-wp-migration-onedrive-extension',
+		'all-in-one-wp-migration-pcloud-extension',
+		'all-in-one-wp-migration-pro',
+		'all-in-one-wp-migration-s3-client-extension',
+		'all-in-one-wp-migration-s3-extension',
+		'all-in-one-wp-migration-unlimited-extension',
+		'all-in-one-wp-migration-url-extension',
+		'all-in-one-wp-migration-webdav-extension',
 	);
 }
 
@@ -1083,116 +1103,6 @@ function openmigrate_active_servmask_plugins( $plugins = array() ) {
 	// WP Migration Plugin
 	if ( defined( 'OPENMIGRATE_PLUGIN_BASENAME' ) ) {
 		$plugins[] = OPENMIGRATE_PLUGIN_BASENAME;
-	}
-
-	// Microsoft Azure Extension
-	if ( defined( 'OPENMIGRATEZE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEZE_PLUGIN_BASENAME;
-	}
-
-	// Backblaze B2 Extension
-	if ( defined( 'OPENMIGRATEAE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEAE_PLUGIN_BASENAME;
-	}
-
-	// Backup Plugin
-	if ( defined( 'OPENMIGRATEVE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEVE_PLUGIN_BASENAME;
-	}
-
-	// Box Extension
-	if ( defined( 'OPENMIGRATEBE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEBE_PLUGIN_BASENAME;
-	}
-
-	// DigitalOcean Spaces Extension
-	if ( defined( 'OPENMIGRATEIE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEIE_PLUGIN_BASENAME;
-	}
-
-	// Direct Extension
-	if ( defined( 'OPENMIGRATEXE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEXE_PLUGIN_BASENAME;
-	}
-
-	// Dropbox Extension
-	if ( defined( 'OPENMIGRATEDE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEDE_PLUGIN_BASENAME;
-	}
-
-	// File Extension
-	if ( defined( 'OPENMIGRATETE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATETE_PLUGIN_BASENAME;
-	}
-
-	// FTP Extension
-	if ( defined( 'OPENMIGRATEFE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEFE_PLUGIN_BASENAME;
-	}
-
-	// Google Cloud Storage Extension
-	if ( defined( 'OPENMIGRATECE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATECE_PLUGIN_BASENAME;
-	}
-
-	// Google Drive Extension
-	if ( defined( 'OPENMIGRATEGE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEGE_PLUGIN_BASENAME;
-	}
-
-	// Amazon Glacier Extension
-	if ( defined( 'OPENMIGRATERE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATERE_PLUGIN_BASENAME;
-	}
-
-	// Mega Extension
-	if ( defined( 'OPENMIGRATEEE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEEE_PLUGIN_BASENAME;
-	}
-
-	// Multisite Extension
-	if ( defined( 'OPENMIGRATEME_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEME_PLUGIN_BASENAME;
-	}
-
-	// OneDrive Extension
-	if ( defined( 'OPENMIGRATEOE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEOE_PLUGIN_BASENAME;
-	}
-
-	// pCloud Extension
-	if ( defined( 'OPENMIGRATEPE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEPE_PLUGIN_BASENAME;
-	}
-
-	// Pro Plugin
-	if ( defined( 'OPENMIGRATEKE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEKE_PLUGIN_BASENAME;
-	}
-
-	// S3 Client Extension
-	if ( defined( 'OPENMIGRATENE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATENE_PLUGIN_BASENAME;
-	}
-
-	// Amazon S3 Extension
-	if ( defined( 'OPENMIGRATESE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATESE_PLUGIN_BASENAME;
-	}
-
-	// Unlimited Extension
-	if ( defined( 'OPENMIGRATEUE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEUE_PLUGIN_BASENAME;
-	}
-
-	// URL Extension
-	if ( defined( 'OPENMIGRATELE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATELE_PLUGIN_BASENAME;
-	}
-
-	// WebDAV Extension
-	if ( defined( 'OPENMIGRATEWE_PLUGIN_BASENAME' ) ) {
-		$plugins[] = OPENMIGRATEWE_PLUGIN_BASENAME;
 	}
 
 	return $plugins;
@@ -1589,7 +1499,7 @@ function openmigrate_open( $file, $mode ) {
 		throw new OpenMigrate_Not_Accessible_Exception(
 			wp_kses(
 				/* translators: 1: File path, 2: mode */
-				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $file, $mode ),
+				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue.', 'open-migrate' ), $file, $mode ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -1612,7 +1522,7 @@ function openmigrate_gzopen( $file, $mode ) {
 		throw new OpenMigrate_Not_Accessible_Exception(
 			wp_kses(
 				/* translators: 1: File path, 2: mode */
-				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $file, $mode ),
+				sprintf( __( 'Could not open %1$s with mode %2$s. The process cannot continue.', 'open-migrate' ), $file, $mode ),
 				openmigrate_allowed_html_tags()
 			)
 		);
@@ -1637,7 +1547,7 @@ function openmigrate_write( $handle, $content ) {
 			throw new OpenMigrate_Not_Writable_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					sprintf( __( 'Could not write to: %s. The process cannot continue.', 'open-migrate' ), $meta['uri'] ),
 					openmigrate_allowed_html_tags()
 				)
 			);
@@ -1649,7 +1559,7 @@ function openmigrate_write( $handle, $content ) {
 			throw new OpenMigrate_Quota_Exceeded_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Out of disk space. Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/out-of-disk-space/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					sprintf( __( 'Out of disk space. Could not write to: %s. The process cannot continue.', 'open-migrate' ), $meta['uri'] ),
 					openmigrate_allowed_html_tags()
 				)
 			);
@@ -1675,7 +1585,7 @@ function openmigrate_read( $handle, $length ) {
 				throw new OpenMigrate_Not_Readable_Exception(
 					wp_kses(
 						/* translators: 1: Meta data stream URI. */
-						sprintf( __( 'Could not read file: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+						sprintf( __( 'Could not read file: %s. The process cannot continue.', 'open-migrate' ), $meta['uri'] ),
 						openmigrate_allowed_html_tags()
 					)
 				);
@@ -1703,7 +1613,7 @@ function openmigrate_seek( $handle, $offset, $mode = SEEK_SET ) {
 			throw new OpenMigrate_Not_Seekable_Exception(
 				wp_kses(
 					/* translators: 1: File offset, 2: Meta data stream URI. */
-					sprintf( __( 'Could not seek to offset %1$d on %2$s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'open-migrate' ), $offset, $meta['uri'] ),
+					sprintf( __( 'Could not seek to offset %1$d on %2$s. The process cannot continue.', 'open-migrate' ), $offset, $meta['uri'] ),
 					openmigrate_allowed_html_tags()
 				)
 			);
@@ -1726,7 +1636,7 @@ function openmigrate_tell( $handle ) {
 			throw new OpenMigrate_Not_Tellable_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Could not get current pointer position of %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/php-32bit/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					sprintf( __( 'Could not get current pointer position of %s. The process cannot continue.', 'open-migrate' ), $meta['uri'] ),
 					openmigrate_allowed_html_tags()
 				)
 			);
@@ -1761,7 +1671,7 @@ function openmigrate_putcsv( $handle, $fields, $separator = ',', $enclosure = '"
 			throw new OpenMigrate_Not_Writable_Exception(
 				wp_kses(
 					/* translators: 1: Meta data stream URI. */
-					sprintf( __( 'Could not write to: %s. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-file-permissions/" target="_blank">Technical details</a>', 'open-migrate' ), $meta['uri'] ),
+					sprintf( __( 'Could not write to: %s. The process cannot continue.', 'open-migrate' ), $meta['uri'] ),
 					openmigrate_allowed_html_tags()
 				)
 			);
@@ -1967,7 +1877,7 @@ function openmigrate_verify_secret_key( $secret_key ) {
 	if ( $secret_key !== get_option( OPENMIGRATE_SECRET_KEY ) ) {
 		throw new OpenMigrate_Not_Valid_Secret_Key_Exception(
 			wp_kses(
-				__( 'Could not authenticate the secret key. The process cannot continue. <a href="https://help.servmask.com/knowledgebase/invalid-secret-key/" target="_blank">Technical details</a>', 'open-migrate' ),
+				__( 'Could not authenticate the secret key. The process cannot continue.', 'open-migrate' ),
 				openmigrate_allowed_html_tags()
 			)
 		);

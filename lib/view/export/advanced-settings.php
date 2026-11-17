@@ -64,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<li class="openmigrate-encrypt-backups-container-disabled">
 					<input type="checkbox" id="openmigrate-encrypt-backups" name="options[encrypt_backups]" disabled />
 					<?php esc_html_e( 'Password-protect and encrypt backups', 'open-migrate' ); ?>
-					<a href="https://help.servmask.com/knowledgebase/unable-to-encrypt-and-decrypt-backups/" target="_blank"><span class="openmigrate-icon-help"></span></a>
+
 				</li>
 			<?php endif; ?>
 

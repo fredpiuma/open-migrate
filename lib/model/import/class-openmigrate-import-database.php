@@ -932,6 +932,9 @@ class OpenMigrate_Import_Database {
 		// Get sites links
 		$sites_links = get_option( OPENMIGRATE_SITES_LINKS, array() );
 
+		// Get the state of the original plugin, which an import must never change
+		$original_state = OpenMigrate_Compat::capture();
+
 		$old_table_prefixes = array();
 		$new_table_prefixes = array();
 
@@ -1087,6 +1090,9 @@ class OpenMigrate_Import_Database {
 
 		// Set new backups path
 		update_option( OPENMIGRATE_BACKUPS_PATH_OPTION, OPENMIGRATE_BACKUPS_PATH );
+
+		// Put the state of the original plugin back
+		OpenMigrate_Compat::restore( $original_state );
 
 		return $params;
 	}

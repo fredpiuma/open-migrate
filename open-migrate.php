@@ -1,16 +1,18 @@
 <?php
 /**
- * Plugin Name: All-in-One WP Migration and Backup
- * Plugin URI: https://servmask.com/
- * Description: All-in-One WP Migration makes moving your entire WordPress site simple. Export or import your database, media, plugins, and themes with just a few clicks.
- * Author: ServMask
- * Author URI: https://servmask.com/
- * Version: 7.113
- * Text Domain: all-in-one-wp-migration
+ * Plugin Name: Open Migrate
+ * Plugin URI: https://www.fredericodecastro.com.br/links
+ * Description: Import, export and manage .wpress backups with no file size limit, no telemetry and no external connections. Compatible with All-in-One WP Migration backups.
+ * Author: Frederico de Castro
+ * Author URI: https://www.fredericodecastro.com.br/links
+ * Version: 1.0.0
+ * Requires PHP: 7.4
+ * Requires at least: 5.8
+ * Text Domain: open-migrate
  * Domain Path: /languages
- * Network: True
  * License: GPLv3
  *
+ * Copyright (C) 2026 Frederico de Castro
  * Copyright (C) 2014-2025 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify

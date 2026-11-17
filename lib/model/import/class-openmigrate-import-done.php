@@ -92,6 +92,7 @@ class OpenMigrate_Import_Done {
 			openmigrate_deactivate_swift_optimizer_rules(
 				array(
 					openmigrate_discover_plugin_basename( 'open-migrate/open-migrate.php' ),
+					openmigrate_discover_plugin_basename( 'all-in-one-wp-migration/all-in-one-wp-migration.php' ),
 					openmigrate_discover_plugin_basename( 'all-in-one-wp-migration-azure-storage-extension/all-in-one-wp-migration-azure-storage-extension.php' ),
 					openmigrate_discover_plugin_basename( 'all-in-one-wp-migration-b2-extension/all-in-one-wp-migration-b2-extension.php' ),
 					openmigrate_discover_plugin_basename( 'all-in-one-wp-migration-backup/all-in-one-wp-migration-backup.php' ),

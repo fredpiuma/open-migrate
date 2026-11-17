@@ -7,7 +7,7 @@
     "license": "GPLv3",
     "version": "7.113",
     "released_at": "2026-10-27",
-    "synced_at": null,
+    "synced_at": "2026-11-17",
     "info_api": "https://api.wordpress.org/plugins/info/1.0/all-in-one-wp-migration.json",
     "download_url": "https://downloads.wordpress.org/plugin/all-in-one-wp-migration.{version}.zip",
     "version_check": "Cabeçalho 'Version:' de all-in-one-wp-migration.php deve ser igual a {version}; senão abortar",
@@ -590,6 +590,12 @@
       "fork_version": "1.0.0",
       "date": "2026-11-17",
       "notes": "Fases 1 a 4: identidade, compatibilidade, limitador removido, WP-CLI e remoções"
+    },
+    {
+      "upstream_version": "7.113",
+      "fork_version": "1.0.0",
+      "date": "2026-11-17",
+      "notes": "Fase 7: verificação de versão nova (check-upstream.sh), reprodutibilidade (--verify) e relatório conferidos; 7.113 segue a mais recente"
     }
   ],
   "replaced": [

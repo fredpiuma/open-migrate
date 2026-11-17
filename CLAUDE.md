@@ -9,7 +9,7 @@ Ele importa, exporta e gerencia backups `.wpress` **sem limite de tamanho**, sem
 de importação, exportação ou backup. Autor: **Frederico de Castro**, https://www.fredericodecastro.com.br/links.
 
 **Estado atual:** o plugin está implementado (versão 1.0.0, fases 0 a 6 em grande parte concluídas). Falta fechar a matriz de compatibilidade
-(backups do original 7.5 e do fork 6.77, importação por caminho externo) e a fase 7 (acompanhamento do original). Fontes de verdade:
+(backups do original 7.5 e do fork 6.77, importação por caminho externo) (a fase 7, acompanhamento do original, está pronta: ver tools/check-upstream.sh). Fontes de verdade:
 
 | Arquivo | Conteúdo |
 |---|---|
@@ -85,6 +85,7 @@ Ferramentas na pasta `tools/`:
 ```bash
 tools/sync-upstream.sh <versão>            # importa versão do original na branch upstream (confere a versão real no cabeçalho)
 tools/upstream-report.sh <de> <para>       # relatório de mudanças em docs/upstream/relatorios/<para>.md
+tools/check-upstream.sh                    # diz se há versão nova do original (código 10 = há)
 python3 tools/rebrand.py <origem> <destino> # renomeação determinística, regras lidas de tools/upstream-map.json
 tools/build-zip.sh                          # dist/open-migrate-<versão>.zip e dist/open-migrate.zip, só arquivos do plugin, pasta interna open-migrate/
 php -l <arquivo.php>                        # sintaxe

@@ -88,6 +88,26 @@ class OpenMigrate_Import_Upload {
 			$chunk_offset = max( 0, (int) $params['chunk_offset'] );
 		}
 
+		// A part can only start inside, or right after, what was already received.
+		// Otherwise a huge offset would create a sparse file as big as the offset.
+		if ( $chunk_offset > 0 ) {
+			$archive_path = openmigrate_archive_path( $params );
+			clearstatcache( true, $archive_path );
+			if ( ! is_file( $archive_path ) || $chunk_offset > filesize( $archive_path ) ) {
+				throw new OpenMigrate_Upload_Exception(
+					wp_kses(
+						__(
+							'Invalid upload part. The process cannot continue.
+',
+							'open-migrate'
+						),
+						openmigrate_allowed_html_tags()
+					),
+					400
+				);
+			}
+		}
+
 		// Verify file data (the archive header is only in the first part)
 		if ( 0 === $chunk_offset && ! openmigrate_is_filedata_supported( $upload_tmp_name ) ) {
 			throw new OpenMigrate_Upload_Exception(

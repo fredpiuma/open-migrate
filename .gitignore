@@ -1,0 +1,7 @@
+CLAUDE.md
+upstream-src/
+dist/
+*.zip
+__pycache__/
+*.pyc
+docs/

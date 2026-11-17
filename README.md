@@ -29,6 +29,14 @@ Baseado no [All-in-One WP Migration and Backup](https://wordpress.org/plugins/al
 
 GPLv3, a mesma do plugin original.
 
+## Instalação
+
+1. Baixe `open-migrate-1.0.0.zip`.
+2. No painel do WordPress, vá em **Plugins → Adicionar novo → Enviar plugin** e envie o arquivo (ou descompacte em `wp-content/plugins/`).
+3. Ative o **Open Migrate**. O menu aparece na barra lateral, com Exportar, Importar e Backups.
+
+Requer WordPress 5.8 ou superior e PHP 7.4 ou superior (64 bits para arquivos acima de 2 GB).
+
 ---
 
 ### Precisa de uma solução sob medida para a sua loja?

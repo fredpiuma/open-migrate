@@ -32,22 +32,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="openmigrate-field-set">
 	<div class="openmigrate-buttons">
-		<div class="openmigrate-button-group openmigrate-button-export openmigrate-expandable">
-			<div class="openmigrate-button-main">
-				<span role="list" aria-label="<?php esc_attr_e( 'Export Site To', 'open-migrate' ); ?>"><?php esc_html_e( 'Export Site To', 'open-migrate' ); ?></span>
-				<span class="ai1mw-lines">
-					<span class="openmigrate-line openmigrate-line-first"></span>
-					<span class="openmigrate-line openmigrate-line-second"></span>
-					<span class="openmigrate-line openmigrate-line-third"></span>
-				</span>
-			</div>
-			<ul class="openmigrate-dropdown-menu openmigrate-export-providers">
-				<?php foreach ( apply_filters( 'openmigrate_export_buttons', array() ) as $button ) : ?>
-					<li>
-						<?php echo wp_kses( $button, openmigrate_allowed_html_tags() ); ?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
+		<div class="openmigrate-button-group openmigrate-button-export">
+			<a href="#" class="openmigrate-button-main" id="openmigrate-export-file" style="display:block;padding:6px 25px;color:inherit;text-decoration:none;">
+				<i class="openmigrate-icon-export" aria-hidden="true"></i>
+				<span><?php esc_html_e( 'Export File', 'open-migrate' ); ?></span>
+			</a>
 		</div>
 	</div>
 </div>

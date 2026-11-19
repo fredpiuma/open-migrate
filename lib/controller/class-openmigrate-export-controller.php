@@ -171,10 +171,6 @@ class OpenMigrate_Export_Controller {
 		return $params;
 	}
 
-	public static function buttons() {
-		return array( apply_filters( 'openmigrate_export_file', OpenMigrate_Template::get_content( 'export/button-file' ) ) );
-	}
-
 	public static function cleanup() {
 		try {
 			// Iterate over storage directory

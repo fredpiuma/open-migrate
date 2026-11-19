@@ -94,7 +94,6 @@ class OpenMigrate_Main_Controller {
 		// Load commands and buttons
 		add_action( 'plugins_loaded', array( $this, 'openmigrate_loaded' ), 10 );
 		add_action( 'plugins_loaded', array( $this, 'openmigrate_commands' ), 10 );
-		add_action( 'plugins_loaded', array( $this, 'openmigrate_buttons' ), 10 );
 
 		// Register scripts and styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_servmask_scripts_and_styles' ), 5 );
@@ -173,15 +172,6 @@ class OpenMigrate_Main_Controller {
 		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Options::execute', 330 );
 		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Done::execute', 350 );
 		add_filter( 'openmigrate_import', 'OpenMigrate_Import_Clean::execute', 400 );
-	}
-
-	/**
-	 * Export and import buttons
-	 *
-	 * @return void
-	 */
-	public function openmigrate_buttons() {
-		add_filter( 'openmigrate_export_buttons', 'OpenMigrate_Export_Controller::buttons' );
 	}
 
 	/**

@@ -5,7 +5,7 @@
  * Description: Import, export and manage .wpress backups with no file size limit, no telemetry and no external connections. Compatible with All-in-One WP Migration backups.
  * Author: Frederico de Castro
  * Author URI: https://www.fredericodecastro.com.br/links
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires PHP: 7.4
  * Requires at least: 5.8
  * Text Domain: open-migrate

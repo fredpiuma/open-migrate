@@ -4,7 +4,7 @@ Tags: migration, backup, export, import, wpress
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -23,6 +23,9 @@ Open Migrate is a free fork of All-in-One WP Migration and Backup 7.113 (ServMas
 Credits: ServMask Inc., authors of All-in-One WP Migration. Open Migrate is not affiliated with or endorsed by them.
 
 == Changelog ==
+
+= 1.0.2 =
+* Export: single "Export File" button starts the export right away (no dropdown).
 
 = 1.0.1 =
 * New plugin logo.
